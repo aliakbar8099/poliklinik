@@ -1,0 +1,60 @@
+@import url("../public/font/index.css");
+@import url("../public/tailwind.css");
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  color: #000;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Alibaba';
+  padding:0;
+  margin:0;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+*[hidden]{
+  display: none !important; 
+}
+
+.loaded {
+  opacity: 1;
+  animation: loaded 0.6s ease;
+}
+
+.box_sect1 {
+  animation: boxAn 1s ease;
+}
+
+@keyframes loaded {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes boxAn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

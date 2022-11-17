@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "baseUrl": "/"
+  },
+  "include": ["src", "pages/_app.js"],
+  "exclude": ["node_modules"]
+}

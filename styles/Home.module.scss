@@ -1,0 +1,37 @@
+.menu {
+    li {
+        border:1px solid #0000;
+        padding:5px 10px;
+        border-radius: 5px;
+        transition: 0.3s ease;
+        color: #323232;
+        background: #0000;
+        font-weight: normal;
+        transform: scale(1);
+    }
+    li:hover {
+        border:1px solid #0007;
+        border-radius: 20px !important;
+        background: #00b7bd0a;
+        color: #000;
+        // font-weight: bold;
+        transform: scale(1.05);
+    }
+}
+
+.auth {
+    li {
+        background: #0000;
+        transition: 0.3s ease;
+        padding: 5px 15px;
+    }
+    li:nth-child(2):hover {
+        background: #00b7bd0a;
+    }
+    li:nth-child(1):hover {
+        text-decoration: underline;
+        font-weight: bold;
+        color: #00B6BD;
+    }
+
+}

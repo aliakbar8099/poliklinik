@@ -1,0 +1,30 @@
+@font-face { 
+	font-family: 'Alibaba';
+    src: url('./Alibaba-Regular.eot');
+    src: url('./Alibaba-Regular.eot?#iefix') format('embedded-opentype');
+    src: url('./Alibaba-Regular.woff2') format('woff2'),
+    url('./Alibaba-Regular.woff') format('woff'),
+    url('./Alibaba-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+} 
+@font-face { 
+	font-family: 'Alibaba'; 
+    src:url('./Alibaba-Bold.eot');
+    src: url('./Alibaba-Bold.eot?#iefix') format('embedded-opentype');
+    src: url('./Alibaba-Bold.woff2') format('woff2'),
+    url('./Alibaba-Bold.woff') format('woff'),
+    url('./Alibaba-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: bold;
+} 
+@font-face { 
+	font-family: 'Alibaba';
+    src: url('./Alibaba-Light.eot');
+    src: url('./Alibaba-Light.eot?#iefix') format('embedded-opentype');
+    src: url('./Alibaba-Light.woff2') format('woff2'),
+    url('./Alibaba-Light.woff') format('woff'),
+    url('./Alibaba-Light.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
