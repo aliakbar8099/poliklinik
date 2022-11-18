@@ -11,16 +11,16 @@ function Section3() {
                 </div>
                 <p className="text-center text-[20px] m-auto mt-3">
                     <span>با <span className="text-[#00B6BD]">ما</span> در خانه، کمک های اولیه را بیاموزید.</span></p>
-                <div className={`${styles.card_section3} flex justify-around items-center my-10 mt-16`}>
-                    <div className='min-w-[300px] w-[300px] h-[300px] rounded-[30px] overflow-hidden'>
+                <div className={`${styles.card_section3} flex justify-around flex-wrap items-center my-10 mt-16`}>
+                    <div className='min-w-[300px] w-[300px] mt-5 h-[300px] rounded-[30px] overflow-hidden'>
                         <img src="/img/s1.png" />
                         <p>حمله قلبی</p>
                     </div>
-                    <div className='min-w-[300px] w-[300px] h-[300px] rounded-[30px] overflow-hidden'>
+                    <div className='min-w-[300px] w-[300px] mt-5 h-[300px] rounded-[30px] overflow-hidden'>
                         <img src="/img/s2.png" />
                         <p>شکستگی</p>
                     </div>
-                    <div className='min-w-[300px] w-[300px] h-[300px] rounded-[30px] overflow-hidden'>
+                    <div className='min-w-[300px] w-[300px] mt-5 h-[300px] rounded-[30px] overflow-hidden'>
                         <img src="/img/s3.png" />
                         <p>مار گزیدگی</p>
                     </div>

@@ -7,7 +7,7 @@ body {
   margin: 0;
   scroll-behavior: smooth;
   background: #fff;
-  // overflow-x: hidden;
+  overflow-x: hidden;
   color: #000;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -79,13 +79,28 @@ input[type=number] {
 }
 
 .container-pl {
-  width: 90%;
+  width: 90%; 
+  max-width: 1444px;
   margin: auto;
+}
+
+@media (max-width:960px) {
+  .container-pl {
+    width: 100%;
+  }
 }
 
 #comment-s {
   .swiper-wrapper {
     left: 34%;
+  }
+}
+
+@media (max-width:1024px) {
+  #comment-s {
+    .swiper-wrapper {
+      left: 11%;
+    }
   }
 }
 

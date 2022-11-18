@@ -4,8 +4,8 @@ function Footer() {
     return (
         <>
             <footer className="bg-[rgba(0,89,116,0.1)]">
-                <div className=" container-pl py-8 flex justify-between items-start">
-                    <div className="w-[23%] text-justify">
+                <div className="container-pl p-4  lg:py-8 flex flex-col lg:flex-row justify-center lg:justify-between items-start">
+                    <div className="w-[90%] lg:w-[23%] text-justify">
                         <a>
                             <svg width="50" height="51" viewBox="0 0 50 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7.53748 23.6036H16.2325L21.9371 38.7715L36.1438 0.998047L44.6456 23.6036H50V27.6435H41.8483L36.1437 12.4755L21.937 50.249L13.4353 27.6435H7.53748C7.88232 27.0488 8.08081 26.3592 8.08081 25.6235C8.08081 24.8878 7.88232 24.1982 7.53748 23.6036Z" fill="#00B6BD" />
@@ -25,7 +25,7 @@ function Footer() {
                             </span>
                         </p>
                     </div>
-                    <div className="p-12 py-4 mr-10">
+                    <div className="p-0 lg:p-12 py-4 mr-1 lg:mr-10">
                         <h1 className="font-bold text-[17px]">آرشیو مطالب</h1>
                         <ul className="text-[15px] text-[#0007] py-3 menu-fo">
                             <li className="mb-2"><Link href="/">پربازدید ترین ها</Link></li>
@@ -35,7 +35,7 @@ function Footer() {
                             <li className="mb-2"><Link href="/">تقویم تعطیلات</Link></li>
                         </ul>
                     </div>
-                    <div className="p-12 py-4 mr-10">
+                    <div className="p-0 lg:p-12 py-4 mr-1 lg:mr-10">
                         <h1 className="font-bold text-[17px]">درباره ما</h1>
                         <ul className="text-[15px] text-[#0007] py-3 menu-fo">
                             <li className="mb-2"><Link href="/">کادر درمانی</Link></li>

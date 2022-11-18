@@ -62,7 +62,7 @@ function Section5() {
                 <div className="flex mt-36 justify-center items-center">
                     <h2 className="text-[35px] font-bold mb-28">نظرات کاربران</h2>
                 </div>
-                <div className='h-[350px] mb-4 overflow-hidden'>
+                <div className='h-[240px] lg:h-[350px] mb-4 overflow-hidden'>
                     <SliderSection5 comments={comments} />
                 </div>
                 <div className="flex justify-center items-center p-4 pb-10">

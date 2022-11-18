@@ -3,17 +3,17 @@ import styles from '/styles/Home.module.scss'
 function Section2() {
     return (
         <>
-            <section className="container-pl ">
+            <section className="container-pl">
                 <div className="flex mt-10 items-center relative">
                     <svg width="85" height="70" viewBox="0 0 85 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M56.0229 15.1416C72.027 15.1416 84.9999 25.2357 84.9999 37.6873C84.9999 46.5781 78.3849 54.2659 68.7755 57.9366C68.1051 62.2019 69.4292 66.7143 72.7517 70.0005C66.3746 70.0005 60.9864 65.8295 59.2139 60.0967C58.1658 60.1859 57.1015 60.2333 56.0229 60.2333C40.0198 60.2333 27.0459 50.139 27.0459 37.6874C27.0457 25.2357 40.0199 15.1416 56.0229 15.1416Z" fill="#005974" />
                         <path d="M28.977 0C12.9729 0 0 10.0942 0 22.5457C0 31.4365 6.61502 39.1243 16.2244 42.795C16.8948 47.0603 15.5707 51.5727 12.2482 54.8588C18.6253 54.8588 24.0135 50.6879 25.786 44.9551C26.8341 45.0443 27.8984 45.0917 28.977 45.0917C44.9801 45.0917 57.954 34.9974 57.954 22.5458C57.9542 10.0942 44.98 0 28.977 0Z" fill="#FFD24D" />
                     </svg>
-                    <h2 className="text-[35px] font-bold absolute left-[50%] translate-x-[-50%]">خدمات <span className="text-[#00B6BD]">ما</span></h2>
+                    <h2 className="text-[26px] lg:text-[35px] font-bold absolute left-[50%] translate-x-[-50%]">خدمات <span className="text-[#00B6BD]">ما</span></h2>
                 </div>
-                <p className="text-center text-[20px] w-[20%] m-auto mt-1"><span>مجموعه <span className="text-[#00B6BD]">ما</span> با ارائه خدمات متنوع آماده پاسخگویی ب شماست.</span></p>
-                <div className={`${styles.Section2_Items} flex my-10`}>
-                    <div className="w-[25%] h-[200px] bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
+                <p className="text-center text-[14px] lg:text-[20px] w-[80%] lg:w-[20%] m-auto mt-1 "><span>مجموعه <span className="text-[#00B6BD]">ما</span> با ارائه خدمات متنوع آماده پاسخگویی ب شماست.</span></p>
+                <div className={`${styles.Section2_Items} flex my-10 flex-wrap lg:flex-nowrap justify-center`}>
+                    <div className="w-[100%] md:w-[30%] lg:w-[25%] h-[200px] mb-10 bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
                         <svg width="58" height="61" viewBox="0 0 58 61" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M39.2213 13.0798C39.657 12.8851 40.139 12.7783 40.6468 12.7783C42.5888 12.7783 44.1644 14.3537 44.1644 16.2969C44.1644 16.4238 44.1572 16.5479 44.1442 16.6705C44.0101 17.9443 43.1963 19.0148 42.0724 19.5125C41.6367 19.7058 41.1547 19.814 40.6469 19.814C40.064 19.814 39.5158 19.6726 39.0324 19.4216C37.9013 18.8388 37.1279 17.6587 37.1279 16.2968C37.1279 16.1699 37.1352 16.0458 37.1481 15.9232C37.2822 14.6495 38.0974 13.5776 39.2213 13.0798Z" fill="#F95428" />
                             <path d="M56.2246 17.9592L50.3986 25.9499L46.9965 30.6168L42.0723 19.5128C43.1962 19.0151 44.01 17.9447 44.1441 16.6709L56.2246 17.9592Z" fill="#F95428" />
@@ -34,7 +34,7 @@ function Section2() {
                         </svg>
                         <h3 className="mt-9 text-[#000] text-[18px]">اطفال</h3>
                     </div>
-                    <div className="w-[25%] h-[200px] bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
+                    <div className="w-[100%] md:w-[30%] lg:w-[25%] h-[200px] mb-10 bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
                         <svg width="59" height="55" viewBox="0 0 59 55" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M54.8385 53.0019H4.16076C2.62872 53.0019 1.38672 51.76 1.38672 50.2282V15.1986C1.38672 13.6668 2.62883 12.4248 4.16076 12.4248H54.8385C56.3706 12.4248 57.6127 13.6668 57.6127 15.1986V50.2283C57.6126 51.76 56.3706 53.0019 54.8385 53.0019Z" fill="white" />
                             <path d="M18.3516 4.12946V12.4246H22.6726V6.60096H36.3274V12.4246H40.6486V4.12946C40.6486 3.10814 39.8206 2.28027 38.7992 2.28027H20.201C19.1795 2.28027 18.3516 3.10814 18.3516 4.12946Z" fill="#FFDA79" />
@@ -46,7 +46,7 @@ function Section2() {
                         </svg>
                         <h3 className="mt-9 text-[#000] text-[18px]">داخلی</h3>
                     </div>
-                    <div className="w-[25%] h-[200px] bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
+                    <div className="w-[100%] md:w-[30%] lg:w-[25%] h-[200px] mb-10 bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
                         <svg width="58" height="59" viewBox="0 0 58 59" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.56522 29.8903C7.56522 18.0722 17.1806 8.45791 29 8.45791V0.893555C12.9838 0.893555 0 13.8759 0 29.8903C0 45.9046 12.9838 58.887 29 58.887V51.3226C17.1806 51.3226 7.56522 41.7083 7.56522 29.8903Z" fill="#FFF6D6" />
                             <path d="M29 0.893555V8.45791C40.8194 8.45791 50.4348 18.0722 50.4348 29.8903C50.4348 41.7083 40.8194 51.3226 29 51.3226V58.887C45.0162 58.887 58 45.9046 58 29.8903C58 13.8759 45.0162 0.893555 29 0.893555Z" fill="#FFEDAD" />
@@ -59,7 +59,7 @@ function Section2() {
                         </svg>
                         <h3 className="mt-9 text-[#000] text-[18px]">چشم پزشکی</h3>
                     </div>
-                    <div className="w-[25%] h-[200px] bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
+                    <div className="w-[100%] md:w-[30%] lg:w-[25%] h-[200px] mb-10 bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
                         <svg width="56" height="58" viewBox="0 0 56 58" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M18.327 0.893555C11.579 0.893555 7.12695 8.64222 7.12695 18.2007C7.12695 27.7591 11.579 57.9052 18.327 57.9052C22.2634 57.9052 22.7106 32.8708 27.9997 32.8481C34.307 32.8708 33.7359 57.9052 37.6724 57.9052C44.4203 57.9052 48.8724 27.7591 48.8724 18.2007C48.8724 8.64222 44.4203 0.893555 37.6724 0.893555C34.4482 0.893555 31.2239 3.94775 27.9997 3.94775C24.7754 3.94775 21.5512 0.893555 18.327 0.893555Z" fill="#FCC24C" />
                             <path d="M39.7092 12.0918H16.291V26.3447H39.7092V12.0918Z" fill="#ECECEC" />
@@ -71,7 +71,7 @@ function Section2() {
                         </svg>
                         <h3 className="mt-9 text-[#000] text-[18px]">دندان پزشکی</h3>
                     </div>
-                    <div className="w-[25%] h-[200px] bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
+                    <div className="w-[100%] md:w-[30%] lg:w-[25%] h-[200px] mb-10 bg-[#DEEEF2] mx-5 rounded-[30px] flex flex-col justify-center items-center">
                         <svg width="58" height="59" viewBox="0 0 58 59" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M29 58.8869C45.0163 58.8869 58 45.9047 58 29.8903C58 13.8758 45.0163 0.893555 29 0.893555C12.9837 0.893555 0 13.8758 0 29.8903C0 45.9047 12.9837 58.8869 29 58.8869Z" fill="#E05B49" />
                             <path opacity="0.1" d="M39.8272 16.7522L39.713 16.638L39.6973 16.6404C39.2454 16.2634 38.698 16.003 38.0932 15.8932L37.1701 14.9701L37.1652 14.9743C36.5883 14.4101 35.8028 14.0627 34.9576 14.0627C34.6435 14.0627 34.3353 14.1111 34.0392 14.2017C33.574 13.6278 32.8611 13.2775 32.0998 13.2775C30.7345 13.2775 29.6288 14.3708 29.6288 15.7059V15.9838L27.7154 14.0706C27.6713 14.0234 27.6272 13.9781 27.5795 13.9346L27.522 13.8772L27.5172 13.8839C27.0834 13.5111 26.5227 13.2773 25.901 13.2773C25.1397 13.2773 24.4269 13.6277 23.9616 14.2016C23.6656 14.111 23.3575 14.0626 23.0432 14.0626C21.8229 14.0626 20.7172 14.7754 20.2036 15.8387C18.5059 15.9958 17.1526 17.367 17.074 19.0646C15.4549 19.3485 14.2224 20.7379 14.2224 22.4113C14.2224 22.816 14.2949 23.2147 14.4339 23.5893C13.1591 24.4713 12.3857 25.915 12.3857 27.4736C12.3857 28.3254 12.6092 29.1409 13.0442 29.8658C12.6153 30.5183 12.3857 31.2854 12.3857 32.0647C12.3857 33.4602 13.1107 34.7348 14.2829 35.4718C13.9687 36.094 13.7995 36.7767 13.7995 37.4775C13.7995 39.4951 15.1467 41.2229 17.068 41.7786C17.0856 42.6618 17.4474 43.4617 18.0244 44.0585L18.025 44.059C18.0643 44.0995 18.1035 44.14 18.1446 44.1786L32.6216 58.654C45.3937 57.0622 55.5842 47.1726 57.6232 34.5456L40.0562 16.9812C39.9837 16.9008 39.907 16.8259 39.8272 16.7522Z" fill="black" />

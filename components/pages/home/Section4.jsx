@@ -3,7 +3,7 @@
 function Section4() {
     return (
         <>
-            <div className="container-pl flex items-start w-full justify-around pb-5 pt-[150px]">
+            <div className=" container-pl flex flex-col lg:flex-row items-start w-full justify-around pb-5 pt-[150px]">
                 <div className="card w-[450px] min-w-[450px]">
                     <div className="card-body">
                         <h2 className="font-bold text-[35px]">بیمه های طرف قرارداد</h2>
@@ -14,7 +14,7 @@ function Section4() {
                         </div>
                     </div>
                 </div>
-                <div className="w-[588px] h-[441px] bg-[#DEEEF2] rounded-[25px] flex items-center justify-around">
+                <div className="w-full p-4 lg:w-[588px] h-[441px] bg-[#DEEEF2] rounded-none lg:rounded-[25px] flex items-center justify-around">
                     <div className="h-full flex flex-col justify-around items-center">
                         <a><img src="/img/bime/b1.png" /></a>
                         <a><img src="/img/bime/b2.png" /></a>
