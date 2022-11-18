@@ -1,7 +1,7 @@
 .menu {
     li {
-        border:1px solid #0000;
-        padding:5px 10px;
+        border: 1px solid #0000;
+        padding: 5px 10px;
         border-radius: 5px;
         transition: 0.3s ease;
         color: #323232;
@@ -9,8 +9,9 @@
         font-weight: normal;
         transform: scale(1);
     }
+
     li:hover {
-        border:1px solid #0007;
+        border: 1px solid #0007;
         border-radius: 20px !important;
         background: #00b7bd0a;
         color: #000;
@@ -25,13 +26,62 @@
         transition: 0.3s ease;
         padding: 5px 15px;
     }
+
     li:nth-child(2):hover {
         background: #00b7bd0a;
     }
+
     li:nth-child(1):hover {
         text-decoration: underline;
         font-weight: bold;
         color: #00B6BD;
     }
 
+}
+
+.Section2_Items {
+    >div {
+        transition: 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            background: #fff;
+            box-shadow: 0px 1.145px 32.06px -12.595px #BCE7F1;
+            transform: scale(1.02);
+            h3 {
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.card_section3 {
+    > div {
+        position: relative;
+        transition: 0.6s ease;
+        cursor: pointer;
+        img {
+            transition: 1s ease;
+        }
+        p {
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translate(-50% , -50%) scale(0);
+            z-index: 1002;
+            font-size: 25px;
+            transition: 0.5s ease-in-out;
+        }
+        &:hover {
+            transform: scale(1.05);
+            img {
+                opacity: 0.2;
+                transform: scale(1.1);
+            }
+            p {
+                top: 50%;
+                transform: translate(-50% , -50%) scale(1);
+            }
+        }
+
+    }
 }

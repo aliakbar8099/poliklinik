@@ -1,5 +1,6 @@
 @import url("../public/font/index.css");
 @import url("../public/tailwind.css");
+
 html,
 body {
   padding: 0;
@@ -18,8 +19,8 @@ a {
 * {
   box-sizing: border-box;
   font-family: 'Alibaba';
-  padding:0;
-  margin:0;
+  padding: 0;
+  margin: 0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,8 +29,8 @@ a {
   }
 }
 
-*[hidden]{
-  display: none !important; 
+*[hidden] {
+  display: none !important;
 }
 
 .loaded {
@@ -41,10 +42,27 @@ a {
   animation: boxAn 1s ease;
 }
 
+.container-pl {
+  width: 90%;
+  margin: auto;
+}
+
+#comment-s {
+  .swiper-wrapper {
+    left: 34%;
+  }
+}
+
+.costom-Card-commnet {
+  box-shadow: 0px 1.06px 30px -10px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+}
+
 @keyframes loaded {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -54,6 +72,7 @@ a {
   from {
     transform: scale(0);
   }
+
   to {
     transform: scale(1);
   }
