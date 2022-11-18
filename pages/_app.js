@@ -9,13 +9,14 @@ export default function App({ Component, pageProps }) {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      Promise.all(Array.from(document.images).filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
-        setTimeout(() => {
-          setLoading(false)
-        }, 3000);
-      });
-    }
+    // console.log();
+    // document.body.addEventListener("loadstart" , ()=> console.log("starting....."))
+    // document.body.addEventListener("loadeddata" , ()=> console.log("loaded"))
+    setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        setLoading(false)
+      }
+    }, 3000);
   }, [])
 
   return (
@@ -31,7 +32,7 @@ export default function App({ Component, pageProps }) {
           getLayout(
             <Layout>
               <div>
-                <Component {...pageProps} />
+              <Component {...pageProps} />
               </div>
             </Layout>
           )
