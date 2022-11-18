@@ -9,11 +9,13 @@ export default function App({ Component, pageProps }) {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setTimeout(() => {
-      if (typeof window !== 'undefined') {
-        setLoading(false)
-      }
-    }, 3000);
+    if (typeof window !== 'undefined') {
+      Promise.all(Array.from(document.images).filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
+        setTimeout(() => {
+          setLoading(false)
+        }, 3000);
+      });
+    }
   }, [])
 
   return (
@@ -28,7 +30,9 @@ export default function App({ Component, pageProps }) {
         {
           getLayout(
             <Layout>
-              <Component {...pageProps} />
+              <div>
+                <Component {...pageProps} />
+              </div>
             </Layout>
           )
         }
