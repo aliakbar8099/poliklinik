@@ -34,10 +34,10 @@ export default function SliderSection5({ comments }) {
                 loop={true}
                 centeredSlides={true}
                 loopFillGroupWithBlank={true}
-                // autoplay={{
-                //     delay: 2500,
-                //     disableOnInteraction: false,
-                // }}
+                autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                }}
                 modules={[Autoplay, Pagination, Navigation]}
                 className="mySwiper h-[100%] w-[135%]"
                 id="comment-s"
