@@ -13,7 +13,7 @@ function Navbar() {
                     </svg>
                 </a>
                 <ul className={`${styles.menu} hidden lg:flex mr-14`}>
-                    <li className="mr-10"><Link href="/">خانه</Link></li>
+                    <li className="mr-10 text-[#00b6bd]"><Link href="/">خانه</Link></li>
                     <li className="mr-10"><Link href="/">کادر درمانی</Link></li>
                     <li className="mr-10"><Link href="/">بخش های ما</Link></li>
                     <li className="mr-10"><Link href="/">برنامه ما</Link></li>
