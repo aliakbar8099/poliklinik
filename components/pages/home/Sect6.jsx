@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-function Section6() {
+export default function Sect6() {
     return ( 
         <>
             <div className="bg-gradient-to-r from-[#1D5760] to-[#4ECCC4] container-pl flex flex-col lg:flex-row justify-between rounded-t-[50px] pl-4 lg:pl-6 pt-10 pr-4 lg:pr-32">
@@ -18,5 +18,3 @@ function Section6() {
         </>
      );
 }
-
-export default Section6;
