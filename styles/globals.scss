@@ -5,10 +5,33 @@ html,
 body {
   padding: 0;
   margin: 0;
+  scroll-behavior: smooth;
   background: #fff;
+  // overflow-x: hidden;
   color: #000;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: 11px;
+  }
+  
+  /* Track */
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #fff;
+  }
+  
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    border: 2px solid #fff;
+    background: #ccc;
+    border-radius: 10px;
+    &:hover {
+      background: #aaa;
+    }
+  }
 }
 
 a {
@@ -16,9 +39,22 @@ a {
   text-decoration: none;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 * {
   box-sizing: border-box;
   font-family: 'Alibaba';
+  outline: none;
   padding: 0;
   margin: 0;
 }
@@ -56,6 +92,45 @@ a {
 .costom-Card-commnet {
   box-shadow: 0px 1.06px 30px -10px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
+}
+
+.bg-sec3 {
+  background: url('../public/img/bs3.jpg');
+}
+
+.menu-fo {
+  li {
+    transition: 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02) translateX(-10px);
+      color: #007aff;
+      list-style: disc;
+    }
+  }
+}
+
+.soialmedia {
+  a {
+    transition: 0.4s ease;
+    cursor: pointer;
+    color: #007aff;
+  }
+
+  a:nth-child(3):hover {
+    color: red;
+    transform: scale(1.2);
+  }
+
+  a:nth-child(2):hover {
+    color: aqua;
+    transform: scale(1.2);
+  }
+
+  a:nth-child(1):hover {
+    color: purple;
+    transform: scale(1.2);
+  }
 }
 
 @keyframes loaded {

@@ -30,7 +30,7 @@ export default function SliderSection5({ comments }) {
             >
                 {
                     comments.map((item, index) => (
-                        <SwiperSlide key={index} className="w-[300px] h-[100%] p-10 flex flex-col  justify-start costom-Card-commnet" style={{ background: item.color }}>
+                        <SwiperSlide key={index} className="w-[300px] cursor-grab h-[100%] p-10 flex flex-col  justify-start costom-Card-commnet" style={{ background: item.color }}>
                             <h5 className="text-[18px] mb-5">{item.name}</h5>
                             <p className="px-3 py-1">{item.text}</p>
                             <div className="flex justify-between items-center mt-auto">

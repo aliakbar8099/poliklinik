@@ -5,7 +5,7 @@ import styles from '/styles/Home.module.scss'
 function Section3() {
     return (
         <>
-            <section className="container-pl ">
+            <section className="container-pl">
                 <div className="flex mt-36 justify-center items-center">
                     <h2 className="text-[35px] font-bold">نکات آموزشی</h2>
                 </div>
