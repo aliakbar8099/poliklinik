@@ -1,10 +1,39 @@
+import React from "react";
 import Link from "next/link";
 import styles from '/styles/Home.module.scss'
+import { useRouter } from "next/router";
 
 function Navbar() {
+    const route = useRouter();
+    const [position, setPosition] = React.useState({
+        left: 0,
+        width: 0,
+        transform: "scale(0)",
+        opacity: 0
+    })
+
+    function handleENterMouse(e) {
+        setPosition({
+            ...position,
+            left: e.target.offsetLeft + 20,
+            width: e.target.offsetWidth - 40,
+            transform: "scale(1)",
+            opacity: 1
+        })
+    }
+
+    function handleLeft(e) {
+        setPosition({
+            ...position,
+            transform: "scale(0)",
+            opacity: 0,
+        })
+    }
+
+
     return (
         <>
-            <div className="flex w-full px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 left-0 z-[2010] bg-white">
+            <div className="flex overflow-hidden w-full px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
                 <a>
                     <svg width="50" height="51" viewBox="0 0 50 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.53748 23.6036H16.2325L21.9371 38.7715L36.1438 0.998047L44.6456 23.6036H50V27.6435H41.8483L36.1437 12.4755L21.937 50.249L13.4353 27.6435H7.53748C7.88232 27.0488 8.08081 26.3592 8.08081 25.6235C8.08081 24.8878 7.88232 24.1982 7.53748 23.6036Z" fill="#00B6BD" />
@@ -13,11 +42,13 @@ function Navbar() {
                     </svg>
                 </a>
                 <ul className={`${styles.menu} hidden lg:flex mr-14`}>
-                    <li className="mr-10 text-[#00b6bd]"><Link href="/">خانه</Link></li>
-                    <li className="mr-10"><Link href="/">کادر درمانی</Link></li>
-                    <li className="mr-10"><Link href="/">بخش های ما</Link></li>
-                    <li className="mr-10"><Link href="/">برنامه ما</Link></li>
-                    <li className="mr-10"><Link href="/">مجله سلامت</Link></li>
+                    <li className={route.pathname === "/" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/">خانه</Link></li>
+                    <li className={route.pathname === "/staff" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/staff">کادر درمانی</Link></li>
+                    <li className={route.pathname === "/parts" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/parts">بخش های ما</Link></li>
+                    <li className={route.pathname === "/progroms" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/progroms">برنامه ما</Link></li>
+                    <li className={route.pathname === "/magazine" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/magazine">مجله سلامت</Link></li>
+                    <span style={position}></span>
+                    <span className={styles.line} style={position}></span>
                 </ul>
                 <ul className={`${styles.auth} hidden lg:flex items-center mr-auto`}>
                     <li><Link href="/">ورود</Link></li>
@@ -39,11 +70,11 @@ function Navbar() {
                         <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                     </label>
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 left-0">
-                    <li><Link href="/">خانه</Link></li>
-                    <li><Link href="/">کادر درمانی</Link></li>
-                    <li><Link href="/">بخش های ما</Link></li>
-                    <li><Link href="/">برنامه ما</Link></li>
-                    <li><Link href="/">مجله سلامت</Link></li>
+                        <li><Link href="/">خانه</Link></li>
+                        <li><Link href="/">کادر درمانی</Link></li>
+                        <li><Link href="/">بخش های ما</Link></li>
+                        <li><Link href="/">برنامه ما</Link></li>
+                        <li><Link href="/">مجله سلامت</Link></li>
                     </ul>
                 </div>
             </div>
