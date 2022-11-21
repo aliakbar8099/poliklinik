@@ -3,10 +3,26 @@ import { AppProps } from 'next/app'
 import React from 'react';
 import 'animate.css';
 
+import Router from "next/router";
+import ProgressBar from '@badrap/bar-of-progress';
+
+
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
   const Layout = Component.Layout || EmptyLayout;
   const [loading, setLoading] = React.useState(true);
+
+  const progress = new ProgressBar({
+    size: 5,
+    color: "#00B6BD",
+    zIndex: 1090,
+    className: "bar-of-progress",
+    delay: 1,
+  });
+
+  Router.events.on("routeChangeStart", progress.start);
+  Router.events.on("routeChangeComplete", progress.finish);
+  Router.events.on("routeChangeError", progress.finish);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
