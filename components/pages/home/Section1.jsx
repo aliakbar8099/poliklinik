@@ -1,12 +1,28 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
+import React from 'react';
 import { TypeAnimation } from 'react-type-animation';
 
 function Section1() {
+    const [position , setPosition] = React.useState({
+        position:"relative",
+        left:0,
+        top:0,
+        transition:"0.8s"
+    });
+
+    const handleMouseMove = (e) => {
+        setPosition({
+            ...position,
+            left:-e.nativeEvent.offsetX / 20,
+            top:e.nativeEvent.offsetY / 20
+        })
+    }
+
     return (
         <>
-            <section className="h-[524px] w-full overflow-hidden  rounded-b-[20px] lg:rounded-b-[100px] relative">
-                <img className="w-full h-full object-cover" src="/img/bgsec1.jpg" />
+            <section onMouseMove={handleMouseMove} className="h-[524px] w-full overflow-hidden  rounded-b-[20px] lg:rounded-b-[100px] relative">
+                <img style={position} className="w-full h-full object-cover scale-[1.1]" src="/img/bgsec1.jpg" />
                 <div
                     className="box_sect1 rounded-[40px] bg-[#E9FAFF] w-[90%] md:w-[60%] lg:w-[466px] h-[auto] absolute top-[50%]
                  right-[50%] lg:right-[80px] translate-y-[-50%] translate-x-[50%] lg:translate-x-[0%] p-6 pt-10">

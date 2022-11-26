@@ -54,7 +54,7 @@ function Footer() {
                         <h3 className="text-[17px] font-bold mb-6">راه های ارتباطی</h3>
                         <p>
                             شماره تماس: <span>011 - 44224400</span>
-                            <p className="text-left">011 - 44222201</p>
+                            <p className="text-left ml-12">011 - 44222201</p>
                         </p>
                         <p className="mt-2">ایمیل: polyclinicZendegi@gmail.com</p>
                         <p className="mt-4">آدرس: شهرستان آمل،جاده امام زاده عبدالله، جنب دانشگاه شمال، پلی کلینیک زندگی</p>

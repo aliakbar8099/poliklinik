@@ -71,12 +71,12 @@
         background: #0000;
         transition: 0.3s ease;
         padding: 5px 15px;
+        
     }
 
     li:nth-child(2):hover {
         background: #00b7bd0a;
     }
-
     li:nth-child(1):hover {
         text-decoration: underline;
         font-weight: bold;
@@ -94,7 +94,6 @@
             background: #fff;
             box-shadow: 0px 1.145px 32.06px -12.595px #BCE7F1;
             transform: scale(1.02);
-
             h3 {
                 font-weight: bold;
             }
@@ -136,6 +135,36 @@
             }
         }
 
+    }
+}
+
+.menuRes {
+    margin-top: 100px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    li {
+        margin-bottom: 20px;
+        background: #fff;
+        box-shadow: 0 0 0 1px #005974;
+        color: #005974;
+        width: 100%;
+        text-align: center;
+        border-radius: 15px;
+        transition: 0.2s ease;
+        transform: scale(1);
+        a {
+            padding: 15px;
+            display: block;
+            width: 100%;
+        }
+        &.active {
+            background: #005974;
+            color: #fff;
+        }
+        &:active {
+            transform: scale(0.9);
+        }
     }
 }
 

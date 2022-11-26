@@ -7,7 +7,7 @@ export default function Sect6() {
                 <div className="w-[100%] lg:w-1/2 flex justify-center items-center flex-col">
                     <p className="text-[26px] lg:text-[35px] text-center font-bold text-white mb-16">ایجاد تجربه ای بهتر<br /> با عضویت در <span className="text-[#00EED1]">پلی کلینیک زندگی</span></p>
                     <div className="bg-white flex justify-between items-center p-2 rounded-[40px] mt-20px w-full pr-5">
-                        <input type="number" className="w-full text-[12px] sm:text-[10px]" placeholder="شماره تلفن خود را وارد کنید." />
+                        <input type="number" className="w-full text-[12px] sm:text-[16px]" placeholder="شماره تلفن خود را وارد کنید." />
                         <button className="btn btn-ghost text-[#fff] font-normal bg-[#338C8D] rounded-[40px] hover:bg-[#338C8D] hover:opacity-75 text-[10px] sm:text-[16px]">همین الان عضو شوید</button>
                     </div>
                 </div>

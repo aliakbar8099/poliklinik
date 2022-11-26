@@ -1,4 +1,5 @@
 import '/styles/globals.scss'
+import '/styles/components.scss'
 import { AppProps } from 'next/app'
 import React from 'react';
 import 'animate.css';
