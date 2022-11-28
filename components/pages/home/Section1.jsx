@@ -36,7 +36,7 @@ function Section1() {
                     />
                     <h2 className='text-[20px] lg:text-[28px] text-justify w-[90%] lg:w-[75%] lining-[42px] mt-4'>در پلی کلینیک زندگی در هر زمان،
                         <span className='text-[#00B6BD]'>آنلاین</span> وقت رزرو کنید!</h2>
-                    <button className='btn px-9 text-[17px] font-normal btn-ghost bg-[#005974] hover:bg-[#005873] hover:opacity-90 text-[#fff] mt-10'>رزرو نوبت</button>    
+                    <label htmlFor='modalAuth' className='btn px-9 text-[17px] font-normal btn-ghost bg-[#005974] hover:bg-[#005873] hover:opacity-90 text-[#fff] mt-10'>رزرو نوبت</label>    
                 </div>
             </section>
         </>
