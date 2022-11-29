@@ -6,11 +6,32 @@ import TextInput from "./TextInput";
 import Register from "../pages/Auth/Auth";
 import Auth from "../pages/Auth/Auth";
 
+let menus = {
+    main: [
+        { name: "خانه", path: "/" },
+        { name: "کادر درمانی", path: "/staff" },
+        { name: "بخش های ما", path: "/parts" },
+        { name: "برنامه ما", path: "/progroms" },
+        { name: "مجله سلامت", path: "/magazine" },
+    ],
+    dashboard: [
+        { name: "خانه", path: "/" },
+        { name: "کادر درمانی", path: "/staff" },
+        { name: "رزرو نوبت", path: "/reserve" },
+        { name: "رزور های من", path: "/my-reserve" },
+        { name: "پروفایل", path: "/profile" },
+    ],
+}
 
-function Navbar({ bg = "#fff" }) {
+function Navbar({ bg = "#fff", typeLayout = "main" }) {
     const [pageId, setPageId] = React.useState(0);
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = React.useState(false);
+    const [login, setLogin] = React.useState(null);
     const route = useRouter();
+
+    React.useEffect(() => {
+        setLogin(localStorage.getItem("access-token"));
+    }, [])
 
     const [position, setPosition] = React.useState({
         left: 0,
@@ -39,7 +60,7 @@ function Navbar({ bg = "#fff" }) {
 
     return (
         <>
-            <navbar style={{background:bg}} className="flex overflow-hidden w-full px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
+            <navbar style={{ background: bg }} className="flex overflow-hidden w-full px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
                 <a>
                     <svg width="50" height="51" viewBox="0 0 50 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.53748 23.6036H16.2325L21.9371 38.7715L36.1438 0.998047L44.6456 23.6036H50V27.6435H41.8483L36.1437 12.4755L21.937 50.249L13.4353 27.6435H7.53748C7.88232 27.0488 8.08081 26.3592 8.08081 25.6235C8.08081 24.8878 7.88232 24.1982 7.53748 23.6036Z" fill="#00B6BD" />
@@ -48,18 +69,40 @@ function Navbar({ bg = "#fff" }) {
                     </svg>
                 </a>
                 <ul className={`${styles.menu} hidden lg:flex mr-14`}>
-                    <li className={route.pathname === "/" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/">خانه</Link></li>
-                    <li className={route.pathname === "/staff" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/staff">کادر درمانی</Link></li>
-                    <li className={route.pathname === "/parts" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/parts">بخش های ما</Link></li>
-                    <li className={route.pathname === "/progroms" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/progroms">برنامه ما</Link></li>
-                    <li className={route.pathname === "/magazine" ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href="/magazine">مجله سلامت</Link></li>
+                    {
+                        menus[typeLayout].map(item => (
+                            <li key={item.path} className={route.pathname === item.path ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href={item.path}>{item.name}</Link></li>
+                        ))
+                    }
                     <span style={position}></span>
                     <span className={styles.line} style={position}></span>
                 </ul>
-                <ul className={`${styles.auth} hidden lg:flex items-center mr-auto`}>
-                    <label htmlFor="modalAuth" onClick={()=> setPageId(1)} className="cursor-pointer"><a>ورود</a></label>
-                    <label htmlFor="modalAuth" onClick={()=> setPageId(0)}  className="border border-1 border-gray-900 px-4 py-1 mr-4 rounded-[50px] cursor-pointer">عضویت</label>
-                </ul>
+                {
+                    !login ?
+                        <ul className={`${styles.auth} hidden lg:flex items-center mr-auto`}>
+                            <label htmlFor="modalAuth" onClick={() => setPageId(1)} className="cursor-pointer"><a>ورود</a></label>
+                            <label htmlFor="modalAuth" onClick={() => setPageId(0)} className="border border-1 border-gray-900 px-4 py-1 mr-4 rounded-[50px] cursor-pointer">عضویت</label>
+                        </ul>
+                        :
+                        typeLayout != "dashboard" ?
+                            <Link href="/reserve" className="mr-auto">
+                                <button className="btn btnsd btn-outline border-[#0000] hover:bg-[#005974] text-[#005974] items-center mr-auto rounded-[50px]">
+                                    <span className="mx-1">
+                                        حساب کاربری
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
+                                    </svg>
+                                </button>
+                            </Link>
+                            :
+                            <label tabindex="0" class="btn btn-ghost btn-circle mr-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
+                                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                                </svg>
+                            </label>
+                }
                 <div className="dropdown mr-auto block lg:hidden">
                     <label htmlFor="modalAuth" className="btn btn-ghost btn-circle text-[#00B6BD]" dir="ltr">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" className="bi bi-person-fill w-[28px] h-[28px]" viewBox="0 0 16 16">
@@ -82,15 +125,15 @@ function Navbar({ bg = "#fff" }) {
             <div className="menu-res fixed left-0 bg-[#fff] w-full h-[80%] z-[1015] rounded-b-[20px]"
                 style={{ transition: "0.3s ease", top: open ? 0 : -1200 }}>
                 <ul className={`${styles.menuRes} flex flex-col`}>
-                    <li onClick={()=> setOpen(false)} className={route.pathname === "/" ? styles.active : ""} ><Link href="/">خانه</Link></li>
-                    <li onClick={()=> setOpen(false)} className={route.pathname === "/staff" ? styles.active : ""} ><Link href="/staff">کادر درمانی</Link></li>
-                    <li onClick={()=> setOpen(false)} className={route.pathname === "/parts" ? styles.active : ""} ><Link href="/parts">بخش های ما</Link></li>
-                    <li onClick={()=> setOpen(false)} className={route.pathname === "/progroms" ? styles.active : ""} ><Link href="/progroms">برنامه ما</Link></li>
-                    <li onClick={()=> setOpen(false)} className={route.pathname === "/magazine" ? styles.active : ""} ><Link href="/magazine">مجله سلامت</Link></li>
+                    <li onClick={() => setOpen(false)} className={route.pathname === "/" ? styles.active : ""} ><Link href="/">خانه</Link></li>
+                    <li onClick={() => setOpen(false)} className={route.pathname === "/staff" ? styles.active : ""} ><Link href="/staff">کادر درمانی</Link></li>
+                    <li onClick={() => setOpen(false)} className={route.pathname === "/parts" ? styles.active : ""} ><Link href="/parts">بخش های ما</Link></li>
+                    <li onClick={() => setOpen(false)} className={route.pathname === "/progroms" ? styles.active : ""} ><Link href="/progroms">برنامه ما</Link></li>
+                    <li onClick={() => setOpen(false)} className={route.pathname === "/magazine" ? styles.active : ""} ><Link href="/magazine">مجله سلامت</Link></li>
                 </ul>
                 <span className="absolute bottom-1 left-[50%] translate-x-[-50%] w-[90px] h-[5px] bg-[#0005] rounded-[20px]"></span>
             </div>
-            { open ? <div onClick={() => setOpen(false)} className="fixed transition-all left-0 top-0 bg-[#0005] w-full h-[100%] z-[1014]"></div> : null }
+            {open ? <div onClick={() => setOpen(false)} className="fixed transition-all left-0 top-0 bg-[#0005] w-full h-[100%] z-[1014]"></div> : null}
         </>
     );
 }

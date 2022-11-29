@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
+import { useRouter } from 'next/router';
 import React from 'react';
 import { TypeAnimation } from 'react-type-animation';
 
 function Section1() {
+    let router = useRouter();
     const [position , setPosition] = React.useState({
         position:"relative",
         left:0,
@@ -36,7 +38,7 @@ function Section1() {
                     />
                     <h2 className='text-[20px] lg:text-[28px] text-justify w-[90%] lg:w-[75%] lining-[42px] mt-4'>در پلی کلینیک زندگی در هر زمان،
                         <span className='text-[#00B6BD]'>آنلاین</span> وقت رزرو کنید!</h2>
-                    <label htmlFor='modalAuth' className='btn px-9 text-[17px] font-normal btn-ghost bg-[#005974] hover:bg-[#005873] hover:opacity-90 text-[#fff] mt-10'>رزرو نوبت</label>    
+                    <button onClick={()=> router.push("/reserve")} className='btn px-9 text-[17px] font-normal btn-ghost bg-[#005974] hover:bg-[#005873] hover:opacity-90 text-[#fff] mt-10'>رزرو نوبت</button>    
                 </div>
             </section>
         </>

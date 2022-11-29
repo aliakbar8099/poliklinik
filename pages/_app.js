@@ -3,15 +3,18 @@ import '/styles/components.scss'
 import { AppProps } from 'next/app'
 import React from 'react';
 import 'animate.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Router from "next/router";
 import ProgressBar from '@badrap/bar-of-progress';
+import { ToastContainer } from 'react-toastify';
 
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
   const Layout = Component.Layout || EmptyLayout;
   const [loading, setLoading] = React.useState(true);
+  const [login, setLogin] = React.useState(null);
 
   const progress = new ProgressBar({
     size: 5,
@@ -24,6 +27,10 @@ export default function App({ Component, pageProps }) {
   Router.events.on("routeChangeStart", progress.start);
   Router.events.on("routeChangeComplete", progress.finish);
   Router.events.on("routeChangeError", progress.finish);
+
+  React.useEffect(() => {
+    setLogin(localStorage.getItem("access-token"));
+  }, [])
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -41,7 +48,7 @@ export default function App({ Component, pageProps }) {
         {/* <video playsinline="" autoplay="autoplay" muted="muted" loop="loop" style={{ width: 120, height: 120 }}>
           <source type="video/mp4" src="/gif/heartbeat-4292852-3562189.mp4" />
         </video> */}
-        <svg  xlink="http://www.w3.org/1999/xlink"  width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <svg xlink="http://www.w3.org/1999/xlink" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
           <circle cx="80" cy="50" r="5" fill="#93dbe9">
             <animate attributeName="cx" values="80;50" keyTimes="0;1" dur="0.5847953216374269s" repeatCount="indefinite"></animate>
             <animate attributeName="cy" values="50;80" keyTimes="0;1" dur="0.5847953216374269s" repeatCount="indefinite"></animate>
@@ -66,10 +73,11 @@ export default function App({ Component, pageProps }) {
         {
           getLayout(
             <Layout>
-                <Component {...pageProps} />
+              <Component {...pageProps} login={login} setLogin={setLogin} />
             </Layout>
           )
         }
+        <ToastContainer rtl={true} style={{ borderRadius: 8 }} />
       </div>
     </>
   )

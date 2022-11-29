@@ -1,7 +1,7 @@
 function TextInput(props) {
     return (
         <>
-            <div className={`${props.calssStyle} p-2 mt-2`}>
+            <div className={`${props.calssStyle} p-2 mt-1`}>
                 <h3 className="py-3">{props.title}</h3>
                 <input
                     dir={props.type == "number" ? "ltr" : "rtl"} {...props}
