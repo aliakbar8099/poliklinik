@@ -17,6 +17,7 @@ export default async (req, res) => {
             email: null,
             city: null,
             adderess: null,
+            role:"user",
             timeCreateAccount: new Date().toISOString()
         }
 

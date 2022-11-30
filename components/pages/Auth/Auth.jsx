@@ -4,8 +4,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { postLogin, postRegister } from "../../../services/auth";
 import TextInput from "../../common/TextInput";
 
-function Auth({ pageId, setPageId, login, setLogin , setChange}) {
-    const [number, setNumber] = React.useState("");
+function Auth({ pageId, setPageId, login, setLogin, setChange }) {
+    const [NativeCode, setNativeCode] = React.useState("");
     const router = useRouter();
 
     function handlePageChnage(id) {
@@ -32,6 +32,11 @@ function Auth({ pageId, setPageId, login, setLogin , setChange}) {
             password: null,
             password2: null,
         });
+
+        React.useEffect(() => {
+            setValue({ ...value, NationalCode: NativeCode });
+        }, [])
+
         const [msg, setMsg] = React.useState({
             type: "",
             text: "",
@@ -80,6 +85,7 @@ function Auth({ pageId, setPageId, login, setLogin , setChange}) {
                     .then((response) => {
                         toast.error(response.msg);
                         localStorage.setItem("access-token", response.token);
+                        router.push("/render-gggiiy9790709")
                         document.getElementById("modalAuth").checked = false
                         setChange(new Date());
                         setLoading(false);
@@ -113,6 +119,7 @@ function Auth({ pageId, setPageId, login, setLogin , setChange}) {
                         calssStyle="w-1/2 tracking-wide text-[18px]"
                         type="number"
                         nationalCode={true}
+                        defaultValue={NativeCode}
                         placeholder="شماره شناسنامه"
                     />
                     <TextInput
@@ -195,12 +202,17 @@ function Auth({ pageId, setPageId, login, setLogin , setChange}) {
             postLogin(value)
                 .then((response) => {
                     localStorage.setItem("access-token", response.token);
+                    router.push("/render-gggiiy9790709")
                     document.getElementById("modalAuth").checked = false
                     setChange(new Date());
                     setLoading(false);
                 })
                 .catch((error) => {
                     setLoading(false);
+                    if (error.response.status === 404) {
+                        handlePageChnage(0);
+                        setNativeCode(value.NationalCode)
+                    }
                     toast.error(error.response.data.msg);
                 });
 
@@ -340,7 +352,7 @@ function Auth({ pageId, setPageId, login, setLogin , setChange}) {
     return (
         <>
             {pageId === 0 ? (
-                <SingnIn />
+                <SingnIn  />
             ) : pageId === 1 ? (
                 <Login />
             ) : pageId === 2 ? (

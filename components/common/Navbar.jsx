@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import TextInput from "./TextInput";
 import Register from "../pages/Auth/Auth";
 import Auth from "../pages/Auth/Auth";
+import { getUser } from "../../services/get-api";
 
 let menus = {
     main: [
@@ -24,16 +25,30 @@ let menus = {
         { name: "رزور های من", path: "/my-reserve" },
         { name: "پروفایل", path: "/profile" },
     ],
+    admin: [
+        { name: "خانه", path: "/" },
+        { name: "ثبت پزشک", path: "/new/doctor" },
+        { name: "رزرو نوبت", path: "/reserve" },
+        { name: "رزور های من", path: "/my-reserve" },
+        { name: "پروفایل", path: "/profile" },
+    ],
 }
 
-function Navbar({ bg = "#fff", typeLayout = "main", setChange , change , Logout}) {
-    const [pageId, setPageId] = React.useState(0);
+function Navbar({ bg = "#fff", typeLayout = "main", setChange, change, Logout }) {
+    const [pageId, setPageId] = React.useState(1);
     const [open, setOpen] = React.useState(false);
     const [login, setLogin] = React.useState(null);
+    const [user, setUser] = React.useState(null)
     const route = useRouter();
 
     React.useEffect(() => {
         setLogin(localStorage.getItem("access-token"));
+        getUser().then(res => {
+            setUser(res.data);
+        })
+        return () => {
+            setUser(null)
+        }
     }, [change])
 
     const [position, setPosition] = React.useState({
@@ -73,7 +88,7 @@ function Navbar({ bg = "#fff", typeLayout = "main", setChange , change , Logout}
                 </a>
                 <ul className={`${styles.menu} hidden lg:flex mr-14`}>
                     {
-                        menus[login ? "dashboardLogin" : typeLayout].map(item => (
+                        menus[typeLayout == "main" ? "main" : login ? user?.rol == "admin" ? "admin" : "dashboardLogin" : "dashboard"].map(item => (
                             <li key={item.path} className={route.pathname === item.path ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href={item.path}>{item.name}</Link></li>
                         ))
                     }
@@ -99,15 +114,19 @@ function Navbar({ bg = "#fff", typeLayout = "main", setChange , change , Logout}
                                 </button>
                             </Link>
                             :
-                            <label htmlFor="logout-m" className="btn border-0 hidden lg:flex btnsd btn-outline btn-error items-center mr-auto rounded-[50px]">
-                                <span className="mx-1">
-                                    خروج از حساب
-                                </span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z" />
-                                    <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
-                                </svg>
-                            </label>
+                            <>
+                                <label htmlFor="logout-m" className="btn border-0 hidden lg:flex btnsd btn-outline btn-error items-center mr-auto rounded-[50px]">
+                                    <span className="mx-1">
+                                        خروج از حساب
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z" />
+                                        <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                                    </svg>
+                                </label>
+                                <strong className="mr-3">{user?.fullname}</strong>
+
+                            </>
                 }
                 <div className="dropdown mr-auto block lg:hidden">
                     <label htmlFor="modalAuth" className="btn btn-ghost btn-circle text-[#00B6BD]" dir="ltr">

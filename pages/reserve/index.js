@@ -32,7 +32,7 @@ function Reserve({ login, setLogin, className }) {
                         </button>
                     </div>
                     <div className='flex items-center justify-center sm:justify-start lg:flex-col h-full flex-wrap sm:flex-nowrap overflow-auto lg:overflow-hidden'>
-                        <BoxJobs {...value} />
+                        <BoxJobs {...value} login={login} />
                     </div>
                 </div>
                 <div className='w-full px-0 lg:px-3'>

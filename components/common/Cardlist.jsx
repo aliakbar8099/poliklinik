@@ -1,6 +1,6 @@
 function CardList({ name, img, lengthJop, positionsJop, rank, onClick, active }) {
     return (
-        <article onClick={onClick} className={`flex hover-b items-center border  boredr-[#005974] p-3 rounded-xl mb-3 ${active ? "active" : ""}`}>
+        <article onClick={onClick} className={`flex anClick hover-b items-center border  boredr-[#005974] p-3 rounded-xl mb-3 ${active ? "active" : ""}`}>
             <div class="avatar">
                 <div class="w-[70px] lg:w-[90px] rounded-xl">
                     <img className='hover:scale-110 transition' src={img} />

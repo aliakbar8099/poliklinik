@@ -9,11 +9,12 @@ function SecondLayout({ children }) {
 
     let router = useRouter();
 
-    React.useEffect(() => { }, [change]);
+    React.useEffect(() => {}, [change]);
 
     function Logout() {
         localStorage.removeItem("access-token");
         setChange(new Date());
+        router.push("/render-gggiiy9790709");
         document.getElementById("logout-m").checked = false
     }
 

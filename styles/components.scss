@@ -41,3 +41,10 @@
         }
     }
 }
+
+.anClick {
+    transition: 0.16s ease !important;
+    &:active {
+        transform: scale(0.98);
+    }
+}
