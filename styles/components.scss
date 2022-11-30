@@ -6,7 +6,38 @@
     border-radius: 12px;
     transition: 0.4s ease;
     color: #242424;
+
     &:focus {
         box-shadow: 0 0 0 4px #005974;
+    }
+}
+
+.hover-b {
+    transition: 0.1s ease;
+    cursor: pointer;
+    border-width: 1.6px;
+
+
+
+    &.active {
+        transition: 0.5s ease;
+        color: #005974;
+        background: #0059740c;
+        border-color: #005974;
+    }
+
+    &:hover {
+        color: #005974;
+        background: #0059740c;
+        border-color: #0059742a;
+    }
+
+    @media (max-width:1024px) {
+        &.active {
+            transition: 0.5s ease;
+            color: #232323;
+            background: #ffff;
+            border-color: #eee;
+        }
     }
 }

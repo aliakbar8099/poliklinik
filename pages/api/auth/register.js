@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import clientPromise from "../../../lib/mongodb";
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 const jwt = require("jsonwebtoken");
 
 export default async (req, res) => {

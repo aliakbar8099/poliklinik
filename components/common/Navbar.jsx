@@ -16,7 +16,10 @@ let menus = {
     ],
     dashboard: [
         { name: "خانه", path: "/" },
-        { name: "کادر درمانی", path: "/staff" },
+        { name: "رزرو نوبت", path: "/reserve" },
+    ],
+    dashboardLogin: [
+        { name: "خانه", path: "/" },
         { name: "رزرو نوبت", path: "/reserve" },
         { name: "رزور های من", path: "/my-reserve" },
         { name: "پروفایل", path: "/profile" },
@@ -70,7 +73,7 @@ function Navbar({ bg = "#fff", typeLayout = "main" }) {
                 </a>
                 <ul className={`${styles.menu} hidden lg:flex mr-14`}>
                     {
-                        menus[typeLayout].map(item => (
+                        menus[login ? "dashboardLogin" : typeLayout].map(item => (
                             <li key={item.path} className={route.pathname === item.path ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href={item.path}>{item.name}</Link></li>
                         ))
                     }
@@ -96,10 +99,13 @@ function Navbar({ bg = "#fff", typeLayout = "main" }) {
                                 </button>
                             </Link>
                             :
-                            <label tabindex="0" class="btn btn-ghost btn-circle mr-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
-                                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                            <label htmlFor="logout-m" className="btn border-0 hidden lg:flex btnsd btn-outline btn-error items-center mr-auto rounded-[50px]">
+                                <span className="mx-1">
+                                    خروج از حساب
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z" />
+                                    <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
                                 </svg>
                             </label>
                 }
