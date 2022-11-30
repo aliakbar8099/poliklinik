@@ -17,7 +17,7 @@ function SecondLayout({ children }) {
             <Navbar bg="#fff" typeLayout="dashboard" />
             {children}
             <input type="checkbox" id="logout-m" className="modal-toggle" />
-            <label htmlFor="logout-m" className="modal cursor-pointer z-[1015]">
+            <label htmlFor="logout-m" className="modal cursor-pointer z-[1030]">
                 <label className="modal-box relative" htmlFor="">
                     <h3 className="text-lg font-bold text-center">آیا میخواهید از حساب خود خارج شوید؟</h3>
                     <div className="flex justify-center items-center mt-5">
