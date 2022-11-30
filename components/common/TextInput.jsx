@@ -5,7 +5,7 @@ function TextInput(props) {
                 <h3 className="py-3">{props.title}</h3>
                 <input
                     dir={props.type == "number" ? "ltr" : "rtl"} {...props}
-                    className={`inputcss-pl ${props.inputStyle}`}
+                    className={`inputcss-pl text-[10px] lg:text-[15px] ${props.inputStyle}`}
                     id={props.inputId}
                     onInput={props.onInputText}
                     name={props.nameInput}

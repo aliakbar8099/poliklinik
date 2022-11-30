@@ -1,0 +1,56 @@
+@font-face {
+    font-family:IRANYekan;
+    font-style:normal;
+    font-weight:300;
+    src:url(./eot/6a51276d.eot);
+    src:url(./eot/6a51276d.eot?#iefix) format("embedded-opentype"),
+    url(./woff/492984b8.woff) format("woff"),
+    url(./ttf/6387a14a.ttf) format("truetype")
+}
+@font-face {
+    font-family:IRANYekan;
+    src:url(./eot/7c912e00.eot);
+    src:url(./eot/7c912e00.eot?#iefix) format("embedded-opentype"),
+    url(./woff2/fe12f13a.woff2) format("woff2"),
+    url(./woff/2d7cc7cd.woff) format("woff"),
+    url(./ttf/a7d41f91.ttf) format("truetype");
+    font-weight:400;
+    font-style:normal
+}
+@font-face {
+    font-family:IRANYekan;
+    src:url(./eot/cea3492e.eot);
+    src:url(./eot/cea3492e.eot?#iefix) format("embedded-opentype"),
+    url(./woff/1d9f5870.woff) format("woff"),
+    url(./ttf/f2ab2738.ttf) format("truetype");
+    font-weight:800;
+    font-style:normal
+}
+@font-face {
+    font-family:IRANYekan;
+    font-style:normal;
+    font-weight:900;
+    src:url(./eot/5b8cfc1c.eot);
+    src:url(./eot/5b8cfc1c.eot?#iefix) format("embedded-opentype"),
+    url(./woff/76ccefec.woff) format("woff"),
+    url(./ttf/44b6abc1.ttf) format("truetype")
+}
+@font-face {
+    font-family:IRANYekan;
+    font-style:normal;
+    font-weight:950;
+    src:url(./eot/e2d75f96.eot);
+    src:url(./eot/e2d75f96.eot?#iefix) format("embedded-opentype"),
+    url(./woff/b5c0daaf.woff) format("woff"),
+    url(./ttf/5f989680.ttf) format("truetype")
+}
+ @font-face {
+    font-family:IRANYekan;
+    src:url(./eot/5bea6c32.eot);
+    src:url(./eot/5bea6c32.eot?#iefix) format("embedded-opentype"),
+    url(./woff2/1fdcadec.woff2) format("woff2"),
+    url(./woff/56a1baa4.woff) format("woff"),
+    url(./ttf/79533773.ttf) format("truetype");
+    font-weight:100;
+    font-style:normal
+} 

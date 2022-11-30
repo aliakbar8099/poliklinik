@@ -226,6 +226,7 @@ function Auth({ pageId, setPageId, login, setLogin , setChange}) {
                     onGetValue={getValue}
                     inputStyle="scds"
                     title="رمز عبور"
+                    dir="ltr"
                     calssStyle="w-full tracking-wide text-[18px]"
                     type="password"
                     placeholder="رمز عبور را وارد کنید"
