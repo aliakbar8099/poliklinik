@@ -31,7 +31,7 @@ function Reserve({ login, setLogin, className }) {
                             </svg>
                         </button>
                     </div>
-                    <div className='flex items-center justify-center sm:justify-start lg:flex-col h-full flex-wrap sm:flex-nowrap overflow-auto'>
+                    <div className='flex items-center justify-center sm:justify-start lg:flex-col h-full flex-wrap sm:flex-nowrap overflow-auto lg:overflow-hidden'>
                         <BoxJobs {...value} />
                     </div>
                 </div>

@@ -26,7 +26,7 @@ let menus = {
     ],
 }
 
-function Navbar({ bg = "#fff", typeLayout = "main" }) {
+function Navbar({ bg = "#fff", typeLayout = "main", setChange , change , Logout}) {
     const [pageId, setPageId] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const [login, setLogin] = React.useState(null);
@@ -34,7 +34,7 @@ function Navbar({ bg = "#fff", typeLayout = "main" }) {
 
     React.useEffect(() => {
         setLogin(localStorage.getItem("access-token"));
-    }, [])
+    }, [change])
 
     const [position, setPosition] = React.useState({
         left: 0,
@@ -125,7 +125,17 @@ function Navbar({ bg = "#fff", typeLayout = "main" }) {
             <input type="checkbox" id="modalAuth" className="modal-toggle" />
             <label htmlFor="modalAuth" className="modal cursor-pointer z-[2022] backdrop-blur-sm">
                 <label className="modal-box relative z-[2023]" htmlFor="">
-                    <Auth {...{ pageId, setPageId }} />
+                    <Auth {...{ pageId, setPageId, setChange }} />
+                </label>
+            </label>
+            <input type="checkbox" id="logout-m" className="modal-toggle" />
+            <label htmlFor="logout-m" className="modal cursor-pointer z-[1050]">
+                <label className="modal-box relative" htmlFor="">
+                    <h3 className="text-lg font-bold text-center">آیا میخواهید از حساب خود خارج شوید؟</h3>
+                    <div className="flex justify-center items-center mt-5">
+                        <label onClick={Logout} className="btn btn-outline btn-error">خارج شدن</label>
+                        <label htmlFor="logout-m" className="btn btn-outline btn-info mr-4">بیخال</label>
+                    </div>
                 </label>
             </label>
             <div className="menu-res fixed left-0 bg-[#fff] w-full h-[80%] z-[1015] rounded-b-[20px]"

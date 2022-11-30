@@ -15,6 +15,7 @@ export default function App({ Component, pageProps }) {
   const Layout = Component.Layout || EmptyLayout;
   const [loading, setLoading] = React.useState(true);
   const [login, setLogin] = React.useState(null);
+  const [change, setChange] = React.useState(new Date());
 
   const progress = new ProgressBar({
     size: 5,
@@ -30,7 +31,7 @@ export default function App({ Component, pageProps }) {
 
   React.useEffect(() => {
     setLogin(localStorage.getItem("access-token"));
-  }, [])
+  }, [change])
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -73,7 +74,7 @@ export default function App({ Component, pageProps }) {
         {
           getLayout(
             <Layout>
-              <Component {...pageProps} login={login} setLogin={setLogin} />
+              <Component setChange={setChange} {...pageProps} login={login} setLogin={setLogin} />
             </Layout>
           )
         }

@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { postLogin, postRegister } from "../../../services/auth";
 import TextInput from "../../common/TextInput";
 
-function Auth({ pageId, setPageId, login, setLogin }) {
+function Auth({ pageId, setPageId, login, setLogin , setChange}) {
     const [number, setNumber] = React.useState("");
     const router = useRouter();
 
@@ -80,7 +80,8 @@ function Auth({ pageId, setPageId, login, setLogin }) {
                     .then((response) => {
                         toast.error(response.msg);
                         localStorage.setItem("access-token", response.token);
-                        router.push("/reserve");
+                        document.getElementById("modalAuth").checked = false
+                        setChange(new Date());
                         setLoading(false);
                     })
                     .catch((error) => {
@@ -194,7 +195,8 @@ function Auth({ pageId, setPageId, login, setLogin }) {
             postLogin(value)
                 .then((response) => {
                     localStorage.setItem("access-token", response.token);
-                    router.push("/reserve");
+                    document.getElementById("modalAuth").checked = false
+                    setChange(new Date());
                     setLoading(false);
                 })
                 .catch((error) => {
