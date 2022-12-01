@@ -1,7 +1,7 @@
 import React from "react";
 
 function TextInput(props) {
-    const [num, setNum] = React.useState(null);
+    const [num, setNum] = React.useState(0);
 
 
     return (

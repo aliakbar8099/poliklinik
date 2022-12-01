@@ -1,6 +1,6 @@
 import React from "react";
 
-function SelectOption({ titleName, items , width , className}) {
+function SelectOption({ titleName, items, width, className, title }) {
     const [open, setOpen] = React.useState(false);
     const [selectName, setSelectName] = React.useState("");
     const [selectValue, setSelectValue] = React.useState("");
@@ -12,7 +12,8 @@ function SelectOption({ titleName, items , width , className}) {
 
     return (
         <>
-            <div style={{width}} className={`dropdown mx-2 dropdown-bottom dropdown-open ${className} ${open ? "z-[2029]" : ""}`}>
+            <div style={{ width }} className={`dropdown mx-2 dropdown-bottom dropdown-open ${className} ${open ? "z-[2029]" : ""}`}>
+                {title && <h3 className="py-3 mb-3">{title}</h3>} 
                 <button onClick={() => setOpen(!open)} className={`btn m-1 w-[100%] flex justify-between items-center bg-[#fff] hover:bg-[#fff] ${open ? "bg-[#f6f6f6]" : ""}`}>
                     <span className='text-[#005974] text-[12px] lg:text-[15px]'>{selectName === "" ? titleName : <span><strong>{titleName}</strong><small className="mr-1 font-normal">{selectName}</small></span>}</span>
                     <svg style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }} width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">

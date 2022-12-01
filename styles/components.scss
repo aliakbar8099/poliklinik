@@ -48,3 +48,12 @@
         transform: scale(0.98);
     }
 }
+
+.bton {
+    font-weight: bold;
+    &.active {
+        border-color: #234fef;
+        color: #234fef;
+        background: rgba(23, 61, 201, 0.041);
+    }
+}

@@ -160,11 +160,11 @@ function Navbar({ bg = "#fff", typeLayout = "main", setChange, change, Logout })
             <div className="menu-res fixed left-0 bg-[#fff] w-full h-[80%] z-[1015] rounded-b-[20px]"
                 style={{ transition: "0.3s ease", top: open ? 0 : -1200 }}>
                 <ul className={`${styles.menuRes} flex flex-col`}>
-                    <li onClick={() => setOpen(false)} className={route.pathname === "/" ? styles.active : ""} ><Link href="/">خانه</Link></li>
-                    <li onClick={() => setOpen(false)} className={route.pathname === "/staff" ? styles.active : ""} ><Link href="/staff">کادر درمانی</Link></li>
-                    <li onClick={() => setOpen(false)} className={route.pathname === "/parts" ? styles.active : ""} ><Link href="/parts">بخش های ما</Link></li>
-                    <li onClick={() => setOpen(false)} className={route.pathname === "/progroms" ? styles.active : ""} ><Link href="/progroms">برنامه ما</Link></li>
-                    <li onClick={() => setOpen(false)} className={route.pathname === "/magazine" ? styles.active : ""} ><Link href="/magazine">مجله سلامت</Link></li>
+                    {
+                        menus[typeLayout == "main" ? "main" : login ? user?.rol == "admin" ? "admin" : "dashboardLogin" : "dashboard"].map(item => (
+                            <li key={item.path}  onClick={() => setOpen(false)}  className={route.pathname === item.path ? styles.active : ""}  ><Link href={item.path}>{item.name}</Link></li>
+                        ))
+                    }
                 </ul>
                 <span className="absolute bottom-1 left-[50%] translate-x-[-50%] w-[90px] h-[5px] bg-[#0005] rounded-[20px]"></span>
             </div>
