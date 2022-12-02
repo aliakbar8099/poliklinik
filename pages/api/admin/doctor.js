@@ -144,7 +144,7 @@ export default async (req, res) => {
 
                 if (!req.query["id"]) {
                     res.status(200).send({
-                        data: newData,
+                        data: newData.reverse(),
 
                     })
                 }

@@ -1,13 +1,16 @@
 
+import { useRouter } from "next/router";
 import React from "react";
 
-function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login }) {
+function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login, setTabelTime, _id }) {
+    const router = useRouter()
     const [load, setLoad] = React.useState(false);
 
     function handleClick() {
 
         if (login) {
-            ///
+            router.push("?id=" + _id)
+            
         }
         else {
             document.getElementById("modalAuth").checked = true

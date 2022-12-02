@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import CardList from '../../components/common/Cardlist';
 import BoxJobs from '../../components/pages/Rezerve/BoxJobs';
@@ -7,12 +8,14 @@ import SecondLayout from '/layout/second.layout';
 import { getCategory } from '/services/admin';
 
 function Reserve({ data, login, setLogin, className }) {
+    const router = useRouter()
 
     const [value, setValue] = React.useState(null);
     const [category, setCategory] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [loading2, setLoading2] = React.useState(false);
+    const [tabletime, setTabelTime] = React.useState(false);
     const [selectName, setSelectName] = React.useState("");
     const [selectValue, setSelectValue] = React.useState("");
 
@@ -37,8 +40,13 @@ function Reserve({ data, login, setLogin, className }) {
         }
     }, [])
 
+    React.useEffect(()=> {
+        setTabelTime(router.query);
+    },[router.query])
+
 
     function hamdleClose() {
+        router.push("/")
         setOpen(false)
     }
 
@@ -51,11 +59,25 @@ function Reserve({ data, login, setLogin, className }) {
         })
     }
 
+    function handleBack() {
+        router.back()
+
+    }
+
     return (
         <>
-            <div hidden={!open} onClick={hamdleClose} className={`bg-[#0003] lg:hidden fixed left-0 top-0 w-full h-screen z-[1014] ${className}`}></div>
-            <main className="bg-[#f4f8fb] p-0 lg:p-4 h-[auto] flex items-start w-full h-full">
-                <div style={{ bottom: open ? 0 : -1500, transition: "0.3s ease" }} className='box-doctor fixed lg:sticky top-[auto]  lg:top-[85px] bottom-0 lg:bottom-[auto] p-2 w-full lg:w-[400px] bg-[#fff] flex-col shadow-sm rounded-[0] rounded-t-[30px] lg:rounded-xl m-0 lg:m-2 z-[1020] flex items-center justify-start h-[80vh] sm:h-[60vh]  lg:h-[85vh] right-0'>
+            <div hidden={!open} onClick={hamdleClose} className={`bg-[#0003] lg:hidden fixed left-0 top-0 w-full h-full z-[1014] ${className}`}></div>
+            <main className={`bg-[#f4f8fb] p-0 lg:p-4  h-[auto] flex items-start h-full ${tabletime.id ? "table_r" : ""}`}>
+                <div id="tabel-j" className='bg-[#fff] shadow-sm rounded-xl m-0 lg:m-2 w-full p-3 mt-20 h-[85vh]'>
+                    <div>
+                        <button onClick={handleBack} className='btn btn-ghost'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="box-j" style={{ bottom: open ? 0 : -1500, transition: "0.3s ease" }} className='box-doctor fixed lg:sticky top-[auto]  lg:top-[85px] bottom-0 lg:bottom-[auto] p-2 w-full lg:w-[400px] bg-[#fff] flex-col shadow-sm rounded-[0] rounded-t-[30px] lg:rounded-xl m-0 lg:m-2 z-[1020] flex items-center justify-start h-[80vh] sm:h-[60vh]  lg:h-[85vh] right-0'>
                     <div className='flex justify-end items-center w-full'>
                         <button onClick={hamdleClose} className='btn btn-ghost block lg:hidden hover:bg-[#0000] text-[#323232]'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
@@ -85,11 +107,11 @@ function Reserve({ data, login, setLogin, className }) {
                                     <div className='p-5 skeleton w-full m-2 mt-22 rounded-lg mt-auto'></div>
                                 </div>
                                 :
-                                <BoxJobs {...value} login={login} />
+                                <BoxJobs {...value} setTabelTime={setTabelTime} login={login} />
                         }
                     </div>
                 </div>
-                <div className='w-full px-0 lg:px-3 h-full'>
+                <div id="list-j" className='w-full px-0 lg:px-3 h-full'>
                     <div className='bg-[#fff] backdrop-blur-lg shadow-md rounded-xl m-0 lg:m-2 w-full p-3 sticky top-[80px] z-[1012] mb-5 flex justify-center lg:justify-start items-center'>
                         <SelectOption className="w-[150px] lg:w-[250px] text-[12px] lg:text-[16px]" titleName="خدمات:" items={category} />
                         <SelectOption className="w-[150px] lg:w-[250px] text-[12px] lg:text-[16px]" titleName="مرتب سازی:" items={null} />

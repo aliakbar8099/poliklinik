@@ -57,3 +57,28 @@
         background: rgba(23, 61, 201, 0.041);
     }
 }
+
+#tabel-j {
+    transition: 0.2s ease;
+    padding: 0;
+    width: 0 !important;
+}
+
+.table_r {
+    transition: 0.3s ease;
+    #tabel-j {
+        transition: 0.3s ease;
+        padding: 10px;
+        width: 100% !important;
+    }
+    #list-j {
+        transition: 0.3s ease;
+        width: 0;
+        opacity: 0;
+        transform:scale(0);
+    }
+    #box-j {
+        transition: 0.3s ease;
+        margin-right: auto;
+    }
+}
