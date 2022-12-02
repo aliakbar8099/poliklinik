@@ -2,20 +2,11 @@
 import { useRouter } from "next/router";
 import React from "react";
 
-function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login, setTabelTime, _id }) {
+function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login, handleClick , _id }) {
     const router = useRouter()
     const [load, setLoad] = React.useState(false);
 
-    function handleClick() {
 
-        if (login) {
-            router.push("?id=" + _id)
-            
-        }
-        else {
-            document.getElementById("modalAuth").checked = true
-        }
-    }
 
     function handleLoad(e) {
         setLoad(false)
@@ -68,7 +59,7 @@ function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login
                     {bio}
                 </p>
             </div>
-            <button onClick={handleClick} className='btn btn-success bg-[#005974] border-[#005974] hover:bg-[#005974ec] w-full sm:w-[150px] lg:w-full mt-auto justify-between text-[#fff]'>
+            <button onClick={()=> handleClick(_id)} className='btn btn-success bg-[#005974] border-[#005974] hover:bg-[#005974ec] w-full sm:w-[150px] lg:w-full mt-auto justify-between text-[#fff]'>
                 <span>دریافت نوبت</span>
                 <svg width="8" height="16" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-bccac604="" data-v-48b88f42=""><title data-v-bccac604="" data-v-48b88f42="">icon</title> <path d="M5.25 10.3118L0.75 5.81177L5.25 1.31177" stroke="white" stroke-opacity="0.66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-v-bccac604="" data-v-48b88f42=""></path></svg>
             </button>

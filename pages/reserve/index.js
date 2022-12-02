@@ -1,29 +1,37 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import CardList from '../../components/common/Cardlist';
+import TabelTime from '../../components/common/TabelTime';
 import BoxJobs from '../../components/pages/Rezerve/BoxJobs';
-import { getAllDoctor, getSingleDoctor } from '../../services/get-api';
+import { getAllDoctor, getSingleDoctor, getTimeReserve } from '../../services/get-api';
 import SelectOption from '/components/common/SelectOption';
 import SecondLayout from '/layout/second.layout';
 import { getCategory } from '/services/admin';
+import Router from "next/router";
 
-function Reserve({ data, login, setLogin, className }) {
+let weeks = ["جمعه", "شنبه", "یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه"]
+
+function Reserve({ login, setLogin, className }) {
     const router = useRouter()
 
     const [value, setValue] = React.useState(null);
+    const [data, setData] = React.useState([])
     const [category, setCategory] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [loading2, setLoading2] = React.useState(false);
     const [tabletime, setTabelTime] = React.useState(false);
+    const [time, setTime] = React.useState(null)
     const [selectName, setSelectName] = React.useState("");
     const [selectValue, setSelectValue] = React.useState("");
 
     React.useEffect(() => {
         setLoading(true)
         setLoading2(true)
-        if (data.data[0]) {
-            getSingleDoctor(data.data[0]._id).then(res => {
+        getAllDoctor().then(ress => {
+            setData(ress.data)
+            console.log(ress.data);
+            getSingleDoctor(tabletime.id || ress.data[0]._id).then(res => {
                 getCategory().then(res2 => {
                     setCategory(res2.data)
                     setValue(res.data)
@@ -31,23 +39,24 @@ function Reserve({ data, login, setLogin, className }) {
                     setLoading2(false)
                 })
             })
-        }
-        else {
-            setCategory([])
-            setValue([])
-            setLoading(false)
-            setLoading2(false)
+        })
+        return () => {
+            document.body.style.overflow = "auto"
         }
     }, [])
 
-    React.useEffect(()=> {
+    React.useEffect(() => {
         setTabelTime(router.query);
-    },[router.query])
+        if (router.query.id) {
+            getTimeReserve(value?.NationalCode).then(res => {
+                setTime(res.data)
+            })
+        }
+    }, [router.query, value])
 
 
     function hamdleClose() {
         router.push("/")
-        setOpen(false)
     }
 
     function handleClick(item) {
@@ -61,8 +70,21 @@ function Reserve({ data, login, setLogin, className }) {
 
     function handleBack() {
         router.back()
-
+        document.body.style.overflow = "auto"
     }
+
+    function handleClick2(Id) {
+
+        if (login) {
+            router.push("?id=" + Id)
+            document.body.style.overflow = "hidden"
+        }
+        else {
+            document.getElementById("modalAuth").checked = true
+        }
+    }
+
+
 
     return (
         <>
@@ -76,6 +98,7 @@ function Reserve({ data, login, setLogin, className }) {
                             </svg>
                         </button>
                     </div>
+                    <TabelTime time={time} weeks={weeks} />
                 </div>
                 <div id="box-j" style={{ bottom: open ? 0 : -1500, transition: "0.3s ease" }} className='box-doctor fixed lg:sticky top-[auto]  lg:top-[85px] bottom-0 lg:bottom-[auto] p-2 w-full lg:w-[400px] bg-[#fff] flex-col shadow-sm rounded-[0] rounded-t-[30px] lg:rounded-xl m-0 lg:m-2 z-[1020] flex items-center justify-start h-[80vh] sm:h-[60vh]  lg:h-[85vh] right-0'>
                     <div className='flex justify-end items-center w-full'>
@@ -107,7 +130,7 @@ function Reserve({ data, login, setLogin, className }) {
                                     <div className='p-5 skeleton w-full m-2 mt-22 rounded-lg mt-auto'></div>
                                 </div>
                                 :
-                                <BoxJobs {...value} setTabelTime={setTabelTime} login={login} />
+                                <BoxJobs handleClick={handleClick2} {...value} setTabelTime={setTabelTime} login={login} />
                         }
                     </div>
                 </div>
@@ -132,7 +155,7 @@ function Reserve({ data, login, setLogin, className }) {
                                     <div className='p-14 skeleton w-full rounded-xl mb-3'></div>
                                 </div>
                                 :
-                                data.data?.map(item => (
+                                data?.map(item => (
                                     <CardList active={item._id == value?._id} onClick={() => handleClick(item)} key={item.id} {...item} />
                                 ))
                         }
@@ -145,16 +168,16 @@ function Reserve({ data, login, setLogin, className }) {
 
 export default Reserve;
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
-    const dev = process.env.NODE_ENV !== 'production';
-    const baseURL = dev ? 'http://localhost:3000/api' : 'https://poliklinik.vercel.app/api';
-    // Fetch data from external API
-    const res = await fetch(baseURL + "/admin/doctor")
-    const response = await res.json()
+//     const dev = process.env.NODE_ENV !== 'production';
+//     const baseURL = dev ? 'http://localhost:3000/api' : 'https://poliklinik.vercel.app/api';
+//     // Fetch data from external API
+//     const res = await fetch(baseURL + "/admin/doctor")
+//     const response = await res.json()
 
-    // Pass data to the page via props
-    return { props: { data: response } }
-}
+//     // Pass data to the page via props
+//     return { props: { data: response } }
+// }
 
 Reserve.getLayout = (page) => <SecondLayout>{page}</SecondLayout>

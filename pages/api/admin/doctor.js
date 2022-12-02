@@ -161,6 +161,7 @@ export default async (req, res) => {
                         codeJop,
                         category,
                         positionsJop,
+                        NationalCode,
                         rank,
                         bio
                     } = single[0]
@@ -172,6 +173,7 @@ export default async (req, res) => {
                             img,
                             codeJop,
                             category,
+                            NationalCode,
                             positionsJop,
                             bio,
                             rank

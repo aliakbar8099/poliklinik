@@ -68,13 +68,8 @@ export default async (req, res) => {
 
                 break;
             case "GET":
-                // let uniqCode = isLogin(req, res);
-                // let findUser = await user.findOne({ NationalCode: uniqCode });
-
-
-                // if (findUser.rol != "admin") {
-                //     return res.status(403).send({ msg: "شما دسترسی ندارید", rol: findUser.rol })
-                // }
+                let uniqCode = isLogin(req, res);
+                let findReserve = await reserve.findOne({ NationalCode: req.query["nnId"] });
 
                 // const lists = await db
                 //     .collection("users")
@@ -82,8 +77,8 @@ export default async (req, res) => {
                 //     .sort({ metacritic: -1 })
                 //     .toArray();
 
-                // let finDoctor = await lists.filter(i => i.rol === "doctor")
-                // res.status(200).send({ data: finDoctor })
+                let finDoctor = await lists.filter(i => i.rol === "doctor")
+                res.status(200).send({ data: findReserve })
                 break;
 
         }
