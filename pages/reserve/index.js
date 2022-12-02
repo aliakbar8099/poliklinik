@@ -74,7 +74,6 @@ function Reserve({ login, setLogin, className }) {
     }
 
     function handleClick2(Id) {
-
         if (login) {
             router.push("?id=" + Id)
             document.body.style.overflow = "hidden"
@@ -87,6 +86,7 @@ function Reserve({ login, setLogin, className }) {
 
 
     return (
+
         <>
             <div hidden={!open} onClick={hamdleClose} className={`bg-[#0003] lg:hidden fixed left-0 top-0 w-full h-full z-[1014] ${className}`}></div>
             <main className={`bg-[#f4f8fb] p-0 lg:p-4  h-[auto] flex items-start h-full ${tabletime.id ? "table_r" : ""}`}>
@@ -156,7 +156,7 @@ function Reserve({ login, setLogin, className }) {
                                 </div>
                                 :
                                 data?.map(item => (
-                                    <CardList active={item._id == value?._id} onClick={() => handleClick(item)} key={item.id} {...item} />
+                                    <CardList active={item._id == value?._id} handleClick2={handleClick2} onClick={() => handleClick(item)} key={item.id} {...item} />
                                 ))
                         }
                     </div>

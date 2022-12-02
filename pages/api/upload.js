@@ -1,5 +1,5 @@
 const fs = require("fs");
-
+import { encode, decode } from 'node-base64-image';
 
 function makeid(length) {
   var result = '';
@@ -11,7 +11,7 @@ function makeid(length) {
   return result;
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { file, type = "png" } = req.body
   let namefile = makeid(12)
 
@@ -21,11 +21,14 @@ export default function handler(req, res) {
     }
     var base64Data = file.replace(/^data:image\/png;base64,/, "");
 
-    fs.writeFile("./public/upload/" + namefile + "." + type, base64Data, 'base64', function (err) {
-      console.log(err);
-    });
+    // fs.writeFile("./public/upload/" + namefile + "." + type, file, 'base64', function (err) {
+    //   console.log(err);
+    // });
+
+    await decode(file.split("base64,")[1], { fname: "./public/upload/" + namefile, ext: type });
 
     res.status(200).json({ url: "/upload/" + namefile + "." + type });
+
   }
 
 

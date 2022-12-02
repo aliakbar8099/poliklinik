@@ -6,8 +6,6 @@ function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login
     const router = useRouter()
     const [load, setLoad] = React.useState(false);
 
-
-
     function handleLoad(e) {
         setLoad(false)
         if (e.target.complete) {

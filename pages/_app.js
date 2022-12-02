@@ -34,6 +34,7 @@ export default function App({ Component, pageProps }) {
   }, [change])
 
   React.useEffect(() => {
+    setLoading(true)
     if (typeof window !== 'undefined') {
       Promise.all(Array.from(document.images).filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
         setTimeout(() => {
@@ -41,7 +42,9 @@ export default function App({ Component, pageProps }) {
         }, 3000);
       });
     }
-  }, [])
+  }, [change])
+
+
 
   return (
     <>

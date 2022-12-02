@@ -14,7 +14,7 @@ function SecondLayout({ children }) {
     function Logout() {
         localStorage.removeItem("access-token");
         setChange(new Date());
-        router.push("/render-gggiiy9790709");
+        router.reload();
         document.getElementById("logout-m").checked = false
     }
 

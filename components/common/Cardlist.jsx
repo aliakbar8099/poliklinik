@@ -1,6 +1,6 @@
 import React from "react";
 
-function CardList({ fullname, img, lengthJop, positionsJop, rank, onClick, active }) {
+function CardList({ _id, fullname, img, lengthJop, positionsJop, rank, onClick, active, handleClick2 }) {
     const [load, setLoad] = React.useState(false);
 
     function handleLoad(e) {
@@ -44,7 +44,7 @@ function CardList({ fullname, img, lengthJop, positionsJop, rank, onClick, activ
                     }
                 </div>
             </div>
-            <button className='btn hidden lg:flex btn-success bg-[#005974] border-[#005974] hover:bg-[#005974ec] w-[auto] lg:w-[150px] text-[14px] mt-auto justify-between text-[#fff] mr-auto my-auto'>
+            <button onClick={() => handleClick2(_id)} className='btn hidden lg:flex btn-success bg-[#005974] border-[#005974] hover:bg-[#005974ec] w-[auto] lg:w-[150px] text-[14px] mt-auto justify-between text-[#fff] mr-auto my-auto'>
                 <span className='text-[9px] lg:text-[12px]'>دریافت نوبت</span>
                 <svg className="hidden lg:block" width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-bccac604="" data-v-48b88f42=""><title data-v-bccac604="" data-v-48b88f42="">icon</title> <path d="M5.25 10.3118L0.75 5.81177L5.25 1.31177" stroke="white" stroke-opacity="0.66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-v-bccac604="" data-v-48b88f42=""></path></svg>
             </button>
