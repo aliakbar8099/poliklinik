@@ -1,16 +1,25 @@
 
 import React from "react";
 
-function BoxJobs({ name, img, lengthJop, positionsJop, codeJop, rank, login }) {
+function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login }) {
+    const [load, setLoad] = React.useState(false);
 
     function handleClick() {
 
-        if(login){
+        if (login) {
             ///
         }
         else {
             document.getElementById("modalAuth").checked = true
         }
+    }
+
+    function handleLoad(e) {
+        setLoad(false)
+        if (e.target.complete) {
+            setLoad(true)
+        }
+
     }
 
     return (
@@ -19,7 +28,10 @@ function BoxJobs({ name, img, lengthJop, positionsJop, codeJop, rank, login }) {
                 <header className='mt-2'>
                     <div class="avatar">
                         <div class="w-[140px] rounded-xl">
-                            <img className='hover:scale-110 transition' src={img} />
+                            <>
+                                <img hidden={!load} onLoad={handleLoad} className='hover:scale-110 transition' src={img} />
+                                <div hidden={load} className="skeleton w-full h-full"></div>
+                            </>
                         </div>
                     </div>
                     <h2 className='text-center font-bold p-2 mt-2'>{name}</h2>
@@ -30,8 +42,8 @@ function BoxJobs({ name, img, lengthJop, positionsJop, codeJop, rank, login }) {
                     <div className='p-4 text-center'>
                         {
                             positionsJop?.map((position, i) => (
-                                <div key={i} className="badge badge-outline mt-1 ml-1 text-[10px]">
-                                    {position}
+                                <div key={position.id} className="badge badge-outline mt-1 ml-1 text-[10px]">
+                                    {position.text}
                                 </div>
                             ))
                         }
@@ -50,7 +62,7 @@ function BoxJobs({ name, img, lengthJop, positionsJop, codeJop, rank, login }) {
                     <span className='mr-2'>بیوگرافی پزشک</span>
                 </h3>
                 <p className='text-[12px] px-2 text-justify'>
-                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باش
+                    {bio}
                 </p>
             </div>
             <button onClick={handleClick} className='btn btn-success bg-[#005974] border-[#005974] hover:bg-[#005974ec] w-full sm:w-[150px] lg:w-full mt-auto justify-between text-[#fff]'>

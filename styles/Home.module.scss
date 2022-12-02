@@ -37,9 +37,9 @@
     }
 
     li:hover {
-        transform: scale(1.12);
+        // transform: scale(1.12);
         &.active::before {
-            top: 45px;
+            // top: 45px;
         }
     }
 

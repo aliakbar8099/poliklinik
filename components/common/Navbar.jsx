@@ -9,28 +9,33 @@ import { getUser } from "../../services/get-api";
 
 let menus = {
     main: [
-        { name: "خانه", path: "/" },
-        { name: "کادر درمانی", path: "/staff" },
-        { name: "بخش های ما", path: "/parts" },
-        { name: "برنامه ما", path: "/progroms" },
-        { name: "مجله سلامت", path: "/magazine" },
+        { name: "خانه", path: "/", link: true },
+        { name: "کادر درمانی", path: "/staff", link: true },
+        { name: "بخش های ما", path: "/parts", link: true },
+        { name: "برنامه ما", path: "/progroms", link: true },
+        { name: "مجله سلامت", path: "/magazine", link: true },
     ],
     dashboard: [
-        { name: "خانه", path: "/" },
-        { name: "رزرو نوبت", path: "/reserve" },
+        { name: "خانه", path: "/", link: true },
+        { name: "رزرو نوبت", path: "/reserve", link: true },
     ],
     dashboardLogin: [
-        { name: "خانه", path: "/" },
-        { name: "رزرو نوبت", path: "/reserve" },
-        { name: "رزور های من", path: "/my-reserve" },
-        { name: "پروفایل", path: "/profile" },
+        { name: "خانه", path: "/", link: true },
+        { name: "رزرو نوبت", path: "/reserve", link: true },
+        { name: "رزور های من", path: "/my-reserve", link: true },
+        { name: "پروفایل", path: "/profile", link: true },
     ],
     admin: [
-        { name: "خانه", path: "/" },
-        { name: "ثبت پزشک", path: "/new/doctor" },
-        { name: "رزرو نوبت", path: "/reserve" },
-        { name: "رزور های من", path: "/my-reserve" },
-        { name: "پروفایل", path: "/profile" },
+        { name: "خانه", path: "/", link: true },
+        {
+            name: "مدیریت سایت", path: "/new/doctor", link: false, sub: [
+                { name: "ثبت پزشک", path: "/new/doctor" },
+                { name: "مدیریت خدمات", path: "/new/category" },
+            ]
+        },
+        { name: "رزرو نوبت", path: "/reserve", link: true },
+        { name: "رزور های من", path: "/my-reserve", link: true },
+        { name: "پروفایل", path: "/profile", link: true },
     ],
 }
 
@@ -43,9 +48,16 @@ function Navbar({ bg = "#fff", typeLayout = "main", setChange, change, Logout })
 
     React.useEffect(() => {
         setLogin(localStorage.getItem("access-token"));
-        getUser().then(res => {
-            setUser(res.data);
-        })
+        if (localStorage.getItem("access-token")) {
+            getUser().then(res => {
+                setUser(res.data);
+            })
+                .catch((err) => {
+                    if (err.response.status === 401) {
+                        Logout();
+                    }
+                })
+        }
         return () => {
             setUser(null)
         }
@@ -78,7 +90,7 @@ function Navbar({ bg = "#fff", typeLayout = "main", setChange, change, Logout })
 
     return (
         <>
-            <navbar style={{ background: bg }} className="flex overflow-hidden w-full px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
+            <navbar style={{ background: bg }} className="flex w-full px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
                 <a>
                     <svg width="50" height="51" viewBox="0 0 50 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.53748 23.6036H16.2325L21.9371 38.7715L36.1438 0.998047L44.6456 23.6036H50V27.6435H41.8483L36.1437 12.4755L21.937 50.249L13.4353 27.6435H7.53748C7.88232 27.0488 8.08081 26.3592 8.08081 25.6235C8.08081 24.8878 7.88232 24.1982 7.53748 23.6036Z" fill="#00B6BD" />
@@ -86,10 +98,27 @@ function Navbar({ bg = "#fff", typeLayout = "main", setChange, change, Logout })
                         <path d="M7.53772 23.604C7.88257 24.1986 8.08105 24.8883 8.08105 25.6239C8.08105 26.3596 7.88257 27.0492 7.53772 27.6439C6.83813 28.8503 5.53328 29.6639 4.04065 29.6639V21.584C5.53318 21.584 6.83802 22.3975 7.53772 23.604Z" fill="#00EED1" />
                     </svg>
                 </a>
-                <ul className={`${styles.menu} hidden lg:flex mr-14`}>
+                <ul className={`${styles.menu} hidden lg:flex mr-14 `}>
                     {
                         menus[typeLayout == "main" ? "main" : login ? user?.rol == "admin" ? "admin" : "dashboardLogin" : "dashboard"].map(item => (
-                            <li key={item.path} className={route.pathname === item.path ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href={item.path}>{item.name}</Link></li>
+
+                            !item?.link ?
+                                <li id="bbsfd" key={item.path} className={`${route.pathname === item.path ? styles.active : ""} dropdown dropdown-hover`} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} >
+                                    <label className="flex" tabIndex={0}>
+                                        <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
+                                        {item.name}
+                                    </label>
+                                    <ul onMouseEnter={(e) => handleENterMouse({ target: document.getElementById("bbsfd") })} style={{ transform: "translate(20px,30px)" }} tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-full">
+                                        {
+                                            item.sub?.map(i => (
+                                                <li key={i.path} style={{ padding: 8, borderRadius: 8 }} className="w-full p-0 rounded-[10px]"><Link href={i.path} className={`rounded-[8px] ${route.pathname === i.path ? "active" : ""}`} style={{ color: route.pathname === i.path ? "#fff" : "#242422" }}>{i.name}</Link></li>
+                                            ))
+                                        }
+                                    </ul>
+                                </li>
+                                :
+                                <li key={item.path} className={route.pathname === item.path ? styles.active : ""} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} ><Link href={item.path}>{item.name}</Link></li>
+
                         ))
                     }
                     <span style={position}></span>
@@ -162,7 +191,7 @@ function Navbar({ bg = "#fff", typeLayout = "main", setChange, change, Logout })
                 <ul className={`${styles.menuRes} flex flex-col`}>
                     {
                         menus[typeLayout == "main" ? "main" : login ? user?.rol == "admin" ? "admin" : "dashboardLogin" : "dashboard"].map(item => (
-                            <li key={item.path}  onClick={() => setOpen(false)}  className={route.pathname === item.path ? styles.active : ""}  ><Link href={item.path}>{item.name}</Link></li>
+                            <li key={item.path} onClick={() => setOpen(false)} className={route.pathname === item.path ? styles.active : ""}  ><Link href={item.path}>{item.name}</Link></li>
                         ))
                     }
                 </ul>

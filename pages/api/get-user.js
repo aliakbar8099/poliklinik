@@ -13,16 +13,22 @@ export default async (req, res) => {
 
         switch (req.method) {
             case "GET":
-                const user = await db
+                // const user = await db
+                //     .collection("users")
+                //     .find({})
+                //     .sort({ metacritic: -1 })
+                //     .limit(10)
+                //     .toArray();
+                let uuN = isLogin(req, res);
+                const lists = await db
                     .collection("users")
                     .find({})
                     .sort({ metacritic: -1 })
-                    .limit(10)
                     .toArray();
 
-                isLogin(req, res, {
-                    user,
-                })
+                let findUser = await lists.find(i => i.NationalCode === uuN)
+
+                res.status(200).send({ data: findUser })
                 break;
 
         }

@@ -1,9 +1,7 @@
 import React from "react";
 
-function SelectOption({ titleName, items, width, className, title }) {
+function SelectOption({ titleName, items, width, className, title, selectValue, setSelectValue, selectName, setSelectName }) {
     const [open, setOpen] = React.useState(false);
-    const [selectName, setSelectName] = React.useState("");
-    const [selectValue, setSelectValue] = React.useState("");
 
     function handleSelect(e) {
         setSelectName(e.target.textContent);
@@ -13,7 +11,7 @@ function SelectOption({ titleName, items, width, className, title }) {
     return (
         <>
             <div style={{ width }} className={`dropdown mx-2 dropdown-bottom dropdown-open ${className} ${open ? "z-[2029]" : ""}`}>
-                {title && <h3 className="py-3 mb-3">{title}</h3>} 
+                {title && <h3 className="py-3 mb-3">{title}</h3>}
                 <button onClick={() => setOpen(!open)} className={`btn m-1 w-[100%] flex justify-between items-center bg-[#fff] hover:bg-[#fff] ${open ? "bg-[#f6f6f6]" : ""}`}>
                     <span className='text-[#005974] text-[12px] lg:text-[15px]'>{selectName === "" ? titleName : <span><strong>{titleName}</strong><small className="mr-1 font-normal">{selectName}</small></span>}</span>
                     <svg style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }} width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,9 +19,13 @@ function SelectOption({ titleName, items, width, className, title }) {
                     </svg>
                 </button>
                 <ul hidden={!open} className={`dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-[100%]`}>
+                    <li onClick={() => {
+                        setSelectName("")
+                        setSelectValue(0)
+                    }}><a value={null} className={`p-1 mt-2 px-2 ${selectValue == 0 ? "bg-[#eee]" : ""}`}>انتخاب کنید</a></li>
                     {
                         items?.map((item, i) => (
-                            <li key={i} onClick={handleSelect}><a value={item.value} className={`p-1 mt-2 px-2 ${item.value == selectValue ? "bg-[#eee]" : ""}`}>{item.text}</a></li>
+                            <li key={i} onClick={handleSelect}><a value={item._id} className={`p-1 mt-2 px-2 ${item._id == selectValue ? "bg-[#eee]" : ""}`}>{item.title}</a></li>
                         ))
                     }
                 </ul>

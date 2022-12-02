@@ -25,11 +25,11 @@ export default async (req, res) => {
 
         let user = await db.collection("users");
 
-        let uniqCode = isLogin(req, res);
-        let findUser = await user.findOne({ NationalCode: uniqCode });
 
         switch (req.method) {
             case "POST":
+                let uniqCode = isLogin(req, res);
+                let findUser = await user.findOne({ NationalCode: uniqCode });
 
 
                 if (findUser.rol != "admin") {
@@ -107,13 +107,8 @@ export default async (req, res) => {
                 break;
 
             case "GET":
-                let uniqCode = isLogin(req, res);
-                let findUser = await user.findOne({ NationalCode: uniqCode });
-                
 
-                if (findUser.rol != "admin") {
-                    return res.status(403).send({ msg: "شما دسترسی ندارید", rol: findUser.rol })
-                }
+                let newData = []
 
                 const lists = await db
                     .collection("users")
@@ -122,7 +117,68 @@ export default async (req, res) => {
                     .toArray();
 
                 let finDoctor = await lists.filter(i => i.rol === "doctor")
-                res.status(200).send({ data: finDoctor })
+
+                for (let i = 0; i < finDoctor.length; i++) {
+                    let {
+                        _id,
+                        fullname,
+                        lengthJop,
+                        img,
+                        codeJop,
+                        category,
+                        positionsJop,
+                    } = finDoctor[i];
+
+                    newData.push({
+                        _id,
+                        fullname,
+                        lengthJop,
+                        img,
+                        codeJop,
+                        category,
+                        positionsJop,
+                        rank: 60
+                    })
+                }
+
+
+                if (!req.query["id"]) {
+                    res.status(200).send({
+                        data: newData,
+
+                    })
+                }
+                else {
+                    let single = finDoctor.filter(item => item["_id"] == req.query["id"])
+                    if (!single[0]) {
+                        return res.status(404).send({ msg: "وجود ندارد" })
+                    }
+                    let {
+                        _id,
+                        fullname,
+                        lengthJop,
+                        img,
+                        codeJop,
+                        category,
+                        positionsJop,
+                        rank,
+                        bio
+                    } = single[0]
+                    res.status(200).send({
+                        data: {
+                            _id,
+                            fullname,
+                            lengthJop,
+                            img,
+                            codeJop,
+                            category,
+                            positionsJop,
+                            bio,
+                            rank
+                        },
+                    })
+                }
+
                 break;
 
         }
