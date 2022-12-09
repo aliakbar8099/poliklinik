@@ -12,7 +12,6 @@ export default async (req, res) => {
         let {
             NationalCode,
             weekDay,
-            completeObj
         } = req.body;
 
 
@@ -51,9 +50,6 @@ export default async (req, res) => {
                 reserve.insertOne({
                     NationalCode,
                     weekDay,
-                    inputTime,
-                    exportTime,
-                    lengthTimeVisit,
                     createtime: new Date().getTime()
                 });
 

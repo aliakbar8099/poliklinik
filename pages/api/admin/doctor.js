@@ -145,7 +145,6 @@ export default async (req, res) => {
                 if (!req.query["id"]) {
                     res.status(200).send({
                         data: newData.reverse(),
-
                     })
                 }
                 else {
@@ -162,7 +161,7 @@ export default async (req, res) => {
                         category,
                         positionsJop,
                         NationalCode,
-                        rank,
+                        rank = 60,
                         bio
                     } = single[0]
                     res.status(200).send({

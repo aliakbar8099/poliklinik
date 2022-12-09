@@ -59,6 +59,16 @@
         color: #234fef;
         background: rgba(23, 61, 201, 0.041);
     }
+    &.show {
+        border-color: #23ef23;
+        color: #23ef23;
+        background: rgba(23, 61, 201, 0.041);
+    }
+    &.disabled {
+        border-color: #ef2323;
+        color: #ef2323;
+        background: rgba(201, 23, 23, 0.041);
+    }
 }
 
 #tabel-j {
