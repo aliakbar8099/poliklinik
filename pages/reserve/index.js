@@ -25,6 +25,7 @@ function Reserve({ login, setLogin, className }) {
     const [time, setTime] = React.useState(null)
     const [selectName, setSelectName] = React.useState("");
     const [selectValue, setSelectValue] = React.useState("");
+    const [rezs , setRezs] = React.useState([])
 
     React.useEffect(() => {
         setLoading(true)
@@ -96,7 +97,7 @@ function Reserve({ login, setLogin, className }) {
                                 </svg>
                             </button>
                         </div>
-                       {!tabletime.id ? null : <TabelTime time={time} weeks={weeks} value={value} />} 
+                       {!tabletime.id ? null : <TabelTime setRezs={setRezs} time={time} weeks={weeks} value={value} />} 
                     </div>
                 <div id="box-j" style={{ bottom: open ? 0 : -1500, transition: "0.3s ease" }} className='box-doctor fixed lg:sticky top-[auto]  lg:top-[85px] bottom-0 lg:bottom-[auto] p-2 w-full lg:w-[400px] bg-[#fff] flex-col shadow-sm rounded-[0] rounded-t-[30px] lg:rounded-xl m-0 lg:m-2 z-[1020] flex items-center justify-start h-[80vh] sm:h-[60vh]  lg:h-[85vh] right-0'>
                     <div className='flex justify-end items-center w-full'>

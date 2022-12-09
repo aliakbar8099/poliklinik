@@ -17,7 +17,7 @@ const toBase64 = file => new Promise((resolve, reject) => {
     reader.onerror = error => reject(error);
 });
 
-let weeks = ["جمعه", "شنبه", "یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه"]
+let weeks = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه","جمعه", "شنبه", ]
 
 function range(end, start = 0, step = 1) {
     let result = []
@@ -91,8 +91,6 @@ function NewDoctor() {
         });
         setValue({ ...value, [e.target.name]: e.target.value });
     }
-
-
 
     function getValue2(e, n_week) {
         const upd_obj = week.map(obj => {

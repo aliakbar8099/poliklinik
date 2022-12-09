@@ -32,7 +32,7 @@ function MatrixList(end, start = 0, step = 1 , y) {
 }
 
 
-function TabelTime({ weeks , value}) {
+function TabelTime({ weeks , value , setRezs}) {
     const router = useRouter()
 
     let rez = []
@@ -50,9 +50,10 @@ function TabelTime({ weeks , value}) {
     const [selectValue, setSelectValue] = React.useState("");
     
     function getDate(d, w = 1, value = false) {
+        let timeV = new Date(time?.createtime).setHours(Math.abs(24 * ((d + 2))))
         if (value)
             return new Date(time?.createtime + ((3600 * 24 * 7 * 1000) * (w - 1)) + (3600 * 24 * 1000 * Math.abs(d - (new Date().getDay() + 2)))).getTime()
-        return moment(new Date(time?.createtime).setHours((24 * Math.abs((d + 1) - (new Date().getDay() + 2)) + ((24 * 7) * (w - 1))))).format('jYYYY/jM/jD')
+        return moment(new Date(timeV).setHours((24 * 7)* (w - 1))).format('jYYYY/jM/jD')
     }
 
     const [loading, setLoading] = React.useState(false);
@@ -94,15 +95,17 @@ function TabelTime({ weeks , value}) {
     }
 
     function submitRezerveTime(n, nc, i, tv, e) {
-        setLoading(true)
-        const id = toast.loading(e.target.textContent + "در حال رزور ")
-        addRezerveTimeUser(n, nc, { complete: { tiemValue: tv, index: i } }).then(res => {
-            getStatus(n, time?.NationalCode, tv);
-            toast.update(id, {
-                render: " روز " + selectTime.week + " " + selectTime.date + " " + e.target.textContent + " رزرو شد ",
-                type: "success", isLoading: false, autoClose: 8000
-            });
-        })
+        if (confirm(` ساعت ${document.getElementById("we"+i).textContent} رزرو شود؟`) == true) {
+            setLoading(true)
+            const id = toast.loading(e.target.textContent + "در حال رزور ")
+            addRezerveTimeUser(n, nc, { complete: { tiemValue: tv, index: i } }).then(res => {
+                getStatus(n, time?.NationalCode, tv);
+                toast.update(id, {
+                    render: " روز " + selectTime.week + " " + selectTime.date + " " + e.target.textContent + " رزرو شد ",
+                    type: "success", isLoading: false, autoClose: 8000
+                });
+            })
+          } 
     }
 
 
@@ -154,7 +157,7 @@ function TabelTime({ weeks , value}) {
                                             :
                                             range(selectTime?.orderVisit).map((item, i) => (
                                                 <>
-                                                    <button disabled={rez[i] == "complete"} onClick={(e) => submitRezerveTime(selectTime?.number, time?.NationalCode, i, selectTime?.tiemValue, e)} htmlFor="confrim" key={item} className={`bton p-5 m-1 border cursor-pointer  boredr-1 border-[#0003] rounded-[20px] show_active 
+                                                    <button id={"we"+i} disabled={rez[i] == "complete"} onClick={(e) => submitRezerveTime(selectTime?.number, time?.NationalCode, i, selectTime?.tiemValue, e)} htmlFor="confrim" key={item} className={`bton p-5 m-1 border cursor-pointer  boredr-1 border-[#0003] rounded-[20px] show_active 
                                                 ${rez[i] == "complete" ? "disabled" : "show"}`}>
                                                         <span>ساعت
                                                             {Math.floor((parseInt(selectTime?.inputDate.split(":")[1]) + (item * selectTime?.lengthTimeVisit)) / 60) + parseInt(selectTime?.inputDate.split(":")[0])}:
@@ -162,6 +165,16 @@ function TabelTime({ weeks , value}) {
                                                                 ((parseInt(selectTime?.inputDate.split(":")[1]) + (item * selectTime?.lengthTimeVisit))) - (Math.floor((parseInt(selectTime?.inputDate.split(":")[1]) + (item * selectTime?.lengthTimeVisit)) / 60) * 60)}
                                                         </span>
                                                     </button>
+                                                    <input type="checkbox" id="my-modal" className="modal-toggle" />
+                                                    <div className="modal">
+                                                    <div className="modal-box">
+                                                        <h3 className="font-bold text-lg">Congratulations random Internet user!</h3>
+                                                        <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+                                                        <div className="modal-action">
+                                                        <label htmlFor="my-modal" className="btn">Yay!</label>
+                                                    </div>
+                                                    </div>
+                                                    </div>
                                                 </>
 
                                             ))
