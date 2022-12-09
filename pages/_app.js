@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }) {
       Promise.all(Array.from(document.images).filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
         setTimeout(() => {
           setLoading(false)
-        }, 3000);
+        }, 500);
       });
     }
   }, [change])

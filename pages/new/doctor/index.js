@@ -7,6 +7,8 @@ import { postUpload } from '../../../services/post-api';
 import { toast } from 'react-toastify';
 import { getCategory, postDoctor, postReserveTime } from '../../../services/admin';
 import { useRouter } from 'next/router';
+import { body } from 'express-validator';
+
 
 const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -14,6 +16,16 @@ const toBase64 = file => new Promise((resolve, reject) => {
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
 });
+
+let weeks = ["جمعه", "شنبه", "یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه"]
+
+function range(end, start = 0, step = 1) {
+    let result = []
+    for (let i = start; i <= end; i += step) {
+        result.push(i)
+    }
+    return result
+}
 
 function NewDoctor() {
     const router = useRouter();
@@ -30,10 +42,7 @@ function NewDoctor() {
         bio: null,
     })
     let [value2, setValue2] = React.useState({
-        weekDay: "",
-        inputTime: "",
-        exportTime: "",
-        lengthTimeVisit: 12,
+        weekDay: [],
     })
     const [msg, setMsg] = React.useState({
         type: "",
@@ -83,8 +92,38 @@ function NewDoctor() {
         setValue({ ...value, [e.target.name]: e.target.value });
     }
 
-    function getValue2(e) {
-        setValue2({ ...value2, [e.target.name]: e.target.value });
+
+
+    function getValue2(e, n_week) {
+        const upd_obj = week.map(obj => {
+
+            if (obj.number == n_week) {
+
+                obj[e.target.name] = e.target.value
+
+                if (!obj.inputDate || !obj.exportDate) {
+                    return 0
+                } else {
+                    let ddEXP = obj.exportDate.split(":")[1]
+                    let ddINP = obj.inputDate.split(":")[1]
+                    let hhEXP = obj.exportDate.split(":")[0]
+                    let hhINP = obj.inputDate.split(":")[0]
+
+                    let res = ((parseInt(hhEXP) - parseInt(hhINP)) * 60) + (parseInt(ddEXP) - parseInt(ddINP))
+
+                    obj["orderVisit"] = res / parseInt(obj.lengthTimeVisit)
+
+                    document.getElementById("rez" + n_week).value = Math.floor(res / parseInt(obj.lengthTimeVisit))
+                    document.getElementById("rez" + n_week).max = Math.floor(res / parseInt(obj.lengthTimeVisit))
+                    return obj
+                }
+
+            }
+
+            return obj;
+
+        })
+        setValue2(upd_obj);
     }
 
     React.useEffect(() => { }, [week, value.img])
@@ -111,11 +150,24 @@ function NewDoctor() {
     }
 
     function handleWeek(w) {
-        let isWeek = week.find(i => i == w)
-        if (typeof isWeek == "undefined") {
-            setWeek([...week, w].sort())
+        let isWeek = week.find(i => i.number == w)
+
+        if (!isWeek) {
+            setWeek([...week, {
+                week: weeks[w],
+                number: w,
+                inputDate: 0,
+                exportDate: 0,
+                lengthTimeVisit: 15,
+                orderVisit: 0,
+                listComplete:[]
+            }].sort((a, b) => (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0)))
+            setTimeout(() => {
+                window.scrollTo(0, document.getElementById("week_" + w).offsetTop - 400);
+            }, 100);
+
         } else {
-            let newList = week.filter(i => i != w)
+            let newList = week.filter(i => i.number != w)
             setWeek(newList)
         }
     }
@@ -139,7 +191,7 @@ function NewDoctor() {
         setLoading2(true);
         postDoctor(value).then(res => {
             setTimeout(() => {
-                postReserveTime({ ...value2, NationalCode: value.NationalCode }).then(res2 => {
+                postReserveTime({ weekDay: week, NationalCode: value.NationalCode }).then(res2 => {
                     toast.success("با موفقیت انجام شد")
                     setLoading2(false);
                     router.push("/reserve");
@@ -154,9 +206,29 @@ function NewDoctor() {
         })
     }
 
+    function setLimitRezerveHandle(e, n_week) {
+        if (parseInt(e.target.value) > parseInt(e.target.max)) {
+            toast.error("تعداد رزرو نمی تواند بیشتر از " + e.target.max + " تا باشد ")
+            e.target.classList.add("error")
+            return false
+        }
+        e.target.classList.remove("error")
+        const upd_obj = week.map(obj => {
+
+            if (obj.number == n_week) {
+
+                obj[e.target.name] = e.target.value
+
+            }
+            return obj;
+
+        })
+        setValue2(upd_obj);
+    }
+
     return (
         <div className='h-[auto] bg-[#f4f8fb] p-4 pb-32'>
-            <div className={`bg-[#fff]  w-full p-2 mb-2 rounded-lg mt-20 lg:mt-0 sticky top-[83px] shadow-md z-[1010] ${loading2 ? "skeleton" : ""}`}>
+            <div className={`bg-[#fff]  w-full p-2 mb-2 rounded-lg mt-20 lg:mt-0 sticky top-[83px] shadow-md z-[1080] ${loading2 ? "skeleton" : ""}`}>
                 <article className={`flex anClick  hover-b items-center border  boredr-[#005974] p-3 rounded-xl mb-3 active `}>
                     <div class="avatar">
                         <div class="w-[70px] lg:w-[90px] rounded-xl">
@@ -193,7 +265,7 @@ function NewDoctor() {
                     </button>
                 </article>
             </div>
-            <div className='flex flex-wrap items-start bg-[#fff] p-2 rounded-xl shadow-lg'>
+            <div className='flex flex-wrap items-start bg-[#fff] p-2 rounded-xl shadow-lg mb-[200px]'>
                 <div className='w-full text-[20px] font-bold px-3 mt-4'>
                     <h3 className='flex items-center text-[#272727]'>
                         <svg xmlns="http://www.w3.org/2000/svg" height="38" viewBox="0 0 24 24" width="38" fill="#272727"><path d="M0 0h24v24H0z" fill="none" /><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
@@ -251,25 +323,62 @@ function NewDoctor() {
                                     </span>
                                 </h3>
                             </div>
-                            <div className='w-full mt-4 px-3 mr-3'>
+                            <div className='w-full mt-4 px-3 mr-3 sticky top-[200px] bg-[#fff] mb-10 z-10'>
                                 <h4 className='w-full mb-4'>چه روز های هفته حضور دارد؟</h4>
                                 <div>
-                                    <button onClick={() => handleWeek(0)} className={`bton ${week.find(i => i == 0) == 0 ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px]`}>جمعه</button>
-                                    <button onClick={() => handleWeek(1)} className={`bton ${week.find(i => i == 1) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px]`}>شنبه</button>
-                                    <button onClick={() => handleWeek(2)} className={`bton ${week.find(i => i == 2) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px]`}>یک شنبه</button>
-                                    <button onClick={() => handleWeek(3)} className={`bton ${week.find(i => i == 3) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px]`}>دو شنبه</button>
-                                    <button onClick={() => handleWeek(4)} className={`bton ${week.find(i => i == 4) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px]`}>سه شنبه</button>
-                                    <button onClick={() => handleWeek(5)} className={`bton ${week.find(i => i == 5) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px]`}>چهار شنبه</button>
-                                    <button onClick={() => handleWeek(6)} className={`bton ${week.find(i => i == 6) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px]`}>پنج شنبه</button>
+                                    <button onClick={() => handleWeek(0)} className={`bton ${week.find(i => i.number == 0) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>جمعه</button>
+                                    <button onClick={() => handleWeek(1)} className={`bton ${week.find(i => i.number == 1) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>شنبه</button>
+                                    <button onClick={() => handleWeek(2)} className={`bton ${week.find(i => i.number == 2) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>یک شنبه</button>
+                                    <button onClick={() => handleWeek(3)} className={`bton ${week.find(i => i.number == 3) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>دو شنبه</button>
+                                    <button onClick={() => handleWeek(4)} className={`bton ${week.find(i => i.number == 4) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>سه شنبه</button>
+                                    <button onClick={() => handleWeek(5)} className={`bton ${week.find(i => i.number == 5) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>چهار شنبه</button>
+                                    <button onClick={() => handleWeek(6)} className={`bton ${week.find(i => i.number == 6) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>پنج شنبه</button>
                                 </div>
                             </div>
-                            <div className='w-full mt-4 px-3 mr-3 flex items-end flex-wrap'>
-                                <TextInput onGetValue={getValue2} nameInput="inputTime" inputStyle="text-center" msg="" calssStyle="w-full md:w-1/2 lg:w-1/4" title="از ساعت" type="time" />
-                                <spam className="mb-4">تا</spam>
-                                <TextInput onGetValue={getValue2} nameInput="exportTime" inputStyle="text-center" msg="" calssStyle="w-full md:w-1/2 lg:w-1/4" title="تا ساعت" type="time" />
-                                <TextInput onGetValue={getValue2} nameInput="lengthTimeVisit" inputStyle="text-center" msg="" calssStyle="w-full md:w-1/2 lg:w-[15%]" title="مدت زمان هر رزور(دقیقه)" defaultValue={12} type="number" />
-                            </div>
-                            <button onClick={handleSubmit} className='btn block lg:hidden btn-success w-full  text-[17px] mt-auto justify-between text-[#fff] mt-5'>
+
+                            <>
+                                {
+                                    week?.map(({ number, exportDate, inputDate, orderVisit, lengthTimeVisit }, i) => (
+                                        <div id={"week_" + number} key={i} className='w-full mt-4 px-3 mr-3 flex items-end flex-wrap border border-2 border-[#234fef48] rounded-xl py-5'>
+                                            <div className='mb-5 ml-3 text-[18px] font-bold'>{weeks[number]}</div>
+                                            <TextInput onGetValue={(e) => getValue2(e, number)} nameInput="inputDate" inputStyle="text-center" msg="" calssStyle="w-full md:w-1/2 lg:w-1/6" title="از ساعت" type="time" />
+                                            <spam className="mb-4">تا</spam>
+                                            <TextInput onGetValue={(e) => getValue2(e, number)} nameInput="exportDate" inputStyle="text-center" msg="" calssStyle="w-full md:w-1/2 lg:w-1/6" title="تا ساعت" type="time" />
+                                            {/* <TextInput onGetValue={(e) => getValue2(e, number)} nameInput="lengthTimeVisit" inputStyle="text-center" msg="" calssStyle="w-full md:w-1/2 lg:w-[10%]" title="مدت زمان هر رزور(دقیقه)" defaultValue={12} type="number" /> */}
+                                            <div dir='ltr' className='w-full md:w-1/2 lg:w-1/3 mx-3'>
+                                                <h3 className='text-right mb-5'>مدت زمان هر رزور</h3>
+                                                <div className="tooltip w-full" data-tip={lengthTimeVisit}>
+                                                    <input defaultValue={15} onChange={(e) => getValue2(e, number)} name="lengthTimeVisit" type="range" min="1" max="60" className="range" step="1" />
+                                                </div>
+                                                <style jsx>
+                                                    {
+                                                        `
+                                                        .tooltip:after {
+                                                            transition:0.1s ease;
+                                                            left:${(lengthTimeVisit / 60) * 100}%;
+                                                        }
+                                                        .tooltip:before {
+                                                            transition:0.1s ease;
+                                                            left:${(lengthTimeVisit / 60) * 100}% 
+                                                        }
+                                                        `
+                                                    }
+                                                </style>
+                                                <div className="w-full flex justify-between text-xs">
+                                                    {
+                                                        range(60, 0, 5).map(i => (
+                                                            <span className='w-[1.6%]' key={i}>{i}</span>
+                                                        ))
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <TextInput onInputText={(e) => setLimitRezerveHandle(e, number)} inputId={"rez" + number} nameInput="orderVisit" inputStyle="text-center" msg="" calssStyle="w-full md:w-1/2 lg:w-[15%]" title="تعداد رزرو" type="number" />
+                                        </div>
+                                    ))
+                                }
+                            </>
+                            <button onClick={handleSubmit} className='btn block lg:hidden btn-success w-full text-[17px] mt-auto justify-between text-[#fff] mt-5'>
                                 <span className='text-[16px]'>ثبت پزشک</span>
                                 <svg className="hidden lg:block" width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-bccac604="" data-v-48b88f42=""><title data-v-bccac604="" data-v-48b88f42="">icon</title> <path d="M5.25 10.3118L0.75 5.81177L5.25 1.31177" stroke="white" stroke-opacity="0.66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-v-bccac604="" data-v-48b88f42=""></path></svg>
                             </button>

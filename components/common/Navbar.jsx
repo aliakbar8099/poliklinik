@@ -39,7 +39,7 @@ let menus = {
     ],
 }
 
-function Navbar({ bg = "#fff", typeLayout = "main", setChange, change, Logout }) {
+function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }) {
     const [pageId, setPageId] = React.useState(1);
     const [open, setOpen] = React.useState(false);
     const [login, setLogin] = React.useState(null);
@@ -90,7 +90,7 @@ function Navbar({ bg = "#fff", typeLayout = "main", setChange, change, Logout })
 
     return (
         <>
-            <navbar style={{ background: bg }} className="flex w-full px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
+            <navbar style={{ background: bg }} className="flex w-full backdrop-blur-xl px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
                 <a>
                     <svg width="50" height="51" viewBox="0 0 50 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.53748 23.6036H16.2325L21.9371 38.7715L36.1438 0.998047L44.6456 23.6036H50V27.6435H41.8483L36.1437 12.4755L21.937 50.249L13.4353 27.6435H7.53748C7.88232 27.0488 8.08081 26.3592 8.08081 25.6235C8.08081 24.8878 7.88232 24.1982 7.53748 23.6036Z" fill="#00B6BD" />

@@ -2,7 +2,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 
-function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login, handleClick , _id }) {
+function BoxJobs({ fullname, img, lengthJop, positionsJop, bio, codeJop, rank, login, handleClick, _id, tabletime }) {
     const router = useRouter()
     const [load, setLoad] = React.useState(false);
 
@@ -26,7 +26,7 @@ function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login
                             </>
                         </div>
                     </div>
-                    <h2 className='text-center font-bold p-2 mt-2'>{name}</h2>
+                    <h2 className='text-center font-bold p-2 mt-2'>{fullname}</h2>
                 </header>
                 <div className="flex flex-col justify-between items-center w-full">
                     <p className='mt-1 text-[12px]'>{lengthJop} سال سابقه</p>
@@ -57,10 +57,21 @@ function BoxJobs({ name, img, lengthJop, positionsJop, bio, codeJop, rank, login
                     {bio}
                 </p>
             </div>
-            <button onClick={()=> handleClick(_id)} className='btn btn-success bg-[#005974] border-[#005974] hover:bg-[#005974ec] w-full sm:w-[150px] lg:w-full mt-auto justify-between text-[#fff]'>
-                <span>دریافت نوبت</span>
-                <svg width="8" height="16" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-bccac604="" data-v-48b88f42=""><title data-v-bccac604="" data-v-48b88f42="">icon</title> <path d="M5.25 10.3118L0.75 5.81177L5.25 1.31177" stroke="white" stroke-opacity="0.66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-v-bccac604="" data-v-48b88f42=""></path></svg>
-            </button>
+            {
+                tabletime?.id ?
+                    <button onClick={() => handleClick(_id)} className='btn btn-success w-full sm:w-[150px] lg:w-full mt-auto justify-between'>
+                        <span>ثبت نهایی نوبت</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                        </svg>
+                    </button>
+                    :
+                    <button onClick={() => handleClick(_id)} className='btn btn-success bg-[#005974] border-[#005974] hover:bg-[#005974ec] w-full sm:w-[150px] lg:w-full mt-auto justify-between text-[#fff]'>
+                        <span>دریافت نوبت</span>
+                        <svg width="8" height="16" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-bccac604="" data-v-48b88f42=""><title data-v-bccac604="" data-v-48b88f42="">icon</title> <path d="M5.25 10.3118L0.75 5.81177L5.25 1.31177" stroke="white" stroke-opacity="0.66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-v-bccac604="" data-v-48b88f42=""></path></svg>
+                    </button>
+            }
         </>
     );
 }

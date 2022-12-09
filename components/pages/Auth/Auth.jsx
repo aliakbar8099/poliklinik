@@ -250,7 +250,7 @@ function Auth({ pageId, setPageId, login, setLogin, setChange }) {
                     className={`${loading ? "loading" : ""
                         } btn px-9 w-full  text-[17px] font-normal btn-ghost bg-[#005974] hover:bg-[#005873] hover:opacity-90 text-[#fff] mt-5`}
                 >
-                    {loading ? "درحال ارسال کد ..." : "ارسال کد تایید"}
+                    {loading ? "لطفا صبر کنید ..." : "ورود به حساب"}
                 </button>
                 <label
                     msg=""
