@@ -2,7 +2,10 @@ import moment from "moment-jalaali";
 import React from "react";
 import { toast } from "react-toastify";
 import { getTimeReserveComplet } from "../../services/get-api";
-import { addRezerveTimeUser } from "../../services/update"
+import { addRezerveTimeUser } from "../../services/update";
+import { getTimeReserve } from '/services/get-api';
+import { useRouter } from 'next/router';
+import SelectOption from '/components/common/SelectOption';
 
 let options = { year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -14,41 +17,72 @@ function range(end, start = 0, step = 1) {
     return result
 }
 
+function MatrixList(end, start = 0, step = 1 , y) {
+    let result = []
+    for (let i = start; i <= end; i += step) {
+        let d = []
+        for(let n = 0; n <= y; n++){
+           d.push(n) 
+            if(n == y){
+                result.push(d)
+            }
+        }
+    }
+    return result
+}
 
-function TabelTime({ time, weeks }) {
+
+function TabelTime({ weeks , value}) {
+    const router = useRouter()
+
     let rez = []
-
 
     let weekVlaue = []
 
+    
+    weekVlaue = []
+
+    const [selectTime, setSelctTime] = React.useState(null)
+    
+    const [complete, setComplete] = React.useState([]);
+    const [time , setTime] = React.useState(null);
+    const [selectName, setSelectName] = React.useState("");
+    const [selectValue, setSelectValue] = React.useState("");
+    
     function getDate(d, w = 1, value = false) {
         if (value)
             return new Date(time?.createtime + ((3600 * 24 * 7 * 1000) * (w - 1)) + (3600 * 24 * 1000 * Math.abs(d - (new Date().getDay() + 2)))).getTime()
-        return moment(new Date(time?.createtime + ((3600 * 24 * 7 * 1000) * (w - 1)) + (3600 * 24 * 1000 * Math.abs(d - (new Date().getDay() + 2))))).format('jYYYY/jM/jD')
+        return moment(new Date(time?.createtime).setHours((24 * Math.abs((d + 1) - (new Date().getDay() + 2)) + ((24 * 7) * (w - 1))))).format('jYYYY/jM/jD')
     }
-
-    weekVlaue = []
-
-    range(5, 1).map(i => {
-        time?.weekDay.map(item => {
-            item["date"] = getDate(parseInt(item.number) || 8, i)
-            item["tiemValue"] = getDate(parseInt(item.number) || 8, i, true)
-
-            weekVlaue.push({ ...item })
-
-        })
-    })
-
-
-    const [selectTime, setSelctTime] = React.useState(null)
-
-    const [complete, setComplete] = React.useState([]);
 
     const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
+        if (router.query.id) {
+            getTimeReserve(value?.NationalCode).then(res => {
+                setTime(res.data)
+            })
+        }
+    }, [router.query])
+
+    range(5, 1).map(i => {
+        time?.weekDay.map(item => {
+            console.log(getDate(parseInt(item.number) || 8, i , true));
+            item["date"] = getDate(parseInt(item.number) || 8, i)
+            item["tiemValue"] = getDate(parseInt(item.number) || 8, i, true)
+            weekVlaue.push({ ...item })
+        })
+    })
+
+
+
+    React.useEffect(() => {
         setSelctTime(weekVlaue[0])
         getStatus(weekVlaue[0]?.number, time?.NationalCode, weekVlaue[0]?.tiemValue);
+        return ()=> {
+            weekVlaue = []
+            setSelctTime(null)
+        }
     }, [time])
 
     function getStatus(n, nc, tv) {
@@ -82,11 +116,11 @@ function TabelTime({ time, weeks }) {
 
     return (
         <>
-            <div>
+            <div className="pb-32">
                 <>
                     {
                         !selectTime ?
-                            <div className="border border-[3px] border-[#ccc] p-2 mt-10 rounded-[20px] flex justify-start items-start h-[300px]">
+                            <div style={{background:"#eee6"}} className=" p-2 mt-10 rounded-[20px] flex justify-start items-start h-[300px]">
                                 <div className="flex flex-col items-center min-w-[180px] m-auto w-[180px] p-1 h-[260px] overflow-auto overflow-x-hidden border border-2 border-[#0000] rounded-3xl skeleton"></div>
                                 <div className="w-full flex justify-start items-start flex-wrap p-3 overflow-auto">
                                     {
@@ -97,7 +131,7 @@ function TabelTime({ time, weeks }) {
                                 </div>
                             </div>
                             :
-                            <div className="border border-[3px] border-[#ccc] p-2 mt-10 rounded-[20px] flex justify-start items-start flex-col lg:flex-row h-[300px] overflow-auto">
+                            <div id="gthjs" className="border border-[3px] border-[#eee] p-2 mt-10 rounded-[20px] flex justify-start items-start flex-col lg:flex-row h-[300px] overflow-auto">
                                 <div className={`flex flex-col items-center min-w-[180px] w-[180px] p-1 m-auto h-[260px] overflow-auto overflow-x-hidden border border-2 border-[#ccc] rounded-3xl sticky top-1`} style={{position:"sticky" , top:10}}>
                                     {
                                         weekVlaue?.map((i, n) => (
@@ -136,6 +170,14 @@ function TabelTime({ time, weeks }) {
                             </div>
                     }
                 </>
+                <div>
+                <SelectOption {...{ selectValue, setSelectValue, selectName, setSelectName }} className="w-[90%] mt-10 m-auto" titleName="نوع بیمه" items={[
+                    {_id:1 , title:"بیمه 1"},
+                    {_id:1 , title:"بیمه 2"},
+                    {_id:1 , title:"بیمه 3"},
+                    {_id:1 , title:"بیمه 4"}
+                ]} />
+                </div>
             </div>
         </>
     );
