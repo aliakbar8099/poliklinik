@@ -1,15 +1,16 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import CardList from '../../components/common/Cardlist';
-import TabelTime from '../../components/common/TabelTime';
+import TabelTime from '../../components/pages/Rezerve/TabelTime';
 import BoxJobs from '../../components/pages/Rezerve/BoxJobs';
 import { getAllDoctor, getSingleDoctor, getTimeReserve } from '../../services/get-api';
 import SelectOption from '/components/common/SelectOption';
 import SecondLayout from '/layout/second.layout';
 import { getCategory } from '/services/admin';
+import { postCreateRezerve } from '/services/post-api';
 import Router from "next/router";
 
-let weeks = ["جمعه", "شنبه", "یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه"]
+let weeks = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه","جمعه", "شنبه", ]
 
 function Reserve({ login, setLogin, className }) {
     const router = useRouter()
@@ -25,7 +26,7 @@ function Reserve({ login, setLogin, className }) {
     const [time, setTime] = React.useState(null)
     const [selectName, setSelectName] = React.useState("");
     const [selectValue, setSelectValue] = React.useState("");
-    const [rezs , setRezs] = React.useState([])
+    const [rezs, setRezs] = React.useState([])
 
     React.useEffect(() => {
         setLoading(true)
@@ -49,7 +50,7 @@ function Reserve({ login, setLogin, className }) {
 
     React.useEffect(() => {
         setTabelTime(router.query);
-    }, [router.query, value , change])
+    }, [router.query, value, change])
 
 
     function handleClose() {
@@ -57,12 +58,15 @@ function Reserve({ login, setLogin, className }) {
     }
 
     function handleClick(item) {
+        let is = false
         setLoading2(true)
         getSingleDoctor(item._id).then(res => {
             setValue(res.data)
             setLoading2(false)
             setOpen(true)
+            is = true
         })
+        return is
     }
 
     function handleBack() {
@@ -72,10 +76,12 @@ function Reserve({ login, setLogin, className }) {
 
     function handleClick2(Id) {
         if (login) {
-            router.push("?id=" + Id)
-            document.body.style.overflow = "hidden"
-            setOpen(false)
-            setChange(new Date())
+            getSingleDoctor(Id).then(res => {
+                router.push("?id=" + Id)
+                document.body.style.overflow = "hidden"
+                setChange(new Date())
+                setValue(res.data)
+            })
         }
         else {
             document.getElementById("modalAuth").checked = true
@@ -83,23 +89,30 @@ function Reserve({ login, setLogin, className }) {
     }
 
 
+    function SubmitReserve(e) {
+        let users = localStorage.getItem("user")
+        postCreateRezerve({user:{NationalCode:users.NationalCode , fullname:user.fullname} , rezerves:[]}).then(res=>{
+            // toast.success(res.msg)
+        })
+    }
 
+    // console.log(rezs);
     return (
 
         <>
             <div hidden={!open} onClick={handleClose} className={`bg-[#0003] lg:hidden fixed left-0 top-0 w-full h-full z-[1014] ${className}`}></div>
             <main className={`bg-[#f4f8fb] p-0 lg:p-4  h-[auto] flex items-start h-full ${tabletime.id ? "table_r" : ""}`}>
-                    <div id="tabel-j" className='bg-[#fff] shadow-sm rounded-xl m-0 lg:m-2 w-full p-3 mt-20 h-[85vh]'>
-                        <div>
-                            <button onClick={handleBack} className='btn btn-ghost bg-[#eee]'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                                </svg>
-                            </button>
-                        </div>
-                       {!tabletime.id ? null : <TabelTime setRezs={setRezs} time={time} weeks={weeks} value={value} />} 
+                <div id="tabel-j" className='bg-[#fff] shadow-sm rounded-xl m-0 lg:m-2 w-full p-3 mt-20 h-[85vh] neumorphism'>
+                    <div>
+                        <button onClick={handleBack} className='btn btn-ghost bg-[#eee]'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                            </svg>
+                        </button>
                     </div>
-                <div id="box-j" style={{ bottom: open ? 0 : -1500, transition: "0.3s ease" }} className='box-doctor fixed lg:sticky top-[auto]  lg:top-[85px] bottom-0 lg:bottom-[auto] p-2 w-full lg:w-[400px] bg-[#fff] flex-col shadow-sm rounded-[0] rounded-t-[30px] lg:rounded-xl m-0 lg:m-2 z-[1020] flex items-center justify-start h-[80vh] sm:h-[60vh]  lg:h-[85vh] right-0'>
+                    {!tabletime.id ? null : <TabelTime setRezs={setRezs} time={time} weeks={weeks} value={value}  />}
+                </div>
+                <div id="box-j" style={{ bottom: open ? 0 : -1500, transition: "0.3s ease" }} className='box-doctor fixed lg:sticky top-[auto]  lg:top-[85px] bottom-0 lg:bottom-[auto] p-2 w-full lg:w-[400px] bg-[#fff] flex-col shadow-sm rounded-[0] rounded-t-[30px] lg:rounded-xl m-0 lg:m-2 z-[1020] flex items-center justify-start h-[80vh] sm:h-[60vh]  lg:h-[85vh] right-0 neumorphism'>
                     <div className='flex justify-end items-center w-full'>
                         <button onClick={handleClose} className='btn btn-ghost block lg:hidden hover:bg-[#0000] text-[#323232]'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
@@ -108,7 +121,7 @@ function Reserve({ login, setLogin, className }) {
                             </svg>
                         </button>
                     </div>
-                    <div className='flex items-center  justify-center w-full sm:justify-start lg:flex-col h-full flex-wrap sm:flex-nowrap overflow-auto lg:overflow-hidden'>
+                    <div className='flex items-center  justify-center w-full sm:justify-start lg:flex-col h-full flex-wrap sm:flex-nowrap overflow-auto lg:overflow-hidden '>
                         {
                             loading2 ?
                                 <div className='flex justify-center items-center flex-col flex-wrap w-full h-full'>

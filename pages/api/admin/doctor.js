@@ -71,7 +71,6 @@ export default async (req, res) => {
                     return res.status(402).send({ msg: "شماره موبایل در سیستم ثبت شده است!" })
                 }
 
-
                 user.insertOne({
                     fullname,
                     lengthJop,

@@ -8,7 +8,6 @@ function CardList({ _id, fullname, img, lengthJop, positionsJop, rank, onClick, 
         if (e.target.complete) {
             setLoad(true)
         }
-
     }
 
     return (

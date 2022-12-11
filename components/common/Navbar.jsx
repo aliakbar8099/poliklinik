@@ -51,6 +51,7 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
         if (localStorage.getItem("access-token")) {
             getUser().then(res => {
                 setUser(res.data);
+                localStorage.setItem("user",JSON.stringify(res.data))
             })
                 .catch((err) => {
                     if (err.response.status === 401) {
