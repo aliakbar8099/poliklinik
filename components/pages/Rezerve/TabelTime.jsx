@@ -48,8 +48,8 @@ function TabelTime({ weeks, value }) {
         let getDay = new Date().getDay()
         time?.weekDay.map(item => {
             let number = parseInt(item.number)
-            item["date"] = getDate(number, i)
-            item["tiemValue"] = getDate(number, i, true)
+            item["date"] = getDate(number || 7, i)
+            item["tiemValue"] = getDate(number || 7, i, true)
             weekVlaue.push({ ...item })
         })
     })
@@ -57,7 +57,7 @@ function TabelTime({ weeks, value }) {
 
     function getDate(d, w = 1, value = false) {
         let timeC = new Date()
-        let timeV = new Date(timeC.getFullYear(), timeC.getMonth(), timeC.getDate()).setHours(24 * Math.abs((new Date().getDay() + 1) - (d + 1)))
+        let timeV = new Date(timeC.getFullYear(), timeC.getMonth(), timeC.getDate()).setHours(24 * Math.abs((new Date().getDay()) - (d)))
 
         if (value)
             return new Date(new Date(timeV).setHours((24 * 7) * (w - 1))).getTime()
