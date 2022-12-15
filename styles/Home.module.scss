@@ -24,9 +24,9 @@
             content: "";
             position: absolute;
             left: 0;
-            top: 49px;
+            top: 46px;
             height: 6px;
-            width: 74%;
+            width: 40%;
             left: 50%;
             transform: translateX(-50%);
             border-radius: 8px 8px 0 0;
@@ -175,6 +175,6 @@
     }
     to {
         opacity: 1;
-        width: 74%;
+        width: 40%;
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import CardList from '../../../components/common/Cardlist';
 import TextInput from '../../../components/common/TextInput';
 import SecondLayout from '/layout/second.layout';
@@ -7,6 +7,7 @@ import { postUpload } from '../../../services/post-api';
 import { toast } from 'react-toastify';
 import { getCategory, postDoctor, postReserveTime } from '../../../services/admin';
 import { useRouter } from 'next/router';
+import { Editor } from '@tinymce/tinymce-react';
 import { body } from 'express-validator';
 
 
@@ -17,7 +18,7 @@ const toBase64 = file => new Promise((resolve, reject) => {
     reader.onerror = error => reject(error);
 });
 
-let weeks = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه","جمعه", "شنبه", ]
+let weeks = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه", "جمعه", "شنبه"]
 
 function range(end, start = 0, step = 1) {
     let result = []
@@ -37,9 +38,7 @@ function NewDoctor() {
         codeJop: null,
         NationalCode: null,
         phoneNumber: null,
-        category: null,
         positionsJop: [],
-        bio: null,
     })
     let [value2, setValue2] = React.useState({
         weekDay: [],
@@ -55,6 +54,11 @@ function NewDoctor() {
     const [category, setCategory] = React.useState([]);
     const [selectName, setSelectName] = React.useState("");
     const [selectValue, setSelectValue] = React.useState("");
+    const editorRef = useRef(null);
+
+    React.useMemo(() => {
+        setValue({ ...value, "bio": editorRef.current?.getContent() })
+    }, [editorRef.current])
 
 
     React.useEffect(() => {
@@ -68,13 +72,11 @@ function NewDoctor() {
     }, [])
 
 
-    React.useMemo(() => {
-        setValue({
-            ...value,
-            category: { _id: selectValue, title: selectName }
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectValue])
+    const log = () => {
+        if (editorRef.current) {
+            console.log(editorRef.current.getContent());
+        }
+    };
 
     React.useMemo(() => {
         setValue2({
@@ -158,7 +160,7 @@ function NewDoctor() {
                 exportDate: 0,
                 lengthTimeVisit: 15,
                 orderVisit: 0,
-                listComplete:[]
+                listComplete: []
             }].sort((a, b) => (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0)))
             setTimeout(() => {
                 window.scrollTo(0, document.getElementById("week_" + w).offsetTop - 400);
@@ -187,7 +189,7 @@ function NewDoctor() {
 
     function handleSubmit(e) {
         setLoading2(true);
-        postDoctor(value).then(res => {
+        postDoctor({...value , category: selectValue, bio: editorRef.current.getContent()}).then(res => {
             setTimeout(() => {
                 postReserveTime({ weekDay: week, NationalCode: value.NationalCode }).then(res2 => {
                     toast.success("با موفقیت انجام شد")
@@ -223,6 +225,9 @@ function NewDoctor() {
         })
         setValue2(upd_obj);
     }
+
+    console.log(week);
+
 
     return (
         <div className='h-[auto] bg-[#f4f8fb] p-4 pb-32'>
@@ -296,8 +301,8 @@ function NewDoctor() {
                             <TextInput nameInput="NationalCode" onGetValue={getValue} calssStyle="w-full md:w-1/2 lg:w-1/3" title="کد ملی دکتر" msg="" />
                             <TextInput nameInput="phoneNumber" onGetValue={getValue} type="number" calssStyle="w-full md:w-1/2 lg:w-1/3" title="شماره تماس دکتر" msg="" />
                             <TextInput nameInput="codeJop" onGetValue={getValue} calssStyle="w-full md:w-1/2 lg:w-1/3" title="کد نظام پزشکی" msg="" />
-                            <SelectOption {...{ selectValue, setSelectValue, selectName, setSelectName }} title="دسته بندی خدمات" className="w-full md:w-1/2 lg:w-[32%]" titleName="خدمات:" items={category} />
-                            <div className='w-full md:w-1/2 lg:w-1/3'>
+                            <SelectOption {...{ selectValue, setSelectValue, selectName, setSelectName }} title="دسته بندی خدمات" className="w-full md:w-1/2 lg:w-[25%]" titleName="خدمات:" items={category} />
+                            <div className='w-full md:w-1/2 lg:w-[25%] mr-auto'>
                                 <form onSubmit={onAddbage} className='flex items-end'>
                                     <TextInput onGetValue={getValue} nameInput="bage" calssStyle="w-full" title="تخصص ها" msg="" />
                                     <button type='submit' className='btn btn-info mb-2 text-[16px] rounded-[11px]'>+</button>
@@ -313,7 +318,31 @@ function NewDoctor() {
                                     }
                                 </div>
                             </div>
-                            <TextInput nameInput="bio" onGetValue={getValue} type="textarea" rows={4} calssStyle="w-full md:w-1/2 lg:w-1/3" title="بیو گرافی" msg="" />
+                            <div className='w-full md:w-1/2 lg:w-[50%] m-auto'>
+                                <h3 className='mb-4 text-[18px] font-bold'>بیو گرافی</h3>
+                                <Editor
+                                    id='textEd'
+                                    onInit={(evt, editor) => editorRef.current = editor}
+                                    initialValue={`<p>${value.fullname ? value.fullname : ""} ${value.lengthJop ? " دارای " + value.lengthJop + " سال سابقه " : ""}</p>`}
+                                    init={{
+                                        height: 500,
+                                        menubar: false,
+                                        selector: 'textarea',  // change this value according to your HTML
+                                        directionality: 'rtl',
+                                        plugins: [
+                                            'advlist autolink lists link image charmap print preview anchor',
+                                            'searchreplace visualblocks code fullscreen',
+                                            'insertdatetime media table paste code help wordcount'
+                                        ],
+                                        toolbar: 'undo redo | formatselect | ' +
+                                            'bold italic backcolor | alignleft aligncenter ' +
+                                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                                            'removeformat | help' + 'ltr rtl',
+                                        content_style: 'body { font-family:IRANSans; font-size:1۶px }'
+                                    }}
+                                />
+                            </div>
+                            {/* <TextInput nameInput="bio" onGetValue={getValue} type="textarea" rows={4} calssStyle="w-full md:w-1/2 lg:w-1/3" title="بیو گرافی" msg="" /> */}
                             <div className='w-full text-[20px] font-bold px-3 mt-4'>
                                 <h3 className='flex items-center text-[#272727]'>
                                     <svg xmlns="http://www.w3.org/2000/svg" height="38" viewBox="0 0 24 24" width="38" fill="#272727"><path d="M0 0h24v24H0z" fill="none" /><path d="M3 17h18v2H3zm0-7h18v5H3zm0-4h18v2H3z" /></svg>                        <span className='mt-2 mr-3'>
@@ -324,13 +353,13 @@ function NewDoctor() {
                             <div className='w-full mt-4 px-3 mr-3 sticky top-[200px] bg-[#fff] mb-10 z-10'>
                                 <h4 className='w-full mb-4'>چه روز های هفته حضور دارد؟</h4>
                                 <div>
-                                    <button onClick={() => handleWeek(0)} className={`bton ${week.find(i => i.number == 0) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>جمعه</button>
-                                    <button onClick={() => handleWeek(1)} className={`bton ${week.find(i => i.number == 1) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>شنبه</button>
-                                    <button onClick={() => handleWeek(2)} className={`bton ${week.find(i => i.number == 2) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>یک شنبه</button>
-                                    <button onClick={() => handleWeek(3)} className={`bton ${week.find(i => i.number == 3) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>دو شنبه</button>
-                                    <button onClick={() => handleWeek(4)} className={`bton ${week.find(i => i.number == 4) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>سه شنبه</button>
-                                    <button onClick={() => handleWeek(5)} className={`bton ${week.find(i => i.number == 5) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>چهار شنبه</button>
-                                    <button onClick={() => handleWeek(6)} className={`bton ${week.find(i => i.number == 6) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>پنج شنبه</button>
+                                    <button onClick={() => handleWeek(5)} className={`bton ${week.find(i => i.number == 5) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>جمعه</button>
+                                    <button onClick={() => handleWeek(6)} className={`bton ${week.find(i => i.number == 6) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>شنبه</button>
+                                    <button onClick={() => handleWeek(0)} className={`bton ${week.find(i => i.number == 0) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>یک شنبه</button>
+                                    <button onClick={() => handleWeek(1)} className={`bton ${week.find(i => i.number == 1) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>دو شنبه</button>
+                                    <button onClick={() => handleWeek(2)} className={`bton ${week.find(i => i.number == 2) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>سه شنبه</button>
+                                    <button onClick={() => handleWeek(3)} className={`bton ${week.find(i => i.number == 3) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>چهار شنبه</button>
+                                    <button onClick={() => handleWeek(4)} className={`bton ${week.find(i => i.number == 4) ? "active" : ""} p-5 m-2 border boredr-1 border-[#0003] rounded-[20px] show_active`}>پنج شنبه</button>
                                 </div>
                             </div>
 

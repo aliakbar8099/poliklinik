@@ -3,14 +3,17 @@ import React from 'react';
 import CardList from '../../components/common/Cardlist';
 import TabelTime from '../../components/pages/Rezerve/TabelTime';
 import BoxJobs from '../../components/pages/Rezerve/BoxJobs';
-import { getAllDoctor, getSingleDoctor, getTimeReserve } from '../../services/get-api';
+import { getAllDoctor, getSingleDoctor, getTimeReserve, getTimeReserveComplet } from '../../services/get-api';
 import SelectOption from '/components/common/SelectOption';
 import SecondLayout from '/layout/second.layout';
 import { getCategory } from '/services/admin';
 import { postCreateRezerve } from '/services/post-api';
 import Router from "next/router";
+import TextInput from '../../components/common/TextInput';
+import { toast } from 'react-toastify';
+import { addRezerveTimeUser } from '../../services/update';
 
-let weeks = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه","جمعه", "شنبه", ]
+let weeks = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه", "جمعه", "شنبه",]
 
 function Reserve({ login, setLogin, className }) {
     const router = useRouter()
@@ -22,19 +25,21 @@ function Reserve({ login, setLogin, className }) {
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [loading2, setLoading2] = React.useState(false);
+    const [loading3, setLoading3] = React.useState(false);
     const [tabletime, setTabelTime] = React.useState(false);
     const [time, setTime] = React.useState(null)
     const [selectName, setSelectName] = React.useState("");
     const [selectValue, setSelectValue] = React.useState("");
+    const [user, setUser] = React.useState(null)
     const [rezs, setRezs] = React.useState([])
+    const [complete, setComplete] = React.useState([]);
 
     React.useEffect(() => {
         setLoading(true)
         setLoading2(true)
         getAllDoctor().then(ress => {
             setData(ress.data)
-            console.log(ress.data);
-            getSingleDoctor(tabletime.id || ress.data[0]._id).then(res => {
+            getSingleDoctor(tabletime.id || ress.data[0]?._id).then(res => {
                 getCategory().then(res2 => {
                     setCategory(res2.data)
                     setValue(res.data)
@@ -49,6 +54,8 @@ function Reserve({ login, setLogin, className }) {
     }, [])
 
     React.useEffect(() => {
+        let getUser = JSON.parse(localStorage.getItem("user"))
+        setUser(getUser)
         setTabelTime(router.query);
     }, [router.query, value, change])
 
@@ -88,15 +95,35 @@ function Reserve({ login, setLogin, className }) {
         }
     }
 
+    function getStatus(n, nc, tv) {
+        setLoading3(true)
+        setTimeout(() => {
+            getTimeReserveComplet(n, nc, tv).then(res => {
+                document.getElementById("confrimRez").classList.remove("modal-open")
+                setComplete(res.data)
+                setLoading3(false)
+            })
+        }, 500);
+    }
 
-    function SubmitReserve(e) {
-        let users = localStorage.getItem("user")
-        postCreateRezerve({user:{NationalCode:users.NationalCode , fullname:user.fullname} , rezerves:[]}).then(res=>{
-            // toast.success(res.msg)
+    function submitReserve(params) {
+
+        let dataUser = {
+            fullname: document.getElementsByName("fullname")[0].value,
+            phoneNumber: document.getElementsByName("phonenumber")[0].value,
+            reason: document.getElementsByName("what")[0].value,
+        }
+
+        rezs.obj.complete["user"] = dataUser
+
+        setLoading3(true)
+        addRezerveTimeUser(rezs.number, rezs.NativeCode, rezs.obj).then(res => {
+            getStatus(rezs.number, rezs.NativeCode, rezs.obj.complete.tiemValue);
+            toast.success(" روز " + rezs.obj.complete.week + " " + rezs.obj.complete.date + " " + rezs.obj.complete.time + " رزرو شد ")
+            setLoading3(false)
         })
     }
 
-    // console.log(rezs);
     return (
 
         <>
@@ -105,12 +132,12 @@ function Reserve({ login, setLogin, className }) {
                 <div id="tabel-j" className='bg-[#fff] shadow-sm rounded-xl m-0 lg:m-2 w-full p-3 mt-20 h-[85vh] neumorphism'>
                     <div>
                         <button onClick={handleBack} className='btn btn-ghost bg-[#eee]'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                             </svg>
                         </button>
                     </div>
-                    {!tabletime.id ? null : <TabelTime setRezs={setRezs} time={time} weeks={weeks} value={value}  />}
+                    {!tabletime.id ? null : <TabelTime {...{ complete, setComplete }} getStatus={getStatus} setRezs={setRezs} time={time} weeks={weeks} value={value} loading={loading3} setLoading={setLoading3} />}
                 </div>
                 <div id="box-j" style={{ bottom: open ? 0 : -1500, transition: "0.3s ease" }} className='box-doctor fixed lg:sticky top-[auto]  lg:top-[85px] bottom-0 lg:bottom-[auto] p-2 w-full lg:w-[400px] bg-[#fff] flex-col shadow-sm rounded-[0] rounded-t-[30px] lg:rounded-xl m-0 lg:m-2 z-[1020] flex items-center justify-start h-[80vh] sm:h-[60vh]  lg:h-[85vh] right-0 neumorphism'>
                     <div className='flex justify-end items-center w-full'>
@@ -174,6 +201,52 @@ function Reserve({ login, setLogin, className }) {
                     </div>
                 </div>
             </main>
+            {/* The button to open modal */}
+            <div className="modal z-[2022] backdrop-blur-sm " id="confrimRez">
+                <div className="modal-box pt-0">
+                    <div className="modal-action" onClick={() => document.getElementById("confrimRez").classList.remove("modal-open")}>
+                        <div className='flex items-center justify-between w-full'>
+                            <a className="btn btn-ghost ml-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                                </svg>
+                            </a>
+                            <div className='flex'>
+                                <div className='text-[17px] bton'> دوشنبه ساعت 12:15</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex items-center p-2 alert-s">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={23} fill="none" viewBox="0 0 24 24" className="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span className='text-[12px] mr-1'>
+                            برای تکمیل نوبت مشخصات زیر را  پر کنید
+                        </span>
+                    </div>
+                    <div>
+                        <TextInput id="ddd" defaultValueText={user?.fullname} nameInput="fullname" calssStyle="w-full" type="text" msg="" title="نام کامل" placeholder="نام و نام خانوادگی  مراجعه کننده" />
+                        <TextInput id="ddd" defaultValueText={user?.phoneNumber} dir="ltr" nameInput="phonenumber" calssStyle="w-full" type="text" msg="" title="تلفن همراه" placeholder="شماره همراه مراجعه کننده" />
+                        <TextInput id="ddd" maxText={100} nameInput="what" calssStyle="w-full" type="textarea" msg="" title="علت مراجعه" placeholder="علت مراجعه بنویسید" />
+                        <button disabled={loading3} onClick={submitReserve} className='btn w-full btn-success text-[#fff] hover:text-[#242424] mt-5'>
+                            {
+                                loading3 ?
+                                    <>
+                                        درحال رزرو کردن...
+                                        &nbsp;
+                                        <LoadingSvg />
+                                    </>
+                                    :
+                                    <>
+                                        تکمیل رزرو
+                                        &nbsp;
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                        </svg>
+                                    </>
+                            }
+                        </button>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
@@ -193,3 +266,28 @@ export default Reserve;
 // }
 
 Reserve.getLayout = (page) => <SecondLayout>{page}</SecondLayout>
+
+
+function LoadingSvg() {
+    return (
+        <svg xlink="http://www.w3.org/1999/xlink" width="70px" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+            <circle cx="80" cy="50" r="5" fill="#93dbe9">
+                <animate attributeName="cx" values="80;50" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+                <animate attributeName="cy" values="50;80" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+                <animate attributeName="fill" values="#93dbe9;#689cc5" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+            </circle><circle cx="50" cy="80" r="5" fill="#689cc5">
+                <animate attributeName="cx" values="50;20" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+                <animate attributeName="cy" values="80;50.00000000000001" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+                <animate attributeName="fill" values="#689cc5;#5e6fa3" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+            </circle><circle cx="20" cy="50.00000000000001" r="5" fill="#5e6fa3">
+                <animate attributeName="cx" values="20;49.99999999999999" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+                <animate attributeName="cy" values="50.00000000000001;20" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+                <animate attributeName="fill" values="#5e6fa3;#3b4368" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+            </circle><circle cx="49.99999999999999" cy="20" r="5" fill="#3b4368">
+                <animate attributeName="cx" values="49.99999999999999;80" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+                <animate attributeName="cy" values="20;49.99999999999999" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+                <animate attributeName="fill" values="#3b4368;#93dbe9" keyTimes="0;1" dur="0.3847953216374269s" repeatCount="indefinite"></animate>
+            </circle>
+        </svg>
+    )
+}

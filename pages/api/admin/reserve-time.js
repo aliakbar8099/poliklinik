@@ -73,10 +73,10 @@ export default async (req, res) => {
                 if (!req.query["nCode"]) {
                     return res.status(400).send({ msg: "کدملی مشخص نیست !" })
                 }
-                
-                
-                if (await times.findOne({ NationalCode: req.query["nCode"] }) && await times.findOne({ number: req.query["number"] })) {
-                    const find = getData.find(i => i.NationalCode == req.query["nCode"] && i.number == req.query["number"])
+
+                const find = getData.find(i => i.NationalCode == req.query["nCode"] && i.number == req.query["number"])
+
+                if (find) {
 
                     times.updateOne({ "NationalCode": req.query["nCode"], "number": req.query["number"] },
                         { $set: { "times": [...find.times, req.body.complete] } }

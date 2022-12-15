@@ -7,8 +7,6 @@ import { getTimeReserve } from '/services/get-api';
 import { useRouter } from 'next/router';
 import SelectOption from '/components/common/SelectOption';
 
-let options = { year: 'numeric', month: 'long', day: 'numeric' };
-
 function range(end, start = 0, step = 1) {
     let result = []
     for (let i = start; i <= end; i += step) {
@@ -17,7 +15,11 @@ function range(end, start = 0, step = 1) {
     return result
 }
 
-function TabelTime({ weeks, value }) {
+function MinItem(g) {
+    return g.find(i => i.number == (Math.min.apply(null, g.map(i => i.number))))
+}
+
+function TabelTime({ weeks, value, loading, setLoading, setRezs, getStatus, complete, setComplete }) {
     const router = useRouter()
 
     let rez = []
@@ -28,15 +30,16 @@ function TabelTime({ weeks, value }) {
     weekVlaue = []
 
     const [selectTime, setSelctTime] = React.useState(null)
-
-    const [complete, setComplete] = React.useState([]);
     const [time, setTime] = React.useState(null);
     const [selectName, setSelectName] = React.useState("");
     const [selectValue, setSelectValue] = React.useState("");
 
-    const [loading, setLoading] = React.useState(false);
+    // const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
+        if (!localStorage.getItem("access-token")) {
+            router.push("/reserve")
+        }
         if (router.query.id) {
             getTimeReserve(value?.NationalCode).then(res => {
                 setTime(res.data)
@@ -48,16 +51,18 @@ function TabelTime({ weeks, value }) {
         let getDay = new Date().getDay()
         time?.weekDay.map(item => {
             let number = parseInt(item.number)
+            if (getDay > number) {
+                number += 7
+            }
             item["date"] = getDate(number || 7, i)
             item["tiemValue"] = getDate(number || 7, i, true)
             weekVlaue.push({ ...item })
         })
     })
 
-
     function getDate(d, w = 1, value = false) {
         let timeC = new Date()
-        let timeV = new Date(timeC.getFullYear(), timeC.getMonth(), timeC.getDate()).setHours(24 * Math.abs((new Date().getDay()) - (d)))
+        let timeV = new Date(timeC.getFullYear(), timeC.getMonth(), timeC.getDate()).setHours(24 * Math.abs(((d) - new Date().getDay())))
 
         if (value)
             return new Date(new Date(timeV).setHours((24 * 7) * (w - 1))).getTime()
@@ -75,29 +80,17 @@ function TabelTime({ weeks, value }) {
         }
     }, [time])
 
-    function getStatus(n, nc, tv) {
-        setLoading(true)
-        setTimeout(() => {
-            getTimeReserveComplet(n, nc, tv).then(res => {
-                setComplete(res.data)
-                setLoading(false)
-            })
-        }, 500);
-    }
-
     function submitRezerveTime(n, nc, i, tv, e) {
-        if (confirm(` ساعت ${document.getElementById("we" + i).textContent} رزرو شود؟`) == true) {
-            setLoading(true)
-            const id = toast.loading(e.target.textContent + "در حال رزور ")
-            addRezerveTimeUser(n, nc, { complete: { tiemValue: tv, index: i } }).then(res => {
-                getStatus(n, time?.NationalCode, tv);
-                // setRezs([...rezs , { tiemValue: tv, index: i  , time:document.getElementById("we"+i).textContent ,date }])
-                toast.update(id, {
-                    render: " روز " + selectTime.week + " " + selectTime.date + " " + e.target.textContent + " رزرو شد ",
-                    type: "success", isLoading: false, autoClose: 8000
-                });
-            })
+
+        document.getElementById("confrimRez").classList.add("modal-open");
+        document.querySelector("#confrimRez .bton").textContent = " روز " + selectTime.week + " " + selectTime.date + " " + e.target.textContent
+        let userNCode = JSON.parse(localStorage.getItem("user"))
+        let dataUser = {
+            fullname: document.getElementsByName("fullname")[0].value,
+            phoneNumber: document.getElementsByName("phonenumber")[0].value,
+            reason: document.getElementsByName("what")[0].value,
         }
+        setRezs({ number: n, NativeCode: nc, obj: { complete: { user: dataUser, tiemValue: tv, index: i, time: e.target.textContent.split(" ")[2], date: selectTime.date, week: selectTime.week, userNCode: userNCode?.NationalCode } } })
     }
 
 
@@ -110,6 +103,10 @@ function TabelTime({ weeks, value }) {
     })
 
 
+    weekVlaue.sort(({ tiemValue: a }, { tiemValue: b }) => a > b ? 1 : a < b ? -1 : 0)
+    weekVlaue = weekVlaue.filter(i => i.tiemValue > new Date().getTime())
+
+    const hours = i => (parseInt(selectTime?.inputDate.split(":")[1]) + (i * selectTime?.lengthTimeVisit))
 
     return (
         <>
@@ -118,7 +115,7 @@ function TabelTime({ weeks, value }) {
                     {
                         !selectTime ?
                             <div style={{ background: "#eee6" }} className=" p-2 mt-10 rounded-[20px] flex justify-start items-start h-[300px]">
-                                <div className="flex flex-col items-center min-w-[180px] m-auto w-[180px] p-1 h-[260px] overflow-auto overflow-x-hidden border border-2 border-[#0000] rounded-3xl skeleton"></div>
+                                <div className="flex flex-col items-center min-w-[210px] m-auto w-[210px] p-1 h-[260px] overflow-auto overflow-x-hidden border border-2 border-[#0000] rounded-3xl skeleton"></div>
                                 <div className="w-full flex justify-start items-start flex-wrap p-3 overflow-auto">
                                     {
                                         range(31).map(i => (
@@ -128,8 +125,8 @@ function TabelTime({ weeks, value }) {
                                 </div>
                             </div>
                             :
-                            <div id="gthjs" className="border border-[3px] border-[#eee] p-2 mt-10 rounded-[20px] flex justify-start items-start flex-col lg:flex-row h-[300px] overflow-auto">
-                                <div className={`flex flex-col items-center min-w-[180px] w-[180px] p-1 m-auto h-[260px] overflow-auto overflow-x-hidden border border-2 border-[#ccc] rounded-3xl sticky top-1 bg-[#fff] z-10`} style={{ position: "sticky", top: 10 }}>
+                            <div id="gthjs" className="border relative border-[3px] border-[#eee] p-2 mt-10 rounded-[20px] flex justify-start items-start flex-col lg:flex-row h-[300px] overflow-auto">
+                                <div className={`flex flex-col items-center min-w-[210px] w-[210px] p-1 m-auto h-[260px] overflow-auto overflow-x-hidden border border-2 border-[#ccc] rounded-3xl sticky top-1 bg-[#fff] z-10`} style={{ position: "sticky", top: 10 }}>
                                     {
                                         weekVlaue?.map((i, n) => (
                                             <button onClick={() => {
@@ -149,14 +146,15 @@ function TabelTime({ weeks, value }) {
                                                 <Loading />
                                             </>
                                             :
-                                            range(selectTime?.orderVisit).map((item, i) => (
+                                            range(selectTime?.orderVisit).map((item, i) =>
+                                            (
                                                 <>
-                                                    <button style={{ animation: `show_move-a ease ${0.2 * (i / 8)}s` }} id={"we" + i} disabled={rez[i] == "complete"} onClick={(e) => submitRezerveTime(selectTime?.number, time?.NationalCode, i, selectTime?.tiemValue, e)} htmlFor="confrim" key={item} className={`bton p-5 m-1 border cursor-pointer  boredr-1 border-[#0003] rounded-[20px] show_active show_move-a
+                                                    <button style={{ animation: `show_move-a ease ${0.2 * (i / 8)}s` }} id={"we" + i} disabled={rez[i] == "complete"} onClick={(e) => submitRezerveTime(selectTime?.number, time?.NationalCode, i, selectTime?.tiemValue, e)} htmlFor="confrimRez" key={item} className={`bton T_btn p-5 m-1 border cursor-pointer time  boredr-1 border-[#0003] rounded-[20px] show_active show_move-a
                                                 ${rez[i] == "complete" ? "disabled" : "show"}`}>
-                                                        <span>ساعت
+                                                        <span> ساعت
+                                                            &nbsp;
                                                             {Math.floor((parseInt(selectTime?.inputDate.split(":")[1]) + (item * selectTime?.lengthTimeVisit)) / 60) + parseInt(selectTime?.inputDate.split(":")[0])}:
-                                                            {(parseInt(selectTime?.inputDate.split(":")[1]) + (item * selectTime?.lengthTimeVisit)) % 60 == 0 ? "00" :
-                                                                ((parseInt(selectTime?.inputDate.split(":")[1]) + (item * selectTime?.lengthTimeVisit))) - (Math.floor((parseInt(selectTime?.inputDate.split(":")[1]) + (item * selectTime?.lengthTimeVisit)) / 60) * 60)}
+                                                            {hours(item) % 60 < 10 ? "0" + hours(item) % 60 : hours(item) % 60}
                                                         </span>
                                                     </button>
                                                 </>

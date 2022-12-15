@@ -155,3 +155,42 @@ $primary: #FFAB9D;
         
     }
 }
+
+.T_btn {
+    transition: 0.5s ease !important;
+    &.select {
+        width: 90%;
+        transition: 0.5s ease !important;
+        position: absolute;
+        background: #fff;
+        right: 5%;
+        top: 5%;
+        height: 90%;
+        z-index: 10;
+        border: 0;
+        animation:zoom-s 0.3s ease !important;
+        &.time {
+            span {
+                display: none;
+            }
+        }
+        &:active {
+            transform: scale(1) !important;
+        }
+    }
+}
+
+@keyframes zoom-s {
+    from {
+        top: -1000px;
+    }
+    to {
+        top: 0;
+    }
+}
+.alert-s {
+    background: aquamarine;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-top: 20px;
+}

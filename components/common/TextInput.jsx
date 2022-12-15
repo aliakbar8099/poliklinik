@@ -3,6 +3,9 @@ import React from "react";
 function TextInput(props) {
     const [num, setNum] = React.useState(0);
 
+    function onInputTextArea(e) {
+        setNum(e.target.value.length)
+    }
 
     return (
         <>
@@ -15,17 +18,19 @@ function TextInput(props) {
                                 dir={props.type == "number" ? "ltr" : "rtl"} {...props}
                                 className={`inputcss-pl text-[10px] lg:text-[15px] ${props.inputStyle}`}
                                 id={props.inputId}
-                                onInput={(e) => setNum(e.target.value.length)}
+                                onInput={onInputTextArea}
+                                defaultValue={props.defaultValueText}
                                 name={props.nameInput}
                                 onChange={props.onGetValue}
                             ></textarea>
-                            <small style={{ color: num > 250 ? "#ff0000" : "" }}>حداکثر 250 کاراکتر - {num}</small>
+                            <small style={{ color: num > props.maxText ? "#ff0000" : "" }}>حداکثر {props.maxText} کاراکتر - {num}</small>
                         </>
                         :
                         <input
                             dir={props.type == "number" ? "ltr" : "rtl"} {...props}
                             className={`inputcss-pl text-[10px] lg:text-[15px] ${props.inputStyle}`}
                             id={props.inputId}
+                            defaultValue={props.defaultValueText}
                             onInput={props.onInputText}
                             name={props.nameInput}
                             onChange={props.onGetValue}
