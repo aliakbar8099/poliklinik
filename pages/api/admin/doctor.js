@@ -10,6 +10,13 @@ export default async (req, res) => {
         const client = await clientPromise;
         const db = client.db("poliklinik");
 
+
+        const lists = await db
+            .collection("users")
+            .find({})
+            .sort({ metacritic: -1 })
+            .toArray();
+
         let {
             fullname,
             lengthJop,
@@ -109,11 +116,6 @@ export default async (req, res) => {
 
                 let newData = []
 
-                const lists = await db
-                    .collection("users")
-                    .find({})
-                    .sort({ metacritic: -1 })
-                    .toArray();
 
                 let finDoctor = await lists.filter(i => i.rol === "doctor")
 

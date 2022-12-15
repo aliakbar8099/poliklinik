@@ -9,6 +9,7 @@
 
     &:focus {
         box-shadow: 0 0 0 4px #005974;
+
         &.error {
             box-shadow: 0 0 0 4px #da0000;
         }
@@ -47,6 +48,7 @@
 
 .anClick {
     transition: 0.16s ease !important;
+
     &:active {
         transform: scale(0.98);
     }
@@ -54,16 +56,19 @@
 
 .bton {
     font-weight: bold;
+
     &.active {
         border-color: #234fef;
         color: #234fef;
         background: rgba(23, 61, 201, 0.041);
     }
+
     &.show {
         border-color: #23ef23;
         color: #23ef23;
         background: rgba(23, 61, 201, 0.041);
     }
+
     &.disabled {
         border-color: #ef2323;
         color: #ef2323;
@@ -81,6 +86,7 @@
 
 .table_r {
     transition: 0.3s ease;
+
     #tabel-j {
         transition: 0.3s ease;
         padding: 10px;
@@ -88,12 +94,14 @@
         transform: scale(1);
         width: 100% !important;
     }
+
     #list-j {
         transition: 0.3s ease;
         width: 0;
         opacity: 0;
-        transform:scale(0);
+        transform: scale(0);
     }
+
     #box-j {
         transition: 0.3s ease;
         margin-right: auto;
@@ -103,11 +111,12 @@
 $color: #111;
 $primary: #FFAB9D;
 
-.cta{
+.cta {
     position: relative;
     margin: auto;
     padding: 19px 22px;
     transition: all .2s ease;
+
     &:before {
         content: "";
         position: absolute;
@@ -115,20 +124,22 @@ $primary: #FFAB9D;
         left: 0;
         display: block;
         border-radius: 28px;
-        background: rgba($primary,.5);
+        background: rgba($primary, .5);
         width: 56px;
         height: 56px;
         transition: all .3s ease;
     }
-    span{
-            position: relative;
-            font-size: 16px;
-            line-height: 18px;
-            font-weight: 900;
-            letter-spacing: .25em;
-            text-transform: uppercase;
-            vertical-align: middle;
-        }
+
+    span {
+        position: relative;
+        font-size: 16px;
+        line-height: 18px;
+        font-weight: 900;
+        letter-spacing: .25em;
+        text-transform: uppercase;
+        vertical-align: middle;
+    }
+
     svg {
         position: relative;
         top: 0;
@@ -141,23 +152,27 @@ $primary: #FFAB9D;
         transform: translateX(-5px);
         transition: all .3s ease;
     }
+
     &:hover {
         &:before {
             width: 100%;
-            background: rgba($primary,1);
+            background: rgba($primary, 1);
         }
-        svg{
+
+        svg {
             transform: translateX(0);
         }
-      &:active{
-          transform: scale(.96);
-      }
-        
+
+        &:active {
+            transform: scale(.96);
+        }
+
     }
 }
 
 .T_btn {
     transition: 0.5s ease !important;
+
     &.select {
         width: 90%;
         transition: 0.5s ease !important;
@@ -168,12 +183,14 @@ $primary: #FFAB9D;
         height: 90%;
         z-index: 10;
         border: 0;
-        animation:zoom-s 0.3s ease !important;
+        animation: zoom-s 0.3s ease !important;
+
         &.time {
             span {
                 display: none;
             }
         }
+
         &:active {
             transform: scale(1) !important;
         }
@@ -184,13 +201,36 @@ $primary: #FFAB9D;
     from {
         top: -1000px;
     }
+
     to {
         top: 0;
     }
 }
+
 .alert-s {
     background: aquamarine;
     border-radius: 10px;
     font-size: 14px;
     margin-top: 20px;
+}
+
+@media (max-width:1024px) {
+    .btn-tb {
+        min-width: 160px;
+    }
+
+    .tb-d {
+        margin-bottom: 30px;
+        height: 100%;
+        flex-direction: row;
+        width: 100%;
+        overflow: auto;
+        overflow-y: hidden;
+    }
+    .jb-ds {
+        height: 70%;
+    }
+    .nh_ns {
+        height: 500px;
+    }
 }

@@ -15,12 +15,14 @@ import { addRezerveTimeUser } from '../../services/update';
 
 let weeks = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنج شنبه", "جمعه", "شنبه",]
 
-function Reserve({ login, setLogin, className }) {
+function Reserve({ data, login, setLogin, className }) {
+
+    console.log(data);
     const router = useRouter()
 
     const [value, setValue] = React.useState(null);
     const [change, setChange] = React.useState(null);
-    const [data, setData] = React.useState([])
+    // const [data, setData] = React.useState([])
     const [category, setCategory] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
@@ -38,16 +40,15 @@ function Reserve({ login, setLogin, className }) {
         setLoading(true)
         setLoading2(true)
         getAllDoctor().then(ress => {
-            setData(ress.data)
             getSingleDoctor(tabletime.id || ress.data[0]?._id).then(res => {
                 getCategory().then(res2 => {
                     setCategory(res2.data)
-                    setValue(res.data)
                     setLoading(false)
                     setLoading2(false)
                 })
             })
         })
+        setValue(data[0])
         return () => {
             document.body.style.overflow = "auto"
         }
@@ -120,7 +121,6 @@ function Reserve({ login, setLogin, className }) {
         addRezerveTimeUser(rezs.number, rezs.NativeCode, rezs.obj).then(res => {
             getStatus(rezs.number, rezs.NativeCode, rezs.obj.complete.tiemValue);
             toast.success(" روز " + rezs.obj.complete.week + " " + rezs.obj.complete.date + " " + rezs.obj.complete.time + " رزرو شد ")
-            setLoading3(false)
         })
     }
 
@@ -181,7 +181,7 @@ function Reserve({ login, setLogin, className }) {
                     <div className='bg-[#fff] shadow-sm rounded-xl m-0 lg:m-2 w-full p-3 mt-20 h-full'>
 
                         {
-                            loading ?
+                            !data ?
                                 <div>
                                     <div className='p-14 skeleton w-full rounded-xl mb-3'></div>
                                     <div className='p-14 skeleton w-full rounded-xl mb-3'></div>
@@ -253,17 +253,17 @@ function Reserve({ login, setLogin, className }) {
 
 export default Reserve;
 
-// export async function getServerSideProps(context) {
+export async function getServerSideProps() {
 
-//     const dev = process.env.NODE_ENV !== 'production';
-//     const baseURL = dev ? 'http://localhost:3000/api' : 'https://poliklinik.vercel.app/api';
-//     // Fetch data from external API
-//     const res = await fetch(baseURL + "/admin/doctor")
-//     const response = await res.json()
+    const dev = process.env.NODE_ENV !== 'production';
+    const baseURL = dev ? 'http://localhost:3000/api' : 'https://poliklinik.vercel.app/api';
+    // Fetch data from external API
+    const res = await fetch(baseURL + "/admin/doctor")
+    const response = await res.json()
 
-//     // Pass data to the page via props
-//     return { props: { data: response } }
-// }
+    // Pass data to the page via props
+    return { props: { data: response.data } }
+}
 
 Reserve.getLayout = (page) => <SecondLayout>{page}</SecondLayout>
 

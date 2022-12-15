@@ -9,31 +9,29 @@ export default async (req, res) => {
         const client = await clientPromise;
         const db = client.db("poliklinik");
 
-        let {
-            rezerves=[],
-            user=[]
-        } = req.body;
+        let reserves = await db
+            .collection("times")
+            .find({})
+            .sort({ metacritic: -1 })
+            .toArray()
 
-        let reserve = await db.collection("reserve-user");
-
-            
         switch (req.method) {
-                case "POST":
-                    let uniqCode = isLogin(req, res);
-                    // let findUser = await lists.find(i => i.NationalCode === uniqCode)
-          
-                    if (user.length == 0 || rezerves.length == 0) {
-                        return res.status(400).send({ msg: "هیچ فیلدی نمی تواند خالی باشد" })
-                    }
+            case "GET":
+                let uniqCode = isLogin(req, res);
+                let lists = [];
+                let doctorNcode = req.query["doctorNcode"];
+                let nCodeUser = req.query["nCodeUser"];
 
-                    reserve.insertOne({
-                        ...user,
-                        rezerves
-                    });
+                await reserves.map(i => {
+                    let listUserReserve = i.times.filter(i => i.userNCode == nCodeUser);
+                    listUserReserve.map(item=> {
+                        lists.push(item)
+                    })
+                })
 
-                    res.status(200).json({
-                        msg: "رزرو شما انجام شد!"
-                    });
+                res.status(200).json({
+                    data: lists
+                });
 
                 break;
         }

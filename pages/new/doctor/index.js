@@ -33,7 +33,7 @@ function NewDoctor() {
 
     let [value, setValue] = React.useState({
         fullname: null,
-        img: "/img/de.png",
+        img: "/img/se.jpeg",
         lengthJop: null,
         codeJop: null,
         NationalCode: null,

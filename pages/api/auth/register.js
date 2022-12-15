@@ -14,6 +14,7 @@ export default async (req, res) => {
 
         let defaultData = {
             birthDay: null,
+            img: "/img/de.png",
             email: null,
             city: null,
             adderess: null,

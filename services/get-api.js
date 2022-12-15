@@ -22,6 +22,11 @@ export async function getTimeReserve(nnId) {
 }
 
 export async function getTimeReserveComplet(number , nCode , tiemValue) {
-  let apiCall = await Client().get(`http://localhost:3000/api/admin/rezerve-status?number=${number}&nCode=${nCode}&timeValue=${tiemValue}`)
+  let apiCall = await Client().get(`/admin/rezerve-status?number=${number}&nCode=${nCode}&timeValue=${tiemValue}`)
+  return apiCall.data;
+}
+
+export async function getListMyReserve(nCodeU) {
+  let apiCall = await Client().get(`/users/submit-reserve?nCodeUser=${nCodeU}`)
   return apiCall.data;
 }
