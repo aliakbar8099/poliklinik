@@ -21,7 +21,7 @@ function SecondLayout({ children }) {
 
     return (
         <>
-            <Navbar bg="#fff" typeLayout="dashboard" setChange={setChange} change={change} Logout={Logout} />
+            <Navbar bg="#e7faff" typeLayout="dashboard" setChange={setChange} change={change} Logout={Logout} />
             {children}
         </>
     );

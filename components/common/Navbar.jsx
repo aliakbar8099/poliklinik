@@ -22,20 +22,27 @@ let menus = {
     dashboardLogin: [
         { name: "خانه", path: "/", link: true },
         { name: "رزرو نوبت", path: "/reserve", link: true },
-        { name: "رزور های من", path: "/my-reserve", link: true },
-        { name: "پروفایل", path: "/profile", link: true },
+        { name: "رزور های من", path: "/panel/my-reserve", link: true },
+        { name: "پروفایل", path: "/panel/profile", link: true },
     ],
     admin: [
         { name: "خانه", path: "/", link: true },
         {
-            name: "مدیریت سایت", path: "/new/doctor", link: false, sub: [
-                { name: "ثبت پزشک", path: "/new/doctor" },
+            name: "مدیریت سایت", path: "/panel/new/doctor", link: false, sub: [
+                { name: "ثبت پزشک", path: "/panel/new/doctor" },
                 { name: "مدیریت خدمات", path: "/new/category" },
             ]
         },
         { name: "رزرو نوبت", path: "/reserve", link: true },
-        { name: "رزور های من", path: "/my-reserve", link: true },
-        { name: "پروفایل", path: "/profile", link: true },
+        { name: "رزور های من", path: "/panel/my-reserve", link: true },
+        { name: "پروفایل", path: "/panel/profile", link: true },
+    ],
+    doctor: [
+        { name: "خانه", path: "/", link: true },
+        { name: "جدول رزور من", path: "/panel/my-table", link: true },
+        { name: "رزرو ثبت شده", path: "/panel/submit-reserves", link: true },
+        { name: "گزارشات", path: "/panel//reports", link: true },
+        { name: "پروفایل", path: "/panel/profile", link: true },
     ],
 }
 
@@ -51,7 +58,7 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
         if (localStorage.getItem("access-token")) {
             getUser().then(res => {
                 setUser(res.data);
-                localStorage.setItem("user",JSON.stringify(res.data))
+                localStorage.setItem("user", JSON.stringify(res.data))
             })
                 .catch((err) => {
                     if (err.response.status === 401) {
@@ -101,7 +108,7 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                 </a>
                 <ul className={`${styles.menu} hidden lg:flex mr-14 `}>
                     {
-                        menus[typeLayout == "main" ? "main" : login ? user?.rol == "admin" ? "admin" : "dashboardLogin" : "dashboard"].map(item => (
+                        menus[typeLayout == "main" ? "main" : login ? user?.rol == "admin" ? "admin" : user?.rol == "doctor" ? "doctor" : "dashboardLogin" : "dashboard"].map(item => (
 
                             !item?.link ?
                                 <li id="bbsfd" key={item.path} className={`${route.pathname === item.path ? styles.active : ""} dropdown dropdown-hover`} onMouseEnter={handleENterMouse} onMouseLeave={handleLeft} >
@@ -133,7 +140,7 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                         </ul>
                         :
                         typeLayout != "dashboard" ?
-                            <Link href="/reserve" className="mr-auto">
+                            <Link href="/panel/profile" className="mr-auto">
                                 <button className="btn btnsd btn-outline border-[#0000] hover:bg-[#005974] text-[#005974] items-center mr-auto rounded-[50px]">
                                     <span className="mx-1">
                                         حساب کاربری
@@ -155,7 +162,11 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                                     </svg>
                                 </label>
                                 <strong className="mr-3">{user?.fullname}</strong>
-
+                                <div className="avatar">
+                                    <div className="w-10 rounded-full ring ring-offset-base-100 ring-offset-2 mr-5">
+                                        <img src={user?.img} />
+                                    </div>
+                                </div>
                             </>
                 }
                 <div className="dropdown mr-auto block lg:hidden">
@@ -183,7 +194,7 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                     <h3 className="text-lg font-bold text-center">آیا میخواهید از حساب خود خارج شوید؟</h3>
                     <div className="flex justify-center items-center mt-5">
                         <label onClick={Logout} className="btn btn-outline btn-error">خارج شدن</label>
-                        <label htmlFor="logout-m" className="btn btn-outline btn-info mr-4">بیخال</label>
+                        <label htmlFor="logout-m" className="btn btn-outline btn-info mr-4">بیخیال</label>
                     </div>
                 </label>
             </label>

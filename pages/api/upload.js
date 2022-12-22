@@ -1,5 +1,22 @@
 const fs = require("fs");
 import { encode, decode } from 'node-base64-image';
+const AWS = require('aws-sdk');
+
+const config = {
+    endpoint: process.env.LIARA_ENDPOINT,
+    accessKeyId: process.env.LIARA_ACCESS_KEY,
+    secretAccessKey: process.env.LIARA_SECRET_KEY,
+    region: "default",
+}
+
+const client = new AWS.S3(config);
+
+client.listBuckets(
+    (err, data) => {
+        if (err) console.error(err, err.stack);
+        else console.log(data);
+    }
+);
 
 function makeid(length) {
   var result = '';

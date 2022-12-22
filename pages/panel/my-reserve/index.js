@@ -1,5 +1,5 @@
 import React from 'react';
-import { getListMyReserve } from '../../services/get-api';
+import { getListMyReserve } from '/services/get-api';
 import { getCategory } from '/services/admin';
 import SecondLayout from '/layout/second.layout';
 import Link from 'next/link';

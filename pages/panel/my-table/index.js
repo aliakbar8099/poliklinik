@@ -1,11 +1,10 @@
-import moment from "moment-jalaali";
-import React from "react";
-import { toast } from "react-toastify";
-import { getTimeReserveComplet } from "../../../services/get-api";
-import { addRezerveTimeUser } from "../../../services/update";
-import { getTimeReserve } from "/services/get-api";
-import { useRouter } from "next/router";
-import SelectOption from "/components/common/SelectOption";
+import React from 'react';
+import { getListMyReserve, getTimeReserve, getTimeReserveComplet } from '../../../services/get-api';
+import { getCategory } from '/services/admin';
+import SecondLayout from '/layout/second.layout';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import moment from 'moment-jalaali';
 
 function range(end, start = 0, step = 1) {
     let result = [];
@@ -15,27 +14,22 @@ function range(end, start = 0, step = 1) {
     return result;
 }
 
-function MinItem(g) {
-    return g.find(
-        (i) =>
-            i.number ==
-            Math.min.apply(
-                null,
-                g.map((i) => i.number)
-            )
-    );
-}
+function MyTable() {
+    const [data, setData] = React.useState(null);
 
-function TabelTime({
-    weeks,
-    value,
-    loading,
-    setLoading,
-    setRezs,
-    getStatus,
-    complete,
-    setComplete,
-}) {
+    const [value, setValue] = React.useState(null);
+    const [change, setChange] = React.useState(null);
+    const [open, setOpen] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
+    const [loading2, setLoading2] = React.useState(false);
+    const [loading3, setLoading3] = React.useState(false);
+    const [time, setTime] = React.useState(null)
+    const [selectName, setSelectName] = React.useState("");
+    const [selectValue, setSelectValue] = React.useState("");
+    const [user, setUser] = React.useState(null)
+    const [rezs, setRezs] = React.useState([])
+    const [complete, setComplete] = React.useState([]);
+
     const router = useRouter();
 
     let rez = [];
@@ -45,22 +39,16 @@ function TabelTime({
     weekVlaue = [];
 
     const [selectTime, setSelctTime] = React.useState(null);
-    const [time, setTime] = React.useState(null);
-    const [selectName, setSelectName] = React.useState("");
-    const [selectValue, setSelectValue] = React.useState("");
-
-    // const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
         if (!localStorage.getItem("access-token")) {
             router.push("/reserve");
         }
-        if (router.query.id) {
-            console.log(value);
-            getTimeReserve(value?.NationalCode).then((res) => {
-                setTime(res.data);
-            });
-        }
+        let { NationalCode } = JSON.parse(localStorage.getItem("user"));
+
+        getTimeReserve(NationalCode).then((res) => {
+            setTime(res.data);
+        });
     }, [router.query]);
 
     range(5, 1).map((i) => {
@@ -159,6 +147,43 @@ function TabelTime({
         parseInt(selectTime?.inputDate.split(":")[1]) +
         i * selectTime?.lengthTimeVisit;
 
+
+    React.useEffect(() => {
+        if (localStorage.getItem("user")) {
+            let getUser = JSON.parse(localStorage.getItem("user"))
+            setUser(getUser)
+        }
+    }, [value, change])
+
+
+    function getStatus(n, nc, tv) {
+        setLoading(true)
+        setTimeout(() => {
+            getTimeReserveComplet(n, nc, tv).then(res => {
+                // document.getElementById("confrimRez").classList.remove("modal-open")
+                setComplete(res.data)
+                setLoading(false)
+            })
+        }, 500);
+    }
+
+    function submitReserve(params) {
+
+        let dataUser = {
+            fullname: document.getElementsByName("fullname")[0].value,
+            phoneNumber: document.getElementsByName("phonenumber")[0].value,
+            reason: document.getElementsByName("what")[0].value,
+        }
+
+        rezs.obj.complete["user"] = dataUser
+
+        setLoading(true)
+        addRezerveTimeUser(rezs.number, rezs.NativeCode, rezs.obj).then(res => {
+            getStatus(rezs.number, rezs.NativeCode, rezs.obj.complete.tiemValue);
+            toast.success(" روز " + rezs.obj.complete.week + " " + rezs.obj.complete.date + " " + rezs.obj.complete.time + " رزرو شد ")
+        })
+    }
+
     return (
         <>
             <div className="pb-32">
@@ -182,10 +207,10 @@ function TabelTime({
                     ) : (
                         <div
                             id="gthjs"
-                            className="border relative border-[3px] border-[#eee] p-2 mt-10 rounded-[20px] flex justify-start items-start flex-col lg:flex-row h-[300px] overflow-auto"
+                            className="border relative border-[3px] border-[#eee] p-2 mt-10 rounded-[20px] flex justify-start items-start flex-col lg:flex-row h-[300px] overflow-auto nh_ns"
                         >
                             <div
-                                className={`flex flex-col items-center min-w-[210px] w-[210px] p-1 m-auto h-[260px] overflow-auto overflow-x-hidden border border-2 border-[#ccc] rounded-3xl sticky top-1 bg-[#fff] z-10`}
+                                className={`flex flex-col items-center min-w-[210px] w-[210px] p-1 m-auto h-[260px] overflow-auto overflow-x-hidden border border-2 border-[#ccc] rounded-3xl sticky top-1 bg-[#fff] z-10 tb-d`}
                                 style={{ position: "sticky", top: 10 }}
                             >
                                 {weekVlaue?.map((i, n) => (
@@ -195,7 +220,7 @@ function TabelTime({
                                             getStatus(i.number, time?.NationalCode, i.tiemValue);
                                         }}
                                         key={i.number}
-                                        className={`bton w-[90%] p-5 m-2 border  boredr-1 border-[#0003] rounded-[20px] show_active ${selectTime?.tiemValue == i.tiemValue ? "active" : ""
+                                        className={`bton btn-tb w-[90%] p-5 m-2 border  boredr-1 border-[#0003] rounded-[20px] show_active ${selectTime?.tiemValue == i.tiemValue ? "active" : ""
                                             }`}
                                     >
                                         <span>{i.week}</span>
@@ -203,7 +228,7 @@ function TabelTime({
                                     </button>
                                 ))}
                             </div>
-                            <div className="w-full flex justify-start items-start flex-wrap p-3">
+                            <div className="w-full flex justify-start items-start flex-wrap p-3 jb-ds">
                                 {loading ? (
                                     <>
                                         <Loading />
@@ -268,7 +293,7 @@ function TabelTime({
     );
 }
 
-export default TabelTime;
+export default MyTable;
 function Loading() {
     return (
         <div className="flex justify-center items-center w-full mt-10">
@@ -375,3 +400,6 @@ function Loading() {
         </div>
     );
 }
+
+
+MyTable.getLayout = (page) => <SecondLayout>{page}</SecondLayout>

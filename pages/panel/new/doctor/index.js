@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
-import CardList from '../../../components/common/Cardlist';
-import TextInput from '../../../components/common/TextInput';
+import CardList from '../../../../components/common/Cardlist';
+import TextInput from '../../../../components/common/TextInput';
 import SecondLayout from '/layout/second.layout';
 import SelectOption from '/components/common/SelectOption';
-import { postUpload } from '../../../services/post-api';
+import { postUpload } from '../../../../services/post-api';
 import { toast } from 'react-toastify';
-import { getCategory, postDoctor, postReserveTime } from '../../../services/admin';
+import { getCategory, postDoctor, postReserveTime } from '../../../../services/admin';
 import { useRouter } from 'next/router';
 import { Editor } from '@tinymce/tinymce-react';
 import { body } from 'express-validator';
@@ -189,7 +189,7 @@ function NewDoctor() {
 
     function handleSubmit(e) {
         setLoading2(true);
-        postDoctor({...value , category: selectValue, bio: editorRef.current.getContent()}).then(res => {
+        postDoctor({...value , category: selectValue, bio: editorRef.current?.getContent() ?? ""}).then(res => {
             setTimeout(() => {
                 postReserveTime({ weekDay: week, NationalCode: value.NationalCode }).then(res2 => {
                     toast.success("با موفقیت انجام شد")

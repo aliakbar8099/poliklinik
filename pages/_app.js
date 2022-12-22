@@ -4,6 +4,7 @@ import { AppProps } from 'next/app'
 import React from 'react';
 import 'animate.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import Router from "next/router";
 import ProgressBar from '@badrap/bar-of-progress';

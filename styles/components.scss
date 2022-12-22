@@ -234,3 +234,39 @@ $primary: #FFAB9D;
         height: 500px;
     }
 }
+.col-card {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    article {
+        width: calc(25% - 20px);
+        flex-direction: column;
+        height: 320px;
+        margin: 10px;
+        > div {
+            h3 {
+                margin-block: 10px;
+            }
+        }
+        button {
+            width: 100%;
+            margin: 0;
+            margin-top: auto;
+            background: transparent;
+            color: #005974;
+            justify-content: center;
+            &:hover {
+                color: #fff;
+            }
+            svg {
+                display: none;
+            }
+        }
+    }
+    @media (max-width:1024px) {
+        article {
+            width: calc(50% - 20px);
+            height: 230px;
+        }
+    }
+}
