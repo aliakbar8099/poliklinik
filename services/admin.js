@@ -7,6 +7,16 @@ export async function getCategory() {
   return apiCall.data;
 }
 
+export async function postCategory(data) {
+  let apiCall = await Client().post(sub_baseUrl + "/category", data)
+  return apiCall.data;
+}
+
+export async function removeCategory(id) {
+  let apiCall = await Client().delete(sub_baseUrl + "/category?id=" + id)
+  return apiCall.data;
+}
+
 export async function postDoctor(data) {
   let apiCall = await Client().post(sub_baseUrl + "/doctor", data)
   return apiCall.data;

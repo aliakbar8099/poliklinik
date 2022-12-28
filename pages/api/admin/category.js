@@ -2,6 +2,7 @@
 import clientPromise from "../../../lib/mongodb";
 import bcrypt from "bcryptjs"
 import { isLogin } from "../../../middleware/Auth";
+import { ObjectId } from "mongodb";
 
 export default async (req, res) => {
     try {
@@ -11,6 +12,7 @@ export default async (req, res) => {
 
         let {
             title,
+            svg
         } = req.body;
 
         let user = await db.collection("users");
@@ -23,23 +25,24 @@ export default async (req, res) => {
             .sort({ metacritic: -1 })
             .toArray();
 
-            
-            switch (req.method) {
-                case "POST":
-                
-                        let uniqCode = isLogin(req, res);
-                        let findUser = await lists.find(i => i.NationalCode === uniqCode)
+
+        switch (req.method) {
+            case "POST":
+
+                let uniqCode = isLogin(req, res);
+                let findUser = await lists.find(i => i.NationalCode === uniqCode)
 
                 if (findUser.rol != "admin") {
                     return res.status(403).send({ msg: "شما دسترسی ندارید", rol: findUser.rol })
                 }
 
-                if (!title) {
+                if (!title, !svg) {
                     return res.status(400).send({ msg: "هیچ فیلدی نمی تواند خالی باشد" })
                 }
 
                 category.insertOne({
                     title,
+                    svg
                 });
 
                 res.status(200).json({
@@ -48,14 +51,22 @@ export default async (req, res) => {
 
                 break;
             case "GET":
-
                 const categories = await db
                     .collection("category")
                     .find({})
-                    .sort({ metacritic: -1 })
+                    .sort()
                     .toArray();
 
                 res.status(200).json({ data: categories })
+
+                break;
+
+            case "DELETE":
+
+                await db
+                    .collection("category").remove({ _id: ObjectId(req.query["id"]) })
+
+                res.status(200).json({ msg: "با موفقیت حذف شد" })
 
                 break;
 

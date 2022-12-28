@@ -1,6 +1,10 @@
 @import url("../public/fonts2/font.css");
 @import url("../public/tailwind.css");
 
+:root {
+  --scale:1;
+}
+
 html,
 body {
   padding: 0;
@@ -394,9 +398,48 @@ input[type=number] {
   border-radius: 20px;
 }
 
-.DatePicker  {
+.DatePicker {
   width: 100%;
+
   input {
     padding: 12px;
+  }
+}
+
+.swiper-pagination-bullet {
+  width: 15px !important;
+  height: 15px !important;
+  transition: 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background: #005974 !important;
+  width: 30px !important;
+  border-radius: 20px !important;
+  height: 15px !important;
+}
+
+#pageSect1 {
+  transition: 0.3s ease;
+  border-radius: 0 0 var(--rounded) var(--rounded);
+
+  .box_sect1 {
+    transition: 0.5s ease;
+    opacity: var(--scale);
+    transform: translate(0%, -50%) scale(var(--scale));
+  }
+  @media (max-width:1024px) {
+    .box_sect1 {
+      transform: translate(50%, -50%);
+    }
+  }
+}
+
+.bres {
+  li {
+    color: #aaa !important;
+  }
+  li.active {
+    color: #242424 !important;
   }
 }

@@ -226,9 +226,6 @@ function NewDoctor() {
         setValue2(upd_obj);
     }
 
-    console.log(week);
-
-
     return (
         <div className='h-[auto] bg-[#f4f8fb] p-4 pb-32'>
             <div className={`bg-[#fff]  w-full p-2 mb-2 rounded-lg mt-20 lg:mt-0 sticky top-[83px] shadow-md z-[1080] ${loading2 ? "skeleton" : ""}`}>

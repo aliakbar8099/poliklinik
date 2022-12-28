@@ -30,7 +30,8 @@ let menus = {
         {
             name: "مدیریت سایت", path: "/panel/new/doctor", link: false, sub: [
                 { name: "ثبت پزشک", path: "/panel/new/doctor" },
-                { name: "مدیریت خدمات", path: "/new/category" },
+                { name: "مدیریت خدمات", path: "/panel/new/category" },
+                { name: "صفحه اصلی", path: "/panel/new/home" },
             ]
         },
         { name: "رزرو نوبت", path: "/reserve", link: true },
