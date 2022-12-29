@@ -20,8 +20,12 @@ export default function SliderMain({ slider }) {
         modules={[Pagination, Autoplay]}
         className="mySwiper h-[100%]">
         {
-          slider.map((item, index) => (
-            <SwiperSlide key={index} >{item}</SwiperSlide>
+          slider?.map((item) => (
+            <SwiperSlide
+              key={item.id}
+            >
+              <img className="w-full h-full object-cover" src={item.img} />
+            </SwiperSlide>
           ))
         }
       </Swiper>

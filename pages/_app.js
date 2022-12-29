@@ -6,7 +6,7 @@ import 'animate.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
-import Router from "next/router";
+import Router, { withRouter } from "next/router";
 import ProgressBar from '@badrap/bar-of-progress';
 import { ToastContainer } from 'react-toastify';
 

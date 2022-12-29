@@ -12,6 +12,11 @@ export async function postCategory(data) {
   return apiCall.data;
 }
 
+export async function postMainProps(data) {
+  let apiCall = await Client().post(sub_baseUrl + "/main-page", data)
+  return apiCall.data;
+}
+
 export async function removeCategory(id) {
   let apiCall = await Client().delete(sub_baseUrl + "/category?id=" + id)
   return apiCall.data;

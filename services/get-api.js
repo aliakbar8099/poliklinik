@@ -30,3 +30,7 @@ export async function getListMyReserve(nCodeU) {
   let apiCall = await Client().get(`/users/submit-reserve?nCodeUser=${nCodeU}`)
   return apiCall.data;
 }
+export async function getMainProps() {
+  let apiCall = await Client().get('/admin/main-page')
+  return apiCall.data;
+}

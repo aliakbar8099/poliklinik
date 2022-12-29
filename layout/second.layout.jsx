@@ -24,7 +24,12 @@ function SecondLayout({ children }) {
     let sectB = Breadcrumbs.find(i => i.path == router.pathname.split("/").at(2))
     let firstB = Breadcrumbs.find(i => i.path == router.pathname.split("/").at(1))
 
-    React.useEffect(() => { }, [change]);
+    React.useEffect(() => {
+        document.body.style.background = "#f4f8fb"
+        return () => {
+            document.body.style.background = "#fff"
+        }
+    }, [change]);
 
     // console.log(router.pathname.split("/").at(1));
 

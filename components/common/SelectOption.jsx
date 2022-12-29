@@ -24,7 +24,8 @@ function SelectOption({ titleName, items, width, className, title, selectValue, 
                     flexWrap: "nowrap"}} className={`dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-[100%] overflow-auto`}>
                     <li onClick={() => {
                         setSelectName("")
-                        setSelectValue(0)
+                        setSelectValue("")
+                        setOpen(false)
                     }}><a value={null} className={`p-1 mt-2 px-2 ${selectValue == 0 ? "bg-[#eee]" : ""}`}>انتخاب کنید</a></li>
                     {
                         items?.map((item, i) => (

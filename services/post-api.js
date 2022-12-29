@@ -1,8 +1,8 @@
 import Client from "../lib/axios";
 
 
-export async function postUpload(data) {
-  let apiCall = await Client().post("/upload", data)
+export async function postUpload(data , config) {
+  let apiCall = await Client().post("/upload", data , config)
   return apiCall.data;
 }
 

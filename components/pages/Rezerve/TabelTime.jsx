@@ -5,6 +5,7 @@ import { getTimeReserveComplet } from "../../../services/get-api";
 import { addRezerveTimeUser } from "../../../services/update";
 import { getTimeReserve } from "/services/get-api";
 import { useRouter } from "next/router";
+import Comments from "./Comments"
 import SelectOption from "/components/common/SelectOption";
 
 function range(end, start = 0, step = 1) {
@@ -211,43 +212,45 @@ function TabelTime({
                                 ) : (
                                     range(selectTime?.orderVisit).map((item, i) => (
                                         <>
-                                            <button
-                                                style={{
-                                                    animation: `show_move-a ease ${0.2 * (i / 8)}s`,
-                                                }}
-                                                id={"we" + i}
-                                                disabled={rez[i] == "complete"}
-                                                onClick={(e) =>
-                                                    submitRezerveTime(
-                                                        selectTime?.number,
-                                                        time?.NationalCode,
-                                                        i,
-                                                        selectTime?.tiemValue,
-                                                        e
-                                                    )
-                                                }
-                                                htmlFor="confrimRez"
-                                                key={item}
-                                                className={`bton T_btn p-5 m-1 border cursor-pointer time  boredr-1 border-[#0003] rounded-[20px] show_active show_move-a
+                                            <div className={`tooltip tooltip-bottom ${rez[i] == "complete" ? "tooltip-error" : ""}`} data-tip={rez[i] == "complete" ? "رزرو شده" : "رزور کنید"}>
+                                                <button
+                                                    style={{
+                                                        animation: `show_move-a ease ${0.2 * (i / 8)}s`,
+                                                    }}
+                                                    id={"we" + i}
+                                                    disabled={rez[i] == "complete"}
+                                                    onClick={(e) =>
+                                                        submitRezerveTime(
+                                                            selectTime?.number,
+                                                            time?.NationalCode,
+                                                            i,
+                                                            selectTime?.tiemValue,
+                                                            e
+                                                        )
+                                                    }
+                                                    htmlFor="confrimRez"
+                                                    key={item}
+                                                    className={`bton T_btn p-5 m-1 border cursor-pointer time  boredr-1 border-[#0003] rounded-[20px] show_active show_move-a
                                                 ${rez[i] == "complete"
-                                                        ? "disabled"
-                                                        : "show"
-                                                    }`}
-                                            >
-                                                <span>
-                                                    {" "}
-                                                    ساعت &nbsp;
-                                                    {Math.floor(
-                                                        (parseInt(selectTime?.inputDate.split(":")[1]) +
-                                                            item * selectTime?.lengthTimeVisit) /
-                                                        60
-                                                    ) + parseInt(selectTime?.inputDate.split(":")[0])}
-                                                    :
-                                                    {hours(item) % 60 < 10
-                                                        ? "0" + (hours(item) % 60)
-                                                        : hours(item) % 60}
-                                                </span>
-                                            </button>
+                                                            ? "disabled cursor-not-allowed"
+                                                            : "show"
+                                                        }`}
+                                                >
+                                                    <span>
+                                                        {" "}
+                                                        ساعت &nbsp;
+                                                        {Math.floor(
+                                                            (parseInt(selectTime?.inputDate.split(":")[1]) +
+                                                                item * selectTime?.lengthTimeVisit) /
+                                                            60
+                                                        ) + parseInt(selectTime?.inputDate.split(":")[0])}
+                                                        :
+                                                        {hours(item) % 60 < 10
+                                                            ? "0" + (hours(item) % 60)
+                                                            : hours(item) % 60}
+                                                    </span>
+                                                </button>
+                                            </div>
                                         </>
                                     ))
                                 )}
@@ -255,14 +258,7 @@ function TabelTime({
                         </div>
                     )}
                 </>
-                {/* <div>
-                <SelectOption {...{ selectValue, setSelectValue, selectName, setSelectName }} className="w-[90%] mt-10 m-auto" titleName="نوع بیمه" items={[
-                    {_id:1 , title:"بیمه 1"},
-                    {_id:1 , title:"بیمه 2"},
-                    {_id:1 , title:"بیمه 3"},
-                    {_id:1 , title:"بیمه 4"}
-                ]} />
-                </div> */}
+                <Comments />
             </div>
         </>
     );

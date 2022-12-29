@@ -12,16 +12,18 @@ export async function getServerSideProps() {
   const baseURL = dev ? 'http://localhost:3000/api' : 'https://poliklinik.vercel.app/api';
   // Fetch data from external API
   const res = await fetch(baseURL + "/admin/category")
+  const res2 = await fetch(baseURL + "/admin/main-page")
   const response = await res.json()
+  const response2 = await res2.json()
 
   // Pass data to the page via props
-  return { props: { category: response.data.reverse().slice(0,5) } }
+  return { props: { category: response.data.reverse().slice(0, 5), mainProps: response2.data } }
 }
 
-export default function Home({category}) {
+export default function Home({ category, mainProps }) {
   return (
     <main className='overflow-hidden'>
-      <Section1 />
+      <Section1 mainProps={mainProps} />
       <Section2 category={category} />
       <Section3 />
       <Section4 />

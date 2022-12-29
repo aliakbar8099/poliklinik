@@ -17,7 +17,6 @@ let weeks = ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه"
 
 function Reserve({ data, login, setLogin, className }) {
 
-    console.log(data);
     const router = useRouter()
 
     const [value, setValue] = React.useState(null);
@@ -35,11 +34,11 @@ function Reserve({ data, login, setLogin, className }) {
     const [user, setUser] = React.useState(null)
     const [rezs, setRezs] = React.useState([])
     const [complete, setComplete] = React.useState([]);
-    const [btnCard , setBtnCard] = React.useState("col")
+    const [btnCard, setBtnCard] = React.useState("col")
 
 
     React.useEffect(() => {
-        if(!localStorage.getItem("card_status")){
+        if (!localStorage.getItem("card_status")) {
             localStorage.setItem("card_status", "col")
         }
         setBtnCard(localStorage.getItem("card_status"))
@@ -91,7 +90,6 @@ function Reserve({ data, login, setLogin, className }) {
         if (login) {
             getSingleDoctor(Id).then(res => {
                 router.push("?id=" + Id)
-                document.body.style.overflow = "hidden"
                 setChange(new Date())
                 setValue(res.data)
             })
@@ -129,12 +127,19 @@ function Reserve({ data, login, setLogin, className }) {
         })
     }
 
+    React.useEffect(() => {
+        let { category } = router.query
+
+        router.push("?category=" + selectValue)
+
+    }, [selectValue])
+
     return (
 
         <>
             <div hidden={!open} onClick={handleClose} className={`bg-[#0003] lg:hidden fixed left-0 top-0 w-full h-full z-[1014] ${className}`}></div>
-            <main className={`bg-[#f4f8fb] p-0 lg:p-4  h-[auto] flex items-start h-full ${tabletime.id ? "table_r" : ""}`}>
-                <div id="tabel-j" className='bg-[#fff] shadow-sm rounded-xl m-0 lg:m-2 w-full p-3 mt-20 h-[85vh] neumorphism'>
+            <main className={`bg-[#f4f8fb] p-0 lg:p-4  h-[auto] flex items-start  ${tabletime.id ? "table_r" : ""}`}>
+                <div id="tabel-j" className='bg-[#fff] shadow-sm rounded-xl m-0 lg:m-2 w-full p-3 mt-20 h-[auto] neumorphism'>
                     <div>
                         <button onClick={handleBack} className='btn btn-ghost bg-[#eee]'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -180,23 +185,23 @@ function Reserve({ data, login, setLogin, className }) {
                 </div>
                 <div id="list-j" className='w-full px-0 lg:px-3 h-full'>
                     <div className='bg-[#fff] backdrop-blur-lg shadow-md rounded-xl m-0 lg:m-2 w-full p-3 sticky top-[80px] z-[1012] mb-5 flex justify-center lg:justify-start items-center'>
-                        <SelectOption className="w-[150px] lg:w-[250px] text-[12px] lg:text-[16px]" titleName="خدمات:" items={category} />
+                        <SelectOption className="w-[150px] lg:w-[250px] text-[12px] lg:text-[16px]" titleName="خدمات:" items={category} {...{ setSelectValue, selectValue, selectName, setSelectName }} />
                         <SelectOption className="w-[150px] lg:w-[250px] text-[12px] lg:text-[16px]" titleName="مرتب سازی:" items={null} />
                         {/* btn cards status */}
-                        <button onClick={()=> {
+                        <button onClick={() => {
                             setBtnCard("col")
                             localStorage.setItem("card_status", "col")
-                            }} className={`btn mr-auto btn-ghost ${btnCard == "col" ? "btn-active" : ""}`}>
+                        }} className={`btn mr-auto btn-ghost ${btnCard == "col" ? "btn-active" : ""}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-list-task" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z" />
                                 <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z" />
                                 <path fill-rule="evenodd" d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z" />
                             </svg>
                         </button>
-                        <button onClick={()=> {
+                        <button onClick={() => {
                             setBtnCard("row")
                             localStorage.setItem("card_status", "row")
-                            }}  className={`btn mr-2 btn-ghost ${btnCard == "row" ? "btn-active" : ""}`}>
+                        }} className={`btn mr-2 btn-ghost ${btnCard == "row" ? "btn-active" : ""}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-fill" viewBox="0 0 16 16">
                                 <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z" />
                             </svg>
@@ -217,10 +222,14 @@ function Reserve({ data, login, setLogin, className }) {
                                     <div className='p-14 skeleton w-full rounded-xl mb-3'></div>
                                     <div className='p-14 skeleton w-full rounded-xl mb-3'></div>
                                 </div>
-                                :
-                                data?.map(item => (
-                                    <CardList active={item._id == value?._id} handleClick2={handleClick2} onClick={() => handleClick(item)} key={item.id} {...item} />
-                                ))
+                                : data.length == 0 ?
+                                    <div className='flex justify-center items-center text-[24px] h-[80vh] text-[#929292] p-12 border border-2 rounded-3xl border-dashed'>
+                                        چیزی پیدا نشده! :(
+                                    </div>
+                                    :
+                                    data?.map(item => (
+                                        <CardList active={item._id == value?._id} handleClick2={handleClick2} onClick={() => handleClick(item)} key={item.id} {...item} />
+                                    ))
                         }
                     </div>
                 </div>
@@ -277,12 +286,14 @@ function Reserve({ data, login, setLogin, className }) {
 
 export default Reserve;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+
+    const { category } = context.query;
 
     const dev = process.env.NODE_ENV !== 'production';
     const baseURL = dev ? 'http://localhost:3000/api' : 'https://poliklinik.vercel.app/api';
     // Fetch data from external API
-    const res = await fetch(baseURL + "/admin/doctor")
+    const res = await fetch(baseURL + "/admin/doctor?category=" + category)
     const response = await res.json()
 
     // Pass data to the page via props

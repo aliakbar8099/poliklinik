@@ -2,6 +2,7 @@
 import clientPromise from "../../../lib/mongodb";
 import bcrypt from "bcryptjs"
 import { isLogin } from "../../../middleware/Auth";
+import { ObjectID } from "bson";
 const jwt = require("jsonwebtoken");
 
 export default async (req, res) => {
@@ -119,6 +120,7 @@ export default async (req, res) => {
 
                 let finDoctor = await lists.filter(i => i.rol === "doctor")
 
+
                 for (let i = 0; i < finDoctor.length; i++) {
                     let {
                         _id,
@@ -142,10 +144,11 @@ export default async (req, res) => {
                     })
                 }
 
+                let filterDoctor = !req.query["category"] ? newData : newData?.filter(i => i.category == req.query["category"])
 
                 if (!req.query["id"]) {
                     res.status(200).send({
-                        data: newData.reverse(),
+                        data: filterDoctor,
                     })
                 }
                 else {
