@@ -39,7 +39,7 @@ function Section1({ mainProps }) {
                 {/* <img style={position} className="w-full h-full object-cover scale-[1.1]" src="/img/bgsec1.jpg" /> */}
                 <SliderMain slider={mainProps?.imgs} mainProps={mainProps} />
                 <div
-                    className="box_sect1 z-[1032] rounded-[40px] bg-[#e9faffcf] w-[90%] md:w-[60%] lg:w-[466px] h-[auto] absolute top-[50%]
+                    className="box_sect1 z-10 rounded-[40px] bg-[#e9faffcf] w-[90%] md:w-[60%] lg:w-[466px] h-[auto] absolute top-[50%]
                  right-[50%] lg:right-[80px] translate-y-[-50%] translate-x-[50%] lg:translate-x-[0%] p-6 pt-10">
                     {
                         texts.length == 0 ?

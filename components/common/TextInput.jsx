@@ -26,16 +26,19 @@ function TextInput(props) {
                             <small style={{ color: num > props.maxText ? "#ff0000" : "" }}>حداکثر {props.maxText} کاراکتر - {num}</small>
                         </>
                         :
-                        <input
-                            readOnly={props.readOnly}
-                            dir={props.type == "number" ? "ltr" : "rtl"} {...props}
-                            className={`inputcss-pl text-[10px] lg:text-[15px] ${props.inputStyle}`}
-                            id={props.inputId}
-                            defaultValue={props.defaultValueText}
-                            onInput={props.onInputText}
-                            name={props.nameInput}
-                            onChange={props.onGetValue}
-                        />
+                        props.skeleton ?
+                            <div className={`p-[23px] w-full skeleton rounded-2xl`}></div>
+                            :
+                            <input
+                                readOnly={props.readOnly}
+                                dir={props.type == "number" ? "ltr" : "rtl"} {...props}
+                                className={`inputcss-pl text-[10px] lg:text-[15px] ${props.inputStyle}`}
+                                id={props.inputId}
+                                defaultValue={props.defaultValueText}
+                                onInput={props.onInputText}
+                                name={props.nameInput}
+                                onChange={props.onGetValue}
+                            />
 
                 }
                 <div hidden={props.msg == ""} className="text-[12px] pt-5 text-error flex items-center">

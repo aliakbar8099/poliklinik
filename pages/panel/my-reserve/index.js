@@ -6,7 +6,7 @@ import SecondLayout from '/layout/second.layout';
 import Link from 'next/link';
 
 function MyReserve() {
-    const [data, setData] = React.useState(null);
+    const [data, setData] = React.useState([]);
     const [loading , setLoading] = React.useState(false);
     const [nCode , setNCode] = React.useState(null)
     const [category, setCategory] = React.useState(null);
@@ -15,20 +15,24 @@ function MyReserve() {
 
     React.useEffect(() => {
         let { NationalCode } = JSON.parse(localStorage.getItem("user"));
+        setLoading(true)
         setNCode(NationalCode)
         getListMyReserve(NationalCode).then(res => {
             getCategory().then(res2 => {
                 setCategory(res2.data)
+                setLoading(false)
                 setData(res.data.reverse());
             })
         })
     }, [])
 
     React.useMemo(() => {
+        setLoading(true)
         setData([])
         if(nCode){
             getListMyReserve(nCode).then(res => {
                 let filter = !selectValue ? res.data : res.data?.filter(item => item.doctor.category == selectValue);
+                setLoading(false)
                 setData(filter.reverse());
             })
         }
@@ -57,7 +61,7 @@ function MyReserve() {
                             </thead>
                             <tbody>
                                 {
-                                    !data?
+                                    loading ?
                                         <>
                                             {
                                                 [1, 2, 3, 4, 5, 6, 7, 8, 9, 12].map(i => (
@@ -81,7 +85,7 @@ function MyReserve() {
                                                 ))
                                             }
                                         </>
-                                        : data.length == 0 ?
+                                        : data?.length == 0 ?
                                             <tr>
                                                 <td></td>
                                                 <td></td>

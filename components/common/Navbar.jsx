@@ -12,7 +12,7 @@ let menus = {
         { name: "خانه", path: "/", link: true },
         { name: "کادر درمانی", path: "/staff", link: true },
         { name: "بخش های ما", path: "/parts", link: true },
-        { name: "برنامه ما", path: "/progroms", link: true },
+        { name: "رویداد ها", path: "/events", link: true },
         { name: "مجله سلامت", path: "/magazine", link: true },
     ],
     dashboard: [
@@ -175,7 +175,7 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                                 <div className="avatar">
                                     {
                                         user ?
-                                            <div className="w-6 lg:w-10 rounded-full ring ring-offset-base-100 ring-offset-2 mr-5">
+                                            <div className="w-9 lg:w-10 rounded-full ring ring-offset-base-100 ring-offset-2 mr-5">
                                                 <img src={user?.img} />
                                             </div>
                                             :
@@ -192,7 +192,7 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                         <path d="M7.53772 23.604C7.88257 24.1986 8.08105 24.8883 8.08105 25.6239C8.08105 26.3596 7.88257 27.0492 7.53772 27.6439C6.83813 28.8503 5.53328 29.6639 4.04065 29.6639V21.584C5.53318 21.584 6.83802 22.3975 7.53772 23.604Z" fill="#00EED1" />
                     </svg>
                 </a>
-                <div className="dropdown mr-auto block lg:hidden">
+                <div style={{visibility:user ? "hidden" : "visible"}} className="dropdown mr-auto block lg:hidden">
                     <label htmlFor="modalAuth" className="btn btn-ghost btn-circle text-[#00B6BD]" dir="ltr">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" className="bi bi-person-fill w-[28px] h-[28px]" viewBox="0 0 16 16">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />

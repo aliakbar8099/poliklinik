@@ -8,7 +8,7 @@ function MainLayout({ children }) {
 
     function Logout() {
         localStorage.removeItem("access-token");
-        router.reload();
+        children.props.setChange(new Date());
         document.getElementById("logout-m").checked = false
     }
 
