@@ -67,8 +67,6 @@ function MyReserve() {
                                                 <td>
                                                     <div className='py-10 pr-4 text-[20px] w-full text-right text-[#aaa]'>
                                                         رزروی انجام نشده!
-                                                        &nbsp;
-                                                        <Link href={"/reserve"} className='btn'>ثبت رزرو</Link>
                                                     </div>
                                                 </td>
                                                 <td></td>

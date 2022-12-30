@@ -35,6 +35,7 @@ function Reserve({ data, login, setLogin, className }) {
     const [rezs, setRezs] = React.useState([])
     const [complete, setComplete] = React.useState([]);
     const [btnCard, setBtnCard] = React.useState("col")
+    const [render , setRender] = React.useState(false)
 
 
     React.useEffect(() => {
@@ -45,7 +46,7 @@ function Reserve({ data, login, setLogin, className }) {
         setLoading(true)
         setLoading2(true)
         getAllDoctor().then(ress => {
-            if(ress.count > 0){
+            if (ress.count > 0) {
                 getSingleDoctor(tabletime.id || ress.data[0]?._id).then(res => {
                     getCategory().then(res2 => {
                         setCategory(res2.data)
@@ -56,10 +57,21 @@ function Reserve({ data, login, setLogin, className }) {
             }
             setValue(ress.data[0])
         })
+
         return () => {
             document.body.style.overflow = "auto"
         }
     }, [])
+
+    React.useEffect(()=> {
+        let qu = router.query
+        if(qu.category && category){
+            let nameCategory = category?.find(i=> i._id == qu.category);  
+            setSelectValue(qu.category)
+            setSelectName(nameCategory.title)
+        }
+        setRender(true)
+    },[category])
 
     React.useEffect(() => {
         let getUser = JSON.parse(localStorage.getItem("user"))
@@ -130,10 +142,12 @@ function Reserve({ data, login, setLogin, className }) {
     }
 
     React.useEffect(() => {
-        let { category } = router.query
-
-        router.push("?category=" + selectValue)
-
+        if(render){
+            router.push("?category=" + selectValue)
+        }
+        if(router.asPath == "/reserve"){
+            router.push("?category=")
+        }
     }, [selectValue])
 
     return (

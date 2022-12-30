@@ -2,9 +2,11 @@ import React from 'react';
 import { getCategory } from '../../../services/admin';
 import styles from '/styles/Home.module.scss'
 import { Svgs } from '../../common/Icons'
+import Link from 'next/link';
 
 function Section2({ category }) {
     const [sticky, setSticky] = React.useState(false);
+    const [moreThan, setMoreThan] = React.useState(1);
 
     const handleScroll = () => {
         const position = window.pageYOffset;
@@ -20,6 +22,10 @@ function Section2({ category }) {
         };
     }, [])
 
+    function handleMore() {
+        setMoreThan(moreThan + 1)
+    }
+
     return (
         <>
             <section id="section2" className="container-pl">
@@ -31,18 +37,18 @@ function Section2({ category }) {
                     <h2 className="text-[26px] lg:text-[35px] font-bold text-center">خدمات <span className="text-[#00B6BD]">ما</span></h2>
                 </div>
                 <p className="text-center text-[14px] lg:text-[20px] w-[80%] lg:w-[20%] m-auto mt-1 "><span>مجموعه <span className="text-[#00B6BD]">ما</span> با ارائه خدمات متنوع آماده پاسخگویی ب شماست.</span></p>
-                <div className={`${styles.Section2_Items} flex my-10 flex-wrap lg:flex-nowrap justify-center`}>
+                <div className={`${styles.Section2_Items} flex my-10 flex-wrap justify-center`}>
                     {
-                        category?.map(item => (
-                            <div key={item?.id} className="w-[40%] lg:w-[25%] h-[200px] mb-10 bg-[#DEEEF2] mx-2 md:mx-5 rounded-[30px] flex flex-col justify-center items-center">
+                        category?.slice(0, (5 * moreThan)).map(item => (
+                            <Link href={"/reserve?category=" + item?._id} key={item?._id} className="h-[150px] lg:h-[200px] mb-10 bg-[#DEEEF2] mx-2 md:mx-5 rounded-[30px] flex flex-col justify-center items-center w-[40%] lg:w-1/6">
                                 {Svgs[item?.svg].svg}
                                 <h3 className="mt-9 text-[#000] text-[18px]">{item?.title}</h3>
-                            </div>
+                            </Link>
                         ))
                     }
                 </div>
                 <div className='text-center mb-2'>
-                    <button className='btn px-9  text-[17px] font-normal btn-ghost bg-[#005974] hover:bg-[#005873] hover:opacity-90 text-[#fff] mt-10'
+                    <button hidden={category?.slice(0, (5 * moreThan)).length >= category?.length} onClick={handleMore} className='btn px-9  text-[17px] font-normal btn-ghost bg-[#005974] hover:bg-[#005873] hover:opacity-90 text-[#fff] mt-10'
                     >مشاهده همه</button>
                 </div>
             </section>

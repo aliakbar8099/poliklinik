@@ -17,7 +17,7 @@ export async function getServerSideProps() {
   const response2 = await res2.json()
 
   // Pass data to the page via props
-  return { props: { category: response.data.reverse().slice(0, 5), mainProps: response2.data } }
+  return { props: { category: response.data, mainProps: response2.data } }
 }
 
 export default function Home({ category, mainProps }) {
