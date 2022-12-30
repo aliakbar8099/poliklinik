@@ -85,7 +85,6 @@ function Auth({ pageId, setPageId, login, setLogin, setChange }) {
                     .then((response) => {
                         toast.error(response.msg);
                         localStorage.setItem("access-token", response.token);
-                        router.reload()
                         document.getElementById("modalAuth").checked = false
                         setChange(new Date());
                         setLoading(false);
@@ -202,7 +201,6 @@ function Auth({ pageId, setPageId, login, setLogin, setChange }) {
             postLogin(value)
                 .then((response) => {
                     localStorage.setItem("access-token", response.token);
-                    router.reload()
                     document.getElementById("modalAuth").checked = false
                     setChange(new Date());
                     setLoading(false);

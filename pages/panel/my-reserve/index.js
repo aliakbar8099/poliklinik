@@ -1,15 +1,21 @@
 import React from 'react';
 import { getListMyReserve } from '/services/get-api';
+import SelectOption from '/components/common/SelectOption';
 import { getCategory } from '/services/admin';
 import SecondLayout from '/layout/second.layout';
 import Link from 'next/link';
 
 function MyReserve() {
     const [data, setData] = React.useState(null);
+    const [loading , setLoading] = React.useState(false);
+    const [nCode , setNCode] = React.useState(null)
     const [category, setCategory] = React.useState(null);
+    const [selectName, setSelectName] = React.useState("");
+    const [selectValue, setSelectValue] = React.useState("");
 
     React.useEffect(() => {
         let { NationalCode } = JSON.parse(localStorage.getItem("user"));
+        setNCode(NationalCode)
         getListMyReserve(NationalCode).then(res => {
             getCategory().then(res2 => {
                 setCategory(res2.data)
@@ -17,32 +23,47 @@ function MyReserve() {
             })
         })
     }, [])
-    React.useEffect(() => { }, [category])
+
+    React.useMemo(() => {
+        setData([])
+        if(nCode){
+            getListMyReserve(nCode).then(res => {
+                let filter = !selectValue ? res.data : res.data?.filter(item => item.doctor.category == selectValue);
+                setData(filter.reverse());
+            })
+        }
+    }, [selectValue])
+
+    function handleDelete(params) {
+
+    }
 
     return (
         <>
             <main className='p-10'>
                 <div className='w-[80%] m-auto shadow-md'>
-                    <div className="overflow-x-auto w-full rtl-grid text-right">
-                        <table className="table w-full rtl-grid  text-right">
+                    <div className="overflow-x-auto overflow-y-auto w-full rtl-grid text-right">
+                        <table className="table w-full rtl-grid hover text-right bg-[#fff]">
                             <thead>
                                 <tr>
-                                    <th>اظلاعات شخصی مراجعه کننده</th>
                                     <th>پزشک رزور شده</th>
                                     <th>زمان رزور</th>
                                     <th>دسته بندی</th>
                                     <th>علت مراجعه</th>
+                                    <th>
+                                        <SelectOption className="w-full" titleName="خدمات:" items={category} {...{ setSelectValue, selectValue, selectName, setSelectName }} />
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    !data ?
+                                    !data?
                                         <>
                                             {
                                                 [1, 2, 3, 4, 5, 6, 7, 8, 9, 12].map(i => (
                                                     <tr key={i} className='w-full'>
                                                         <td>
-                                                            <div className='skeleton p-5 w-ful rounded-mdl'></div>
+                                                            <div className='skeleton p-5 w-full rounded-md'></div>
                                                         </td>
                                                         <td>
                                                             <div className='skeleton p-5 w-full rounded-md'></div>
@@ -74,15 +95,7 @@ function MyReserve() {
                                                 <td></td>
                                             </tr>
                                             : data?.map(item => (
-                                                <tr key={item.tiemValue} className="hover cursor-pointer">
-                                                    <td>
-                                                        <div className="flex items-center space-x-3">
-                                                            <div>
-                                                                <div className="font-bold">{item.user.fullname}</div>
-                                                                <div className="text-sm opacity-50">{item.user.phoneNumber}</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
+                                                <tr key={item.tiemValue}>
                                                     <td>
                                                         <div className="flex items-center space-x-3">
                                                             <div className="avatar ml-2">
@@ -104,17 +117,24 @@ function MyReserve() {
                                                     <th className='w-[300px]'>
                                                         <button className="btn btn-ghost btn-xs">{item.user.reason}</button>
                                                     </th>
+                                                    <td>
+                                                        <label htmlFor='cofrim' className='btn btn-ghost hover:text-[#ff0000] hover:bg-[#ff000030]'>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                                            </svg>
+                                                        </label>
+                                                    </td>
                                                 </tr>
                                             ))
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>اظلاعات شخصی مراجعه کننده</th>
                                     <th>پزشک رزور شده</th>
                                     <th>زمان رزور</th>
                                     <th>دسته بندی</th>
                                     <th>علت مراجعه</th>
+                                    <th></th>
                                 </tr>
                             </tfoot>
 
@@ -122,6 +142,22 @@ function MyReserve() {
                     </div>
                 </div>
             </main>
+            {/* Put this part before </body> tag */}
+            <input type="checkbox" id="cofrim" className="modal-toggle" />
+            <label htmlFor="cofrim" className="modal cursor-pointer">
+                <label className="modal-box relative" htmlFor="">
+                    <p className='text-center text-[18px]'>آیا میخواهید این آیتم را حذف کنید؟</p>
+                    {/* <div className='flex justify-center items-center w-full mt-4'>
+                        {Svgs[idSvgD?.svg]?.svg}
+                    </div>
+                    <h3 className="text-lg font-bold text-center mt-6">{idSvgD?.title}</h3> */}
+                    <div className='flex items-center justify-center mt-4'>
+                        <button onClick={handleDelete} className='btn btn-outline btn-error'>تایید و حذف</button>
+                        <label htmlFor='cofrim' className='btn btn-outline btn-info mr-3'>بیخیال</label>
+                    </div>
+                </label>
+
+            </label>
         </>
     );
 }

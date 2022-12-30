@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }) {
       <div className={loading ? "" : "loaded"}>
         {
           getLayout(
-            <Layout>
+            <Layout setChange={setChange} change={change} >
               <Component setChange={setChange} {...pageProps} login={login} setLogin={setLogin} />
             </Layout>
           )

@@ -99,8 +99,8 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
 
     return (
         <>
-            <navbar style={{ background: bg }} className="flex w-full backdrop-blur-xl px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
-                <a>
+            <navbar style={{ background: bg }} className="flex w-full backdrop-blur-md border-b-[1px] border-[#eee] px-2 lg:px-[50px] m-auto items-center py-3 fixed lg:sticky top-0 right-0 z-[2010] bg-white">
+                <a className="hidden lg:block">
                     <svg width="50" height="51" viewBox="0 0 50 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.53748 23.6036H16.2325L21.9371 38.7715L36.1438 0.998047L44.6456 23.6036H50V27.6435H41.8483L36.1437 12.4755L21.937 50.249L13.4353 27.6435H7.53748C7.88232 27.0488 8.08081 26.3592 8.08081 25.6235C8.08081 24.8878 7.88232 24.1982 7.53748 23.6036Z" fill="#00B6BD" />
                         <path d="M4.04004 21.584V29.6639C1.81176 29.6639 -0.00036478 27.852 -0.00036478 25.6239C-0.00036478 23.3959 1.81176 21.584 4.04004 21.584Z" fill="#00CCB3" />
@@ -153,7 +153,7 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                             </Link>
                             :
                             <>
-                                <label htmlFor="logout-m" className="btn border-0 hidden lg:flex btnsd btn-outline btn-error items-center mr-auto rounded-[50px]">
+                                <label htmlFor="logout-m" className="btn border-0 btnsd btn-outline btn-error items-center mr-auto rounded-[50px] hidden lg:flex">
                                     <span className="mx-1">
                                         خروج از حساب
                                     </span>
@@ -162,14 +162,36 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                                         <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
                                     </svg>
                                 </label>
-                                <strong className="mr-3">{user?.fullname}</strong>
+                                {
+                                    user ?
+                                        <strong className="mr-3 text-[11px] lg:text-[14px] hidden lg:block">{user?.fullname}<br /><small className="font-normal text-center w-full block">({user?.rol == "admin" ? "مدیر" : user?.rol == "doctor" ? "پزشک" : user?.rol == "user" ? "کابر" : ""})</small></strong>
+                                        :
+                                        <div className="flex flex-col justify-center items-center">
+                                            <div className="skeleton w-[80px] h-[9px] rounded-md"></div>
+                                            <div className="skeleton w-[60px] h-[8px] rounded-md mt-2"></div>
+                                        </div>
+
+                                }
                                 <div className="avatar">
-                                    <div className="w-10 rounded-full ring ring-offset-base-100 ring-offset-2 mr-5">
-                                        <img src={user?.img} />
-                                    </div>
+                                    {
+                                        user ?
+                                            <div className="w-6 lg:w-10 rounded-full ring ring-offset-base-100 ring-offset-2 mr-5">
+                                                <img src={user?.img} />
+                                            </div>
+                                            :
+                                            <div className="skeleton w-6 lg:w-12 rounded-full mr-5"></div>
+                                    }
                                 </div>
+                                <strong className="mr-3 text-[11px] lg:text-[16px] block lg:hidden">{user?.fullname}</strong>
                             </>
                 }
+                <a className="block lg:hidden m-auto absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+                    <svg width="32" height="32" viewBox="0 0 50 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.53748 23.6036H16.2325L21.9371 38.7715L36.1438 0.998047L44.6456 23.6036H50V27.6435H41.8483L36.1437 12.4755L21.937 50.249L13.4353 27.6435H7.53748C7.88232 27.0488 8.08081 26.3592 8.08081 25.6235C8.08081 24.8878 7.88232 24.1982 7.53748 23.6036Z" fill="#00B6BD" />
+                        <path d="M4.04004 21.584V29.6639C1.81176 29.6639 -0.00036478 27.852 -0.00036478 25.6239C-0.00036478 23.3959 1.81176 21.584 4.04004 21.584Z" fill="#00CCB3" />
+                        <path d="M7.53772 23.604C7.88257 24.1986 8.08105 24.8883 8.08105 25.6239C8.08105 26.3596 7.88257 27.0492 7.53772 27.6439C6.83813 28.8503 5.53328 29.6639 4.04065 29.6639V21.584C5.53318 21.584 6.83802 22.3975 7.53772 23.604Z" fill="#00EED1" />
+                    </svg>
+                </a>
                 <div className="dropdown mr-auto block lg:hidden">
                     <label htmlFor="modalAuth" className="btn btn-ghost btn-circle text-[#00B6BD]" dir="ltr">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" className="bi bi-person-fill w-[28px] h-[28px]" viewBox="0 0 16 16">
@@ -199,13 +221,17 @@ function Navbar({ bg = "#fff9", typeLayout = "main", setChange, change, Logout }
                     </div>
                 </label>
             </label>
-            <div className="menu-res fixed left-0 bg-[#fff] w-full h-[80%] z-[1015] rounded-b-[20px]"
+            <div className="menu-res fixed left-0 bg-[#fff] w-full h-[auto] z-[1015] rounded-b-[20px]"
                 style={{ transition: "0.3s ease", top: open ? 0 : -1200 }}>
                 <ul className={`${styles.menuRes} flex flex-col`}>
                     {
                         menus[typeLayout == "main" ? "main" : login ? user?.rol == "admin" ? "admin" : "dashboardLogin" : "dashboard"].map(item => (
                             <li key={item.path} onClick={() => setOpen(false)} className={route.pathname === item.path ? styles.active : ""}  ><Link href={item.path}>{item.name}</Link></li>
                         ))
+                    }
+                    {
+                        !login ? null :
+                            <li className="py-4 mb-3 text-error" style={{ color: "#ff0000", boxShadow: "0 0 0 1px #ff0000" }}><label htmlFor="logout-m" className="w-full block">خارج شدن حساب</label></li>
                     }
                 </ul>
                 <span className="absolute bottom-1 left-[50%] translate-x-[-50%] w-[90px] h-[5px] bg-[#0005] rounded-[20px]"></span>

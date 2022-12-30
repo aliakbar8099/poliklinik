@@ -14,7 +14,7 @@ function MainLayout({ children }) {
 
     return (
         <>
-            <Navbar Logout={Logout} />
+            <Navbar setChange={children.props.setChange} change={children.props.change} Logout={Logout} />
             {children}
             <Footer />
         </>

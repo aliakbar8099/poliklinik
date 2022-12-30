@@ -25,25 +25,27 @@ function SecondLayout({ children }) {
     let firstB = Breadcrumbs.find(i => i.path == router.pathname.split("/").at(1))
 
     React.useEffect(() => {
+        if(!localStorage.getItem("access-token") && router.pathname != "/reserve"){
+            router.push("/")
+        }
         document.body.style.background = "#f4f8fb"
         return () => {
             document.body.style.background = "#fff"
         }
-    }, [change]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [children.props.change]);
 
     // console.log(router.pathname.split("/").at(1));
 
     function Logout() {
         localStorage.removeItem("access-token");
-        setChange(new Date());
-        router.reload();
+        children.props.setChange(new Date());
         document.getElementById("logout-m").checked = false
     }
 
-
     return (
         <>
-            <Navbar bg="#e7faff" typeLayout="dashboard" setChange={setChange} change={change} Logout={Logout} />
+            <Navbar bg="#e7faff" typeLayout="dashboard" setChange={children.props.setChange} change={children.props.change} Logout={Logout} />
             <div className="bg-[#f4f8fb]">
                 <nav className="rounded-md w-full pt-2 bres">
                     <ol className="list-reset flex text-sm mt-1 mr-8">

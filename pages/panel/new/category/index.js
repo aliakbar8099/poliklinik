@@ -111,7 +111,7 @@ function Category() {
                     <h3 className="text-lg font-bold text-center mt-6">{idSvgD?.title}</h3>
                     <div className='flex items-center justify-center mt-4'>
                         <button onClick={handleDelete} className='btn btn-outline btn-error'>تایید و حذف</button>
-                        <label htmlFor='cofrim' className='btn btn-outline btn-info mr-3'>بیخال</label>
+                        <label htmlFor='cofrim' className='btn btn-outline btn-info mr-3'>بیخیال</label>
                     </div>
                 </label>
 
@@ -135,7 +135,7 @@ function Card({ title, svg, cofrimDelete, _id, loadingD }) {
                     <div className='h-[57px] w-[57px] flex justify-center items-center'>
                         <LoadingSvg />
                     </div> :
-                    Svgs[svg].svg
+                    Svgs[svg]?.svg
             }
             <h3 className="mt-9 text-[#000] text-[13px]">{title}</h3>
             <div onClick={() => cofrimDelete({ svg, title, _id })} className='absolute left-0 top-0 w-full h-full bg-[#fff8] justify-center items-center cursor-pointer backdrop-blur-md hidden group-hover:flex transition'>

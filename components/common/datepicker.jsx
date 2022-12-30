@@ -20,7 +20,10 @@ function DatePickers(props) {
                     // />
                     <DatePicker
                         value={props.selectedDay}
-                        onChange={props.setSelectedDay}
+                        onChange={(value) => {
+                            props.setSelectedDay(value)
+                            props.getValue({ target: { value, name: props.nameInput } })
+                        }}
                         inputClassName={`inputcss-pl text-[10px] lg:text-[15px] ${props.inputStyle}`}
                         shouldHighlightWeekends
                         inputName={props.nameInput}

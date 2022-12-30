@@ -27,6 +27,7 @@ function TextInput(props) {
                         </>
                         :
                         <input
+                            readOnly={props.readOnly}
                             dir={props.type == "number" ? "ltr" : "rtl"} {...props}
                             className={`inputcss-pl text-[10px] lg:text-[15px] ${props.inputStyle}`}
                             id={props.inputId}

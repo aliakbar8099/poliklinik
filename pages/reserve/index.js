@@ -45,15 +45,17 @@ function Reserve({ data, login, setLogin, className }) {
         setLoading(true)
         setLoading2(true)
         getAllDoctor().then(ress => {
-            getSingleDoctor(tabletime.id || ress.data[0]?._id).then(res => {
-                getCategory().then(res2 => {
-                    setCategory(res2.data)
-                    setLoading(false)
-                    setLoading2(false)
+            if(ress.count > 0){
+                getSingleDoctor(tabletime.id || ress.data[0]?._id).then(res => {
+                    getCategory().then(res2 => {
+                        setCategory(res2.data)
+                        setLoading(false)
+                        setLoading2(false)
+                    })
                 })
-            })
+            }
+            setValue(ress.data[0])
         })
-        setValue(data[0])
         return () => {
             document.body.style.overflow = "auto"
         }
@@ -210,7 +212,7 @@ function Reserve({ data, login, setLogin, className }) {
                     <div className={`bg-[#fff] shadow-sm rounded-xl m-0 lg:m-2 w-full p-3 mt-20 h-full ${btnCard == "col" ? "" : "col-card"}`}>
 
                         {
-                            !data ?
+                            !data || router.asPath == "/reserve" ?
                                 <div>
                                     <div className='p-14 skeleton w-full rounded-xl mb-3'></div>
                                     <div className='p-14 skeleton w-full rounded-xl mb-3'></div>
