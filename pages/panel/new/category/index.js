@@ -1,7 +1,7 @@
 import React from 'react';
 import TextInput from '../../../../components/common/TextInput';
 import SecondLayout from '/layout/second.layout';
-import { Svgs } from "/components/common/icons"
+import { Svgs } from "../../../../components/common/Icons"
 import { getCategory, postCategory, removeCategory } from '../../../../services/admin';
 import { toast } from 'react-toastify';
 
