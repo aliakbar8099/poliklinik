@@ -31,6 +31,55 @@ const hVisData = [
   { title: "همه چیز درباره رژیم غذایی سالم", category: "رژیم و تغذیه", img: "/img/mag/p10.jpg" },
 ]
 
+let vs = [
+  {
+    _id: "63ab2038a9e88b4da95e50c6",
+    title: "روانشناسی",
+    svg: "3",
+  },
+  {
+    _id: "63ab39b1a9e88b4da95e50d5",
+    title: "چشم پزشکی",
+    svg: "2",
+  },
+  {
+    _id: "63ab3c11a9e88b4da95e50d7",
+    title: "داخلی",
+    svg: "1",
+  },
+  {
+    _id: "63aea4b4460abf9dda44b252",
+    title: "اطفال",
+    svg: "16",
+  },
+  {
+    _id: "63aea4d5460abf9dda44b253",
+    title: "دندان پزشکی",
+    svg: "15",
+  },
+  {
+    _id: "63af24d4460abf9dda44b268",
+    title: "کرونا",
+    svg: "9",
+  },
+  {
+    _id: "63af24f0460abf9dda44b269",
+    title: "قلبی و عروقی",
+    svg: "6",
+  },
+  {
+    _id: "63afe4d7343b678db599c683",
+    title: "فیزیوتراپی",
+    svg: "5",
+  },
+  {
+    _id: "63afebf37d77c2387a128071",
+    title: "تست",
+    svg: "2",
+  },
+];
+
+
 export default function Magazine({ category }) {
   return (
     <main className='w-[80%] max-w-[1440px] m-auto'>
@@ -54,7 +103,7 @@ export default function Magazine({ category }) {
       <section className='border-t-[1.2px] border-[#00597481] pt-14 w-full'>
         <div className={`${styles.Section2_Items} flex my-10 flex-wrap justify-center`}>
           {
-            category?.map(item => (
+            vs?.map(item => (
               <Link href={"/reserve?category=" + item?._id} key={item?._id} className="h-[150px] lg:h-[200px] mb-10 bg-[#DEEEF2] mx-2 md:mx-5 rounded-[30px] flex flex-col justify-center items-center w-[40%] lg:w-1/6">
                 {Svgs[item?.svg].svg}
                 <h3 className="mt-9 text-[#000] text-[18px]">{item?.title}</h3>
